@@ -286,10 +286,10 @@ Ja! DLP scant ook Teams DMs, niet alleen channels.
 Nu je DLP, Labels en Retention begrijpt:
 
 1. Login Purview vandaag
-2. Maak je eerste DLP policy
-3. Maak je eerste label
-4. Maak je eerste retention policy
-5. Monitor Activity Explorer volgende week
+2. Maak je eerste DLP policy https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp
+3. Maak je eerste label https://learn.microsoft.com/en-us/purview/sensitivity-labels
+4. Maak je eerste retention policy https://learn.microsoft.com/en-us/purview/get-started-with-data-lifecycle-management
+
 
 Veel sterkte met je Purview journey! Dit is powerful stuff.
 
@@ -297,6 +297,6 @@ Veel sterkte met je Purview journey! Dit is powerful stuff.
 
 By Wesley de Marie | Data Governance Advocate | Microsoft MVP Candidate
 
-Heb je Purview al geprobeerd? Wat zijn je ervaringen? Laat me weten!`
+
   }
 ];
