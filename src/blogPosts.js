@@ -6,7 +6,7 @@ export const blogPosts = [
     category: 'Purview',
     excerpt: 'Leer hoe je Microsoft Purview implementeert: licenties, setup-tijd (2-5 minuten), policy synchronisatie (60 minuten), en praktische stappen om aan de slag te gaan.',
     readTime: '12 min read',
-    featured: true,
+    featured: false,
     content: `# Getting Started with Microsoft Purview: Jouw Complete Beginnersgids
 
 Wil je aan de slag met data governance? Microsoft Purview is dé oplossing voor organisaties die hun data willen organiseren, beschermen en beheren. In deze gids leid ik je stap-voor-stap door het setupproces, de vereiste licenties, en wat je moet weten voordat je start.
