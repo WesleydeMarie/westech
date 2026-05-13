@@ -13,48 +13,13 @@ Wil je aan de slag met data governance? Microsoft Purview is dé oplossing voor 
 
 ## Wat is Microsoft Purview?
 
-Microsoft Purview is een **unified data governance platform** waarmee je:
-- Je data kunt **ontdekken** en **catalogeren** (Data Map)
-- Data kunt **classificeren** en **beschermen** (Data Loss Prevention - DLP)
-- **Compliance** en **regulatie** kunt beheren
+Microsoft Purview is een unified data governance platform waarmee je:
+- Je data kunt ontdekken en catalogeren (Data Map)
+- Data kunt classificeren en beschermen (Data Loss Prevention - DLP)
+- Compliance en regulatie kunt beheren
 - Je gehele data estate overzichtelijk kunt houden
 
 In simpele termen: Purview helpt je antwoord te geven op de vraag "Welke data hebben we, waar staat het, en wie mag eraan?" Dit is cruciaal voor GDPR-compliance, beveiliging, en data governance.
-
-## Welke Licentie Heb Je Nodig?
-
-Dit is een veelgestelde vraag, dus ik geef je het antwoord meteen duidelijk:
-
-### Optie 1: Trial (Gratis - Aanbevolen voor starters!)
-
-Microsoft biedt een **gratis 90-daagse trial** aan!
-
-**Vereisten voor de trial:**
-- Microsoft 365 E3, OF
-- Office 365 E3 + Enterprise Mobility and Security E3
-
-**Wat krijg je in de trial:**
-- Volledige access tot Microsoft Purview (functionaliteiten van Microsoft E5)
-- 25-300 licenties (automatisch toegewezen voor 90 dagen)
-- Alle compliance features om mee te experimenteren
-
-**Hoe je de trial startet:**
-1. Ga naar de Microsoft Purview portal (https://purview.microsoft.com)
-2. Navigeer naar "Trials and recommendations"
-3. Klik "View all trials and recommendations"
-4. Selecteer "Get started" bij de Purview trial
-5. Done! Je bent klaar!
-
-**Opmerking:** Het kan tot 2 uur duren voordat alle Purview solutions zichtbaar zijn in je navigatiemenu. Log uit en in als je ze niet meteen ziet.
-
-### Optie 2: Permanente Licenties
-
-Na de trial kun je kiezen voor:
-- Microsoft 365 E5 (volledig pakket met compliance features)
-- Microsoft Purview Suite (alleen compliance, goedkoper dan E5)
-- Per-solution licenties (alleen DLP, alleen Information Protection, etc.)
-
-Tip: Discussieer licentie-opties met je Microsoft account manager - er zijn verschillende modellen beschikbaar.
 
 ## Hoe Lang Duurt Het Om Te Beginnen?
 
@@ -62,7 +27,6 @@ Tip: Discussieer licentie-opties met je Microsoft account manager - er zijn vers
 
 De initiële setup van Microsoft Purview gaat erg snel:
 - Login in je Microsoft 365 tenant
-- Trial starten (of licentie activeren)
 - Portal openen
 - Klaar!
 
@@ -76,44 +40,14 @@ Dit is normaal en niets om je zorgen over te maken. Je hebt wat geduld nodig, ma
 
 Pro tip: Log uit en in na een uur. Dit versnelt soms het laadproces.
 
-## Data Synchronisatie: Hoe Lang Duurt Dat?
-
-Zodra je Purview hebt opgezet, wil je waarschijnlijk data gaan scannen en policies toepassen. Hier zijn de timing expectations:
-
-### Data Discovery (Data Map)
-
-Wanneer je een data source registreert en scant in Purview:
-- Scanning: Hangt af van grootte van je data
-  - Kleine bronnen (< 1TB): 15-30 minuten
-  - Grote bronnen (> 10TB): Enkele uren tot dagen
-- Indexing: Data verschijnt in je catalog (meestal meteen of binnen minuten)
-
-### Policy Synchronisatie (DLP & Information Protection)
-
-Dit is cruciaal: hoelang duurt het voordat je policies actief zijn?
-
-**DLP Policies synchroniseren op apparaten: Tot 60 minuten**
-
-Dit betekent:
-- Je maakt een Data Loss Prevention policy aan
-- Het duurt maximaal 60 minuten voordat alle gebruikersapparaten deze policy hebben ontvangen
-- Daarna zal de policy actief zijn en gaan helpen data te beschermen
-
-Dus maak je policy niet aan en test direct - wacht minimaal 1 uur!
-
-Aanbeveling: Maak policies aan aan het einde van je werkdag. Ze zijn 's ochtends volledig actief.
-
 ## Stap-voor-Stap: Je Eerste Setup
 
-### Stap 1: Trial Starten (2 minuten)
+### Stap 1: Portal Openen (1 minuut)
 
 1. Ga naar https://purview.microsoft.com
 2. Log in met je Microsoft 365 account
-3. Klik "Trials and recommendations"
-4. Selecteer "Get started" voor Purview trial
-5. Bevestig
-
-Status: Klaar!
+3. Wacht tot de portal laadt
+4. Je bent erin!
 
 ### Stap 2: Wacht Tot Alle Features Laden (Tot 2 uur)
 
@@ -126,111 +60,243 @@ Na stap 1 zullen alle Purview solutions langzaam laden:
 
 Dit is normaal! Je ziet misschien even berichten zoals "Coming soon" of lege pagina's. Dit is OK. Wacht gewoon tot alles geladen is.
 
-### Stap 3: Registreer Je Eerste Data Source (10 minuten)
+### Stap 3: Verken de Dashboard (10 minuten)
 
-Zodra Data Map beschikbaar is:
+Zodra alles geladen is:
+1. Klik op "Home" tab
+2. Explore "Solutions" section
+3. Kijk naar "Data Map", "Data Loss Prevention", "Information Protection"
+4. Maak jezelf vertrouwd met de interface
 
-1. Ga naar "Data Map" → "Sources"
-2. Klik "Register"
-3. Kies je data source (Azure Storage, SQL Database, SharePoint, etc.)
-4. Vul login gegevens in
-5. Vul scan schema in
-6. Click "Register"
+Dit is waar je later je beleid zal maken en data zal beheren.
 
-Status: Je data source is geregistreerd! Scanning start automatisch.
+## De Basis: DLP, Labels en Retentie
 
-### Stap 4: Maak Je Eerste Policy (5 minuten)
+Nu gaan we dieper in op drie kernconcepten die je MOET begrijpen voordat je verder gaat.
 
-1. Ga naar "Data Loss Prevention" → "Policies"
-2. Klik "Create policy"
-3. Kies template (bijv. "PCI DSS for creditcard data")
-4. Configureer scope (Outlook, Teams, OneDrive, etc.)
-5. Review & Save
+### 1. Data Loss Prevention (DLP) - De Bodyguard van Je Data
 
-Belangrijk: Wacht nu 60 minuten voordat je test!
+DLP is als een bodyguard voor je gevoelige informatie. Het detecteert en beschermt gegevens voor ze verloren gaan.
 
-### Stap 5: Monitor Resultaten (Doorlopend)
+Wat doet DLP precies?
 
-Na 60 minuten kan je:
-- Naar "Activity Explorer" gaan
-- Zien welke data policies hebben gedetecteerd
-- Monitoren of alles werkt
+DLP policies scan je data (in Exchange, Teams, OneDrive, SharePoint) op zoek naar gevoelige informatie zoals:
+- Creditcard nummers
+- Burgerservicenummers (BSN)
+- Bankrekening nummers
+- Persoonlijke gegevens (PII)
+
+Wanneer DLP iets detecteert, kan het:
+- De actie blokkeren (email niet versturen)
+- Een waarschuwing tonen ("Ben je zeker?")
+- Dit loggen in Activity Explorer
+- Meldingen sturen naar admins
+
+Praktisch voorbeeld:
+
+Stel je hebt een DLP policy die creditcard nummers blokkeert. Als een werknemer probeert een email te sturen met 16 cijfers (creditcard format):
+1. DLP detecteert het
+2. De email wordt GEBLOKKEERD
+3. De werknemer krijgt melding: "Deze email bevat gevoelige informatie"
+4. Je admin ziet dit in Activity Explorer
+
+Hoelang duurt synchronisatie?
+
+DLP Policies synchroniseren op alle apparaten en clients: Tot 60 minuten
+
+Dit betekent dat als je vandaag een DLP policy aanmaakt, het tot 1 uur kan duren voordat alle employees het voelen. Plan dus policies voor aan het einde van je werkdag.
+
+### 2. Sensitivity Labels - De Classificatie Systeem
+
+Labels zijn zoals stickers op documenten. Ze helpen je data te classificeren en beschermen.
+
+Er zijn twee soorten labels:
+
+Sensitivity Labels:
+- Public (geen beperking)
+- Internal (alleen voor employees)
+- Confidential (gevoelig, beperkt delen)
+- Highly Confidential (zeer gevoelig, strenge controle)
+
+Retention Labels:
+- Bepalen hoe lang je iets moet bewaren
+- Automatisch verwijderen na bepaalde periode
+- Compliance en archivering helpen
+
+Waarom zijn labels belangrijk?
+
+Labels doen meerdere dingen tegelijk:
+1. Classificatie - Iedereen weet wat het document is
+2. Versleuteling - Confidential docs zijn encrypted
+3. Watermerk - "CONFIDENTIAL" verschijnt op het document
+4. Toegangsbeperking - Alleen bepaalde people kunnen het openen
+5. Retention - Auto delete na contract einde
+
+Praktisch voorbeeld:
+
+Een HR medewerker maakt een document met salarissen. Met één klik:
+1. Label "Highly Confidential - HR" toepassen
+2. Document wordt versleuteld
+3. Alleen HR kan het openen
+4. Watermark "CONFIDENTIAL" verschijnt
+5. Na 3 jaar wordt het automatisch verwijderd (retention)
+
+Alles in één actie!
+
+### 3. Retention - Het Archief Systeem
+
+Retention bepaalt hoe lang je data moet/mag bewaren. Dit is cruciaal voor compliance.
+
+Waarom is retention belangrijk?
+
+Regelingen vereisen bepaalde bewaartermijnen:
+- GDPR: Verwijder persoonlijke data als niet meer nodig
+- Belastingwet: Bewaar 7 jaar
+- Contracten: Bewaar tot 5 jaar na einde
+- Email: Soms oneindig, soms 3 jaar
+
+Retention policies automatiseren dit proces.
+
+Hoe werkt retention?
+
+1. Je stelt policy in: "Email ouder dan 3 jaar moet verwijderd worden"
+2. Purview scant automatisch
+3. Items die 3 jaar oud zijn gaan naar "Records Management"
+4. Na grace period worden ze verwijderd
+5. Dit is compliant met regelgeving
+
+Drie scenario's:
+
+Scenario A - Retention Only:
+- Bewaar email 7 jaar
+- Daarna automatisch verwijderen
+- Compliance maintained
+
+Scenario B - Legal Hold:
+- Normaal: Verwijder na 3 jaar
+- Maar: Als rechtszaak begint, NIETS verwijderen
+- Totdat rechtszaak voorbij is
+- Dan pas verwijderen
+
+Scenario C - Deletion + Archive:
+- Bewaar 5 jaar in live mailbox
+- Daarna verplaats naar Archive
+- Daarna verwijder na 10 jaar totaal
+- Layered approach
+
+## DLP + Labels + Retention Samenwerken
+
+Dit is waar het interessant wordt. Deze drie werken samen voor totale data governance.
+
+Voorbeeld Scenario: Contract Management
+
+Document: "Service Contract met Klant XYZ"
+
+Stap 1 - Label (Tag het):
+- Label: "Confidential - Legal"
+- Versleuteling activeren
+- Watermark toevoegen
+
+Stap 2 - DLP (Bescherm het):
+- DLP detecteert gevoelige gegevens (contractcijfers)
+- Blokkeert extern delen
+- Logt alle pogingen
+
+Stap 3 - Retention (Beheer het):
+- Retention policy: "Bewaar 5 jaar na contract einde"
+- Purview telt af
+- Daarna auto-delete
+- Compliance solved
+
+Alles automatisch, geen handwerk meer!
+
+## Praktische Stappen: Je Eerste DLP Policy
+
+Laten we een eenvoudige DLP policy maken om te beginnen.
+
+1. Ga naar Data Loss Prevention
+2. Klik "Create Policy"
+3. Kies template: "Protect Financial Data"
+4. Voeg toe: Exchange, Teams, OneDrive
+5. Stel in: "Block with override"
+6. Publish
+
+Na 60 minuten is het live!
+
+## Praktische Stappen: Je Eerste Label
+
+1. Ga naar Information Protection
+2. Klik "Create Label"
+3. Naam: "Confidential"
+4. Instellingen:
+   - Encryption: Required
+   - Watermark: Yes
+   - Visual Marking: Yes
+5. Publish naar alle users
+
+Gebruikers zien nu in Word/Outlook een "Confidential" label om toe te passen.
+
+## Praktische Stappen: Je Eerste Retention Policy
+
+1. Ga naar Records Management
+2. Klik "Create Retention Label"
+3. Naam: "Delete After 3 Years"
+4. Instellingen:
+   - Action: Delete
+   - Retentie: 3 years
+5. Publish
+
+Documenten ouder dan 3 jaar worden automatisch verwijderd.
 
 ## Veelgestelde Vragen
 
-### Kan ik Purview gebruiken zonder Microsoft E5?
+### Wat is het verschil tussen DLP en Labels?
 
-Ja! Met de trial, of met E3 + Purview Suite licentie.
+DLP = Detectie en blokkering (reactive)
+Labels = Classificatie en bescherming (proactive)
 
-### Hoelang kan ik de trial gebruiken?
+Gebruik beide!
 
-90 dagen, maar je kunt daarna een licentie kopen en verder gaan.
+### Kan ik DLP policies testen zonder ze live te zetten?
 
-### Wat gebeurt er na de 90-daagse trial?
+Ja! Maak policy in "Test mode" eerst. Dit toont alleen waarschuwingen, blokkeert niet.
 
-Je kunt kiezen om:
-1. Licenties te kopen en verder te gaan
-2. Trial te beëindigen en alles te verwijderen
-3. Een nieuwe trial aanvragen (hangt af van Microsoft approvals)
+### Hoe lang duurt het tot labels zichtbaar zijn in Word/Outlook?
 
-### Kan ik data scannen terwijl ik op features wacht?
+Tot 24 uur. Gebruikers zien dan dropdown met labels in Word/Outlook.
 
-Nee, je moet even wachten tot Data Map beschikbaar is. Maar dit duurt meestal slechts 1-2 uur.
+### Kan ik retention policies terugdraaien?
 
-### Waarom duurt synchronisatie 60 minuten?
+Ja, tot een bepaald punt. Eenmaal verwijderd gaat naar Recycle Bin, daarna permanent delete. Dus wees voorzichtig!
 
-Microsoft synchroniseert policies in batches om serverlast te minimaliseren. Dit is normaal voor enterprise-systemen.
+### Werkt DLP ook in Teams Direct Messages?
+
+Ja! DLP scant ook Teams DMs, niet alleen channels.
 
 ## Tips voor Success
 
-### 1. Zorg voor Admin Access
-
-Je hebt Compliance Administrator of Global Administrator rol nodig. Vraag je IT team dit eerst te controleren!
-
-### 2. Plan Je Setup
-
-- Start trial/licenties op dinsdag-donderdag (niet vrijdagnamiddag)
-- Geef jezelf 24 uur om alles te exploreren
-- Plan policies voor einde werkdag
-
-### 3. Begin Klein
-
-Start met één data source en één policy. Niet alles tegelijk!
-
-### 4. Documenteer je Setup
-
-Noteer welke policies je hebt aangemaakt en waarom. Dit helpt later bij audits.
-
-### 5. Gebruik de Trial Maximaal
-
-Je hebt 90 dagen! Experimenteer, test, leer. Dit is gratis!
+1. Begin klein: Start met 1 DLP policy, 1 label, 1 retention rule
+2. Test: Gebruik test mode eerst
+3. Communicate: Vertel gebruikers wat je doet
+4. Monitor: Kijk Activity Explorer regelmatig
+5. Iterate: Pas policies aan op feedback
 
 ## Volgende Stappen
 
-Nu je weet hoe je Purview kunt starten, zijn je volgende stappen:
+Nu je DLP, Labels en Retention begrijpt:
 
-1. Start de trial (vandaag!)
-2. Wacht tot alles laadt (2 uur)
-3. Registreer je eerste data source (morgen)
-4. Maak je eerste policy (morgen)
-5. Monitor resultaten (volgende week)
+1. Login Purview vandaag
+2. Maak je eerste DLP policy
+3. Maak je eerste label
+4. Maak je eerste retention policy
+5. Monitor Activity Explorer volgende week
 
-## Conclusie
-
-Microsoft Purview is geen ingewikkeld systeem - het is vrij intuïtief zodra je het begrijpt. De belangrijkste dingen om te onthouden:
-
-- Trial is gratis en makkelijk
-- Setup duurt slechts minuten
-- Wacht tot features laden (tot 2 uur)
-- Policies synchroniseren in 60 minuten
-- Begin klein en experimenteer
-
-Veel sterkte met je Purview journey! Als je vragen hebt of tegen problemen aanloopt, check dan de Microsoft Learn documentation of laat een opmerking achter.
+Veel sterkte met je Purview journey! Dit is powerful stuff.
 
 ---
 
-**By Wesley de Marie** | Data Governance Advocate | Microsoft MVP Candidate
+By Wesley de Marie | Data Governance Advocate | Microsoft MVP Candidate
 
-Heb je Purview al geprobeerd? Deel je ervaringen in de comments! 👇`
+Heb je Purview al geprobeerd? Wat zijn je ervaringen? Laat me weten!`
   }
 ];
