@@ -3,6 +3,7 @@ import { blogPosts } from './blogPosts';
 
 export default function Techwes() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [email, setEmail] = useState('');
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [showSuccess, setShowSuccess] = useState(false);
@@ -11,6 +12,7 @@ export default function Techwes() {
 
   const allBlogPosts = blogPosts;
   const featuredPost = allBlogPosts.find(post => post.featured);
+  const selectedPost = allBlogPosts.find(post => post.id === selectedPostId);
   const filteredPosts = selectedCategory 
     ? allBlogPosts.filter(post => post.category === selectedCategory && !post.featured)
     : allBlogPosts.filter(post => !post.featured);
@@ -44,6 +46,181 @@ export default function Techwes() {
     'DLP': '#2563eb',
     'MVP Journey': '#059669'
   };
+
+  // Blog Detail Page
+  if (selectedPostId) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#faf8f3' }}>
+        {/* Navigation */}
+        <nav style={{
+          borderBottom: '1px solid #e5e7eb',
+          padding: '1.5rem 2rem',
+          position: 'sticky',
+          top: 0,
+          background: '#faf8f3',
+          zIndex: 10
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: '24px', fontWeight: '600', color: '#1e3a8a', cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedPostId(null); }}>techwes</div>
+            <button
+              onClick={() => { setCurrentPage('blog'); setSelectedPostId(null); }}
+              style={{
+                background: '#1e3a8a',
+                color: 'white',
+                border: 'none',
+                padding: '10px 16px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.background = '#162e6f'}
+              onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+            >
+              ← Back to Blog
+            </button>
+          </div>
+        </nav>
+
+        {/* Blog Post Content */}
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem 2rem' }}>
+          {selectedPost && (
+            <article>
+              <div style={{ marginBottom: '2rem' }}>
+                <h1 style={{ fontSize: '42px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem', lineHeight: '1.2' }}>
+                  {selectedPost.title}
+                </h1>
+                <div style={{ display: 'flex', gap: '1rem', fontSize: '14px', color: '#6b7280', marginBottom: '2rem' }}>
+                  <span>{selectedPost.date}</span>
+                  <span>•</span>
+                  <span style={{ color: categoryColors[selectedPost.category] || '#1e3a8a', fontWeight: '500' }}>{selectedPost.category}</span>
+                  <span>•</span>
+                  <span>{selectedPost.readTime}</span>
+                </div>
+              </div>
+
+              {/* Blog Content */}
+              <div style={{
+                fontSize: '16px',
+                color: '#4b5563',
+                lineHeight: '1.8',
+                background: '#ffffff',
+                padding: '2rem',
+                borderRadius: '8px',
+                border: '1px solid #e5e7eb'
+              }}>
+                {selectedPost.content.split('\n').map((paragraph, index) => {
+                  if (paragraph.startsWith('# ')) {
+                    return <h1 key={index} style={{ fontSize: '28px', fontWeight: '600', color: '#1a1a1a', marginTop: '2rem', marginBottom: '1rem' }}>{paragraph.replace('# ', '')}</h1>;
+                  }
+                  if (paragraph.startsWith('## ')) {
+                    return <h2 key={index} style={{ fontSize: '22px', fontWeight: '600', color: '#1a1a1a', marginTop: '1.5rem', marginBottom: '1rem' }}>{paragraph.replace('## ', '')}</h2>;
+                  }
+                  if (paragraph.startsWith('### ')) {
+                    return <h3 key={index} style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginTop: '1rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
+                  }
+                  if (paragraph.startsWith('- ')) {
+                    return <li key={index} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{paragraph.replace('- ', '')}</li>;
+                  }
+                  if (paragraph.trim() === '') {
+                    return <div key={index} style={{ height: '0.5rem' }}></div>;
+                  }
+                  return <p key={index} style={{ marginBottom: '1rem' }}>{paragraph}</p>;
+                })}
+              </div>
+
+              {/* Author Bio */}
+              <div style={{
+                background: '#f3f4f6',
+                padding: '1.5rem',
+                borderRadius: '8px',
+                marginTop: '2rem',
+                borderLeft: '4px solid #1e3a8a'
+              }}>
+                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>About the Author</h3>
+                <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6', marginBottom: '1rem' }}>
+                  Wesley de Marie is a data governance enthusiast on the path to becoming a Microsoft MVP. Passionate about Purview, compliance, and helping organizations secure their data.
+                </p>
+                <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
+                  display: 'inline-block',
+                  fontSize: '14px',
+                  color: '#1e3a8a',
+                  textDecoration: 'none',
+                  fontWeight: '500',
+                  borderBottom: '1px solid #1e3a8a'
+                }}>
+                  Connect on LinkedIn →
+                </a>
+              </div>
+
+              {/* Newsletter CTA */}
+              <div style={{
+                background: '#f3f4f6',
+                padding: '2rem',
+                borderRadius: '12px',
+                marginTop: '2rem',
+                border: '1px solid #e5e7eb'
+              }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>📧 Don't Miss New Articles</h3>
+                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '1.5rem' }}>Get insights on data governance, Purview, and MVP journey delivered weekly</p>
+                <form onSubmit={handleNewsletterSignup} style={{ display: 'flex', gap: '0.5rem' }}>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    style={{
+                      flex: 1,
+                      padding: '10px 12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      outline: 'none'
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      padding: '10px 16px',
+                      background: '#1e3a8a',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = '#162e6f'}
+                    onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+                  >
+                    Subscribe
+                  </button>
+                </form>
+                {showSuccess && <p style={{ fontSize: '13px', color: '#10b981', marginTop: '1rem' }}>✓ Thanks for subscribing!</p>}
+              </div>
+            </article>
+          )}
+        </div>
+
+        {/* Footer */}
+        <footer style={{
+          borderTop: '1px solid #e5e7eb',
+          padding: '2rem',
+          marginTop: '3rem',
+          color: '#9ca3af',
+          fontSize: '14px',
+          textAlign: 'center',
+          background: '#faf8f3'
+        }}>
+          <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
+        </footer>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: '#faf8f3' }}>
@@ -152,6 +329,7 @@ export default function Techwes() {
                   transition: 'all 0.3s',
                   boxShadow: '0 4px 12px rgba(30, 58, 138, 0.2)'
                 }}
+                onClick={() => setSelectedPostId(featuredPost.id)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow = '0 12px 32px rgba(30, 58, 138, 0.3)';
                   e.currentTarget.style.transform = 'translateY(-4px)';
@@ -291,16 +469,18 @@ export default function Techwes() {
                       <p style={{ fontSize: '12px', color: '#6b7280' }}>By <strong style={{ color: '#1a1a1a' }}>Wesley de Marie</strong> • Data Governance Advocate</p>
                     </div>
 
-                    <button style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#1e3a8a',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      padding: 0,
-                      transition: 'all 0.2s'
-                    }}>
+                    <button 
+                      onClick={() => setSelectedPostId(post.id)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#1e3a8a',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        padding: 0,
+                        transition: 'all 0.2s'
+                      }}>
                       Read more →
                     </button>
                   </article>
@@ -364,7 +544,7 @@ export default function Techwes() {
                 <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>Latest Posts</h3>
                 <div style={{ display: 'grid', gap: '1.5rem' }}>
                   {latestPosts.map(post => (
-                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: '1px solid #e5e7eb' }}>
+                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: '1px solid #e5e7eb', cursor: 'pointer' }} onClick={() => setSelectedPostId(post.id)}>
                       <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '0.25rem' }}>{post.date}</p>
                       <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem', lineHeight: '1.3' }}>
                         {post.title}
