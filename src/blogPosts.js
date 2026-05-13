@@ -297,5 +297,5 @@ Veel sterkte met je Purview journey! Dit is powerful stuff.
 By Wesley de Marie | Data Governance Advocate | Microsoft MVP Candidate
 
 
-  }
+  }'
 ];
