@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
- 
+
 export default function Techwes() {
   const [currentPage, setCurrentPage] = useState('home');
   const [email, setEmail] = useState('');
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [showSuccess, setShowSuccess] = useState(false);
- 
+  const [hoveredPostId, setHoveredPostId] = useState(null);
+
   const blogPosts = [
     {
       id: 1,
@@ -30,39 +31,47 @@ export default function Techwes() {
       category: 'Journey',
       excerpt: 'Why I decided to pursue the Microsoft MVP award and what drives my passion for data governance.',
       readTime: '4 min read'
+    },
+    {
+      id: 4,
+      title: 'Purview Explained: A Beginner\'s Guide to Data Governance',
+      date: 'May 13 2025',
+      category: 'Purview',
+      excerpt: 'Learn what Purview is, why data governance matters, and how to get started with Microsoft\'s unified data governance platform.',
+      readTime: '8 min read'
     }
   ];
- 
+
   const handleNewsletterSignup = (e) => {
     e.preventDefault();
     setEmail('');
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
- 
+
   const handleContactSubmit = (e) => {
     e.preventDefault();
     setContactForm({ name: '', email: '', message: '' });
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
- 
+
   const navItems = [
     { label: 'Home', page: 'home' },
     { label: 'Blog', page: 'blog' },
     { label: 'About', page: 'about' },
     { label: 'Contact', page: 'contact' }
   ];
- 
+
   return (
-    <div style={{ minHeight: '100vh', background: 'white' }}>
+    <div style={{ minHeight: '100vh', background: '#faf8f3' }}>
       {/* Navigation */}
       <nav style={{
         borderBottom: '1px solid #e5e7eb',
         padding: '1.5rem 2rem',
         position: 'sticky',
         top: 0,
-        background: 'white',
+        background: '#faf8f3',
         zIndex: 10
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -90,7 +99,7 @@ export default function Techwes() {
           </div>
         </div>
       </nav>
- 
+
       {/* Content */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         {/* HOME PAGE */}
@@ -115,10 +124,17 @@ export default function Techwes() {
                     fontSize: '15px',
                     fontWeight: '500',
                     cursor: 'pointer',
-                    transition: 'background 0.2s'
+                    transition: 'all 0.2s',
+                    boxShadow: '0 2px 8px rgba(30, 58, 138, 0.15)'
                   }}
-                  onMouseEnter={(e) => e.target.style.background = '#1e3a8a'}
-                  onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#162e6f';
+                    e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = '#1e3a8a';
+                    e.target.style.boxShadow = '0 2px 8px rgba(30, 58, 138, 0.15)';
+                  }}
                 >
                   Read the Blog
                 </button>
@@ -135,11 +151,17 @@ export default function Techwes() {
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#f0f5ff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'white';
+                  }}
                 >
                   Learn About Me
                 </button>
               </div>
- 
+
               {/* MVP Progress */}
               <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '12px', marginTop: '3rem' }}>
                 <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>MVP Journey Progress</h2>
@@ -155,10 +177,10 @@ export default function Techwes() {
                 <div style={{ marginBottom: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
                     <span style={{ color: '#6b7280' }}>Blog & Content</span>
-                    <span style={{ color: '#1e3a8a', fontWeight: '500' }}>60%</span>
+                    <span style={{ color: '#1e3a8a', fontWeight: '500' }}>65%</span>
                   </div>
                   <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: '60%', background: '#1e3a8a' }}></div>
+                    <div style={{ height: '100%', width: '65%', background: '#1e3a8a' }}></div>
                   </div>
                 </div>
                 <div>
@@ -174,7 +196,7 @@ export default function Techwes() {
             </div>
           </div>
         )}
- 
+
         {/* BLOG PAGE */}
         {currentPage === 'blog' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
@@ -183,12 +205,21 @@ export default function Techwes() {
             
             <div style={{ display: 'grid', gap: '2rem', marginBottom: '3rem' }}>
               {blogPosts.map(post => (
-                <article key={post.id} style={{
-                  padding: '1.5rem',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
-                }}>
+                <article 
+                  key={post.id} 
+                  onMouseEnter={() => setHoveredPostId(post.id)}
+                  onMouseLeave={() => setHoveredPostId(null)}
+                  style={{
+                    padding: '1.5rem',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    background: hoveredPostId === post.id ? '#ffffff' : '#faf8f3',
+                    transition: 'all 0.3s ease',
+                    boxShadow: hoveredPostId === post.id ? '0 8px 24px rgba(30, 58, 138, 0.1)' : '0 2px 4px rgba(0, 0, 0, 0.05)',
+                    transform: hoveredPostId === post.id ? 'translateY(-4px)' : 'translateY(0)',
+                    cursor: 'pointer'
+                  }}
+                >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                     <div>
                       <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>{post.title}</h2>
@@ -210,14 +241,19 @@ export default function Techwes() {
                     fontWeight: '500',
                     cursor: 'pointer',
                     marginTop: '1rem',
-                    padding: 0
-                  }}>
+                    padding: 0,
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.gap = '8px';
+                  }}
+                  >
                     Read more →
                   </button>
                 </article>
               ))}
             </div>
- 
+
             {/* Newsletter Signup */}
             <div style={{
               background: '#f3f4f6',
@@ -253,8 +289,11 @@ export default function Techwes() {
                     borderRadius: '6px',
                     fontSize: '14px',
                     fontWeight: '500',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
                   }}
+                  onMouseEnter={(e) => e.target.style.background = '#162e6f'}
+                  onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
                 >
                   Subscribe
                 </button>
@@ -263,7 +302,7 @@ export default function Techwes() {
             </div>
           </div>
         )}
- 
+
         {/* ABOUT PAGE */}
         {currentPage === 'about' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: '700px' }}>
@@ -275,7 +314,7 @@ export default function Techwes() {
                 I'm a data governance enthusiast and cloud solutions architect passionate about helping organizations build secure, compliant, and efficient data ecosystems. Currently on the path to becoming a Microsoft MVP, focusing on Microsoft Purview and modern data governance practices.
               </p>
             </div>
- 
+
             <div style={{ marginBottom: '2rem' }}>
               <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Focus Areas</h3>
               <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -287,7 +326,7 @@ export default function Techwes() {
                 ))}
               </ul>
             </div>
- 
+
             <div style={{ marginBottom: '2rem' }}>
               <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Connect With Me</h3>
               <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
@@ -299,12 +338,22 @@ export default function Techwes() {
                 borderRadius: '6px',
                 fontSize: '14px',
                 fontWeight: '500',
-                transition: 'background 0.2s'
-              }}>
+                transition: 'all 0.2s',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#162e6f';
+                e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#1e3a8a';
+                e.target.style.boxShadow = 'none';
+              }}
+              >
                 Visit LinkedIn →
               </a>
             </div>
- 
+
             <div style={{
               background: '#f3f4f6',
               padding: '1.5rem',
@@ -317,7 +366,7 @@ export default function Techwes() {
             </div>
           </div>
         )}
- 
+
         {/* CONTACT PAGE */}
         {currentPage === 'contact' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: '600px' }}>
@@ -343,7 +392,7 @@ export default function Techwes() {
                   }}
                 />
               </div>
- 
+
               <div>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Email</label>
                 <input
@@ -362,7 +411,7 @@ export default function Techwes() {
                   }}
                 />
               </div>
- 
+
               <div>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Message</label>
                 <textarea
@@ -383,7 +432,7 @@ export default function Techwes() {
                   }}
                 />
               </div>
- 
+
               <button
                 type="submit"
                 style={{
@@ -395,7 +444,15 @@ export default function Techwes() {
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
-                  transition: 'background 0.2s'
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#162e6f';
+                  e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#1e3a8a';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 Send Message
@@ -405,7 +462,7 @@ export default function Techwes() {
           </div>
         )}
       </div>
- 
+
       {/* Footer */}
       <footer style={{
         borderTop: '1px solid #e5e7eb',
@@ -413,7 +470,8 @@ export default function Techwes() {
         marginTop: '3rem',
         color: '#9ca3af',
         fontSize: '14px',
-        textAlign: 'center'
+        textAlign: 'center',
+        background: '#faf8f3'
       }}>
         <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
       </footer>
