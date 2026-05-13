@@ -53,7 +53,6 @@ Pro tip: Log uit en in na een uur. Dit versnelt soms het laadproces.
 
 Na stap 1 zullen alle Purview solutions langzaam laden:
 - Home (klaar)
-- Data Map (Wachten...)
 - Data Catalog (Wachten...)
 - Data Loss Prevention (Wachten...)
 - Information Protection (Wachten...)
@@ -65,7 +64,7 @@ Dit is normaal! Je ziet misschien even berichten zoals "Coming soon" of lege pag
 Zodra alles geladen is:
 1. Klik op "Home" tab
 2. Explore "Solutions" section
-3. Kijk naar "Data Map", "Data Loss Prevention", "Information Protection"
+3. Kijk naar "Data Loss Prevention", "Information Protection"
 4. Maak jezelf vertrouwd met de interface
 
 Dit is waar je later je beleid zal maken en data zal beheren.
