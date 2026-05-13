@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-
-export default function Westech() {
+ 
+export default function Techwes() {
   const [currentPage, setCurrentPage] = useState('home');
   const [email, setEmail] = useState('');
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [showSuccess, setShowSuccess] = useState(false);
-
+ 
   const blogPosts = [
     {
       id: 1,
@@ -32,28 +32,28 @@ export default function Westech() {
       readTime: '4 min read'
     }
   ];
-
+ 
   const handleNewsletterSignup = (e) => {
     e.preventDefault();
     setEmail('');
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
-
+ 
   const handleContactSubmit = (e) => {
     e.preventDefault();
     setContactForm({ name: '', email: '', message: '' });
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
-
+ 
   const navItems = [
     { label: 'Home', page: 'home' },
     { label: 'Blog', page: 'blog' },
     { label: 'About', page: 'about' },
     { label: 'Contact', page: 'contact' }
   ];
-
+ 
   return (
     <div style={{ minHeight: '100vh', background: 'white' }}>
       {/* Navigation */}
@@ -66,7 +66,7 @@ export default function Westech() {
         zIndex: 10
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: '24px', fontWeight: '600', color: '#1e3a8a' }}>westech</div>
+          <div style={{ fontSize: '24px', fontWeight: '600', color: '#1e3a8a' }}>techwes</div>
           <div style={{ display: 'flex', gap: '2rem' }}>
             {navItems.map(item => (
               <button
@@ -90,7 +90,7 @@ export default function Westech() {
           </div>
         </div>
       </nav>
-
+ 
       {/* Content */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         {/* HOME PAGE */}
@@ -98,7 +98,7 @@ export default function Westech() {
           <div style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
             <div style={{ maxWidth: '700px' }}>
               <h1 style={{ fontSize: '48px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem', lineHeight: '1.2' }}>
-                Welcome to Westech
+                Welcome to Techwes
               </h1>
               <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '2rem', lineHeight: '1.7' }}>
                 A journey towards becoming a Microsoft MVP, focusing on data governance, Microsoft Purview, and cloud solutions. Here you'll find insights, best practices, and lessons learned along the way.
@@ -139,7 +139,7 @@ export default function Westech() {
                   Learn About Me
                 </button>
               </div>
-
+ 
               {/* MVP Progress */}
               <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '12px', marginTop: '3rem' }}>
                 <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>MVP Journey Progress</h2>
@@ -174,7 +174,7 @@ export default function Westech() {
             </div>
           </div>
         )}
-
+ 
         {/* BLOG PAGE */}
         {currentPage === 'blog' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
@@ -217,7 +217,7 @@ export default function Westech() {
                 </article>
               ))}
             </div>
-
+ 
             {/* Newsletter Signup */}
             <div style={{
               background: '#f3f4f6',
@@ -263,7 +263,7 @@ export default function Westech() {
             </div>
           </div>
         )}
-
+ 
         {/* ABOUT PAGE */}
         {currentPage === 'about' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: '700px' }}>
@@ -275,7 +275,7 @@ export default function Westech() {
                 I'm a data governance enthusiast and cloud solutions architect passionate about helping organizations build secure, compliant, and efficient data ecosystems. Currently on the path to becoming a Microsoft MVP, focusing on Microsoft Purview and modern data governance practices.
               </p>
             </div>
-
+ 
             <div style={{ marginBottom: '2rem' }}>
               <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Focus Areas</h3>
               <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -287,7 +287,7 @@ export default function Westech() {
                 ))}
               </ul>
             </div>
-
+ 
             <div style={{ marginBottom: '2rem' }}>
               <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Connect With Me</h3>
               <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
@@ -304,7 +304,7 @@ export default function Westech() {
                 Visit LinkedIn →
               </a>
             </div>
-
+ 
             <div style={{
               background: '#f3f4f6',
               padding: '1.5rem',
@@ -317,7 +317,7 @@ export default function Westech() {
             </div>
           </div>
         )}
-
+ 
         {/* CONTACT PAGE */}
         {currentPage === 'contact' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: '600px' }}>
@@ -343,7 +343,7 @@ export default function Westech() {
                   }}
                 />
               </div>
-
+ 
               <div>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Email</label>
                 <input
@@ -362,7 +362,7 @@ export default function Westech() {
                   }}
                 />
               </div>
-
+ 
               <div>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Message</label>
                 <textarea
@@ -383,7 +383,7 @@ export default function Westech() {
                   }}
                 />
               </div>
-
+ 
               <button
                 type="submit"
                 style={{
@@ -405,7 +405,7 @@ export default function Westech() {
           </div>
         )}
       </div>
-
+ 
       {/* Footer */}
       <footer style={{
         borderTop: '1px solid #e5e7eb',
@@ -415,7 +415,7 @@ export default function Westech() {
         fontSize: '14px',
         textAlign: 'center'
       }}>
-        <p>© 2025 Westech. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
+        <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
       </footer>
     </div>
   );
