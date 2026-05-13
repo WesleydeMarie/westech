@@ -20,6 +20,19 @@ export default function Techwes() {
   const latestPosts = [...allBlogPosts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
   const categories = [...new Set(allBlogPosts.map(post => post.category))];
 
+  // Color Palette: Modern Blue
+  const colors = {
+    primary: '#0066cc',        // Helder Professioneel Blauw (Nav Bar)
+    primaryDark: '#0052a3',    // Donkerder voor hover
+    primaryLight: '#e0f2fe',   // Licht blauw accent
+    background: '#f8fafc',     // Ultra-licht grijsblauw
+    white: '#ffffff',
+    text: '#1e293b',           // Donkergrijs
+    textLight: '#64748b',      // Lichter grijs
+    border: '#cbd5e1',         // Licht grijs voor borders
+    success: '#10b981',        // Groen voor success
+  };
+
   const handleNewsletterSignup = (e) => {
     e.preventDefault();
     setEmail('');
@@ -42,31 +55,31 @@ export default function Techwes() {
   ];
 
   const categoryColors = {
-    'Purview': '#1e3a8a',
-    'DLP': '#2563eb',
+    'Purview': '#0066cc',
+    'DLP': '#0052a3',
     'MVP Journey': '#059669'
   };
 
   // Blog Detail Page
   if (selectedPostId) {
     return (
-      <div style={{ minHeight: '100vh', background: '#faf8f3' }}>
+      <div style={{ minHeight: '100vh', background: colors.background }}>
         {/* Navigation */}
         <nav style={{
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: `1px solid ${colors.border}`,
           padding: '1.5rem 2rem',
           position: 'sticky',
           top: 0,
-          background: '#faf8f3',
+          background: colors.primary,
           zIndex: 10
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: '600', color: '#1e3a8a', cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedPostId(null); }}>techwes</div>
+            <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedPostId(null); }}>techwes</div>
             <button
               onClick={() => { setCurrentPage('blog'); setSelectedPostId(null); }}
               style={{
-                background: '#1e3a8a',
-                color: 'white',
+                background: colors.primaryLight,
+                color: colors.primary,
                 border: 'none',
                 padding: '10px 16px',
                 borderRadius: '6px',
@@ -75,8 +88,14 @@ export default function Techwes() {
                 fontWeight: '500',
                 transition: 'all 0.2s'
               }}
-              onMouseEnter={(e) => e.target.style.background = '#162e6f'}
-              onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+              onMouseEnter={(e) => {
+                e.target.style.background = colors.white;
+                e.target.style.boxShadow = '0 4px 12px rgba(0, 102, 204, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = colors.primaryLight;
+                e.target.style.boxShadow = 'none';
+              }}
             >
               ← Back to Blog
             </button>
@@ -88,13 +107,13 @@ export default function Techwes() {
           {selectedPost && (
             <article>
               <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '42px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem', lineHeight: '1.2' }}>
+                <h1 style={{ fontSize: '42px', fontWeight: '600', color: colors.text, marginBottom: '1rem', lineHeight: '1.2' }}>
                   {selectedPost.title}
                 </h1>
-                <div style={{ display: 'flex', gap: '1rem', fontSize: '14px', color: '#6b7280', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', fontSize: '14px', color: colors.textLight, marginBottom: '2rem' }}>
                   <span>{selectedPost.date}</span>
                   <span>•</span>
-                  <span style={{ color: categoryColors[selectedPost.category] || '#1e3a8a', fontWeight: '500' }}>{selectedPost.category}</span>
+                  <span style={{ color: colors.primary, fontWeight: '500' }}>{selectedPost.category}</span>
                   <span>•</span>
                   <span>{selectedPost.readTime}</span>
                 </div>
@@ -103,22 +122,22 @@ export default function Techwes() {
               {/* Blog Content */}
               <div style={{
                 fontSize: '16px',
-                color: '#4b5563',
+                color: colors.text,
                 lineHeight: '1.8',
-                background: '#ffffff',
+                background: colors.white,
                 padding: '2rem',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb'
+                border: `1px solid ${colors.border}`
               }}>
                 {selectedPost.content.split('\n').map((paragraph, index) => {
                   if (paragraph.startsWith('# ')) {
-                    return <h1 key={index} style={{ fontSize: '28px', fontWeight: '600', color: '#1a1a1a', marginTop: '2rem', marginBottom: '1rem' }}>{paragraph.replace('# ', '')}</h1>;
+                    return <h1 key={index} style={{ fontSize: '28px', fontWeight: '600', color: colors.text, marginTop: '2rem', marginBottom: '1rem' }}>{paragraph.replace('# ', '')}</h1>;
                   }
                   if (paragraph.startsWith('## ')) {
-                    return <h2 key={index} style={{ fontSize: '22px', fontWeight: '600', color: '#1a1a1a', marginTop: '1.5rem', marginBottom: '1rem' }}>{paragraph.replace('## ', '')}</h2>;
+                    return <h2 key={index} style={{ fontSize: '22px', fontWeight: '600', color: colors.text, marginTop: '1.5rem', marginBottom: '1rem' }}>{paragraph.replace('## ', '')}</h2>;
                   }
                   if (paragraph.startsWith('### ')) {
-                    return <h3 key={index} style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginTop: '1rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
+                    return <h3 key={index} style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginTop: '1rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
                   }
                   if (paragraph.startsWith('- ')) {
                     return <li key={index} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{paragraph.replace('- ', '')}</li>;
@@ -132,23 +151,23 @@ export default function Techwes() {
 
               {/* Author Bio */}
               <div style={{
-                background: '#f3f4f6',
+                background: colors.primaryLight,
                 padding: '1.5rem',
                 borderRadius: '8px',
                 marginTop: '2rem',
-                borderLeft: '4px solid #1e3a8a'
+                borderLeft: `4px solid ${colors.primary}`
               }}>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>About the Author</h3>
-                <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6', marginBottom: '1rem' }}>
-                  Wesley de Marie is een security consultant met 12 jaar ervaring in data governance en compliance. Gepassioneerd over Microsoft Purview en het helpen van organisaties hun data veilig in te richten.
+                <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>About the Author</h3>
+                <p style={{ fontSize: '14px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>
+                  Wesley de Marie is een security consultant met 12 jaar ervaring. Gepassioneerd over data governance en Microsoft Purview.
                 </p>
                 <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-block',
                   fontSize: '14px',
-                  color: '#1e3a8a',
+                  color: colors.primary,
                   textDecoration: 'none',
                   fontWeight: '500',
-                  borderBottom: '1px solid #1e3a8a'
+                  borderBottom: `1px solid ${colors.primary}`
                 }}>
                   Connect on LinkedIn →
                 </a>
@@ -156,14 +175,14 @@ export default function Techwes() {
 
               {/* Newsletter CTA */}
               <div style={{
-                background: '#f3f4f6',
+                background: colors.primaryLight,
                 padding: '2rem',
                 borderRadius: '12px',
                 marginTop: '2rem',
-                border: '1px solid #e5e7eb'
+                border: `1px solid ${colors.border}`
               }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>📧 Don't Miss New Articles</h3>
-                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '1.5rem' }}>Get insights on data governance, Purview, and MVP journey delivered weekly</p>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>📧 Don't Miss New Articles</h3>
+                <p style={{ fontSize: '14px', color: colors.textLight, marginBottom: '1.5rem' }}>Get insights on data governance, Purview, and MVP journey delivered weekly</p>
                 <form onSubmit={handleNewsletterSignup} style={{ display: 'flex', gap: '0.5rem' }}>
                   <input
                     type="email"
@@ -174,7 +193,7 @@ export default function Techwes() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #d1d5db',
+                      border: `1px solid ${colors.border}`,
                       borderRadius: '6px',
                       fontSize: '14px',
                       outline: 'none'
@@ -184,8 +203,8 @@ export default function Techwes() {
                     type="submit"
                     style={{
                       padding: '10px 16px',
-                      background: '#1e3a8a',
-                      color: 'white',
+                      background: colors.primary,
+                      color: colors.white,
                       border: 'none',
                       borderRadius: '6px',
                       fontSize: '14px',
@@ -194,13 +213,13 @@ export default function Techwes() {
                       transition: 'all 0.2s',
                       whiteSpace: 'nowrap'
                     }}
-                    onMouseEnter={(e) => e.target.style.background = '#162e6f'}
-                    onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+                    onMouseEnter={(e) => e.target.style.background = colors.primaryDark}
+                    onMouseLeave={(e) => e.target.style.background = colors.primary}
                   >
                     Subscribe
                   </button>
                 </form>
-                {showSuccess && <p style={{ fontSize: '13px', color: '#10b981', marginTop: '1rem' }}>✓ Thanks for subscribing!</p>}
+                {showSuccess && <p style={{ fontSize: '13px', color: colors.success, marginTop: '1rem' }}>✓ Thanks for subscribing!</p>}
               </div>
             </article>
           )}
@@ -208,33 +227,34 @@ export default function Techwes() {
 
         {/* Footer */}
         <footer style={{
-          borderTop: '1px solid #e5e7eb',
+          borderTop: `1px solid ${colors.border}`,
           padding: '2rem',
           marginTop: '3rem',
-          color: '#9ca3af',
+          color: colors.textLight,
           fontSize: '14px',
           textAlign: 'center',
-          background: '#faf8f3'
+          background: colors.background
         }}>
-          <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
+          <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
         </footer>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#faf8f3' }}>
+    <div style={{ minHeight: '100vh', background: colors.background }}>
       {/* Navigation */}
       <nav style={{
-        borderBottom: '1px solid #e5e7eb',
+        borderBottom: `1px solid ${colors.border}`,
         padding: '1.5rem 2rem',
         position: 'sticky',
         top: 0,
-        background: '#faf8f3',
-        zIndex: 10
+        background: colors.primary,
+        zIndex: 10,
+        boxShadow: '0 2px 8px rgba(0, 102, 204, 0.1)'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: '24px', fontWeight: '600', color: '#1e3a8a', cursor: 'pointer' }} onClick={() => setCurrentPage('home')}>techwes</div>
+          <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => setCurrentPage('home')}>techwes</div>
           <div style={{ display: 'flex', gap: '2rem' }}>
             {navItems.map(item => (
               <button
@@ -245,10 +265,10 @@ export default function Techwes() {
                   border: 'none',
                   fontSize: '15px',
                   cursor: 'pointer',
-                  color: currentPage === item.page ? '#1e3a8a' : '#6b7280',
+                  color: currentPage === item.page ? colors.white : 'rgba(255,255,255,0.8)',
                   fontWeight: currentPage === item.page ? '500' : '400',
                   paddingBottom: '4px',
-                  borderBottom: currentPage === item.page ? '2px solid #1e3a8a' : 'none',
+                  borderBottom: currentPage === item.page ? `2px solid ${colors.white}` : 'none',
                   transition: 'all 0.2s'
                 }}
               >
@@ -265,10 +285,10 @@ export default function Techwes() {
         {currentPage === 'home' && (
           <div style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
             <div style={{ maxWidth: '700px' }}>
-              <h1 style={{ fontSize: '48px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem', lineHeight: '1.2' }}>
+              <h1 style={{ fontSize: '48px', fontWeight: '600', color: colors.text, marginBottom: '1rem', lineHeight: '1.2' }}>
                 Welcome to Techwes
               </h1>
-              <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '2rem', lineHeight: '1.7' }}>
+              <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '2rem', lineHeight: '1.7' }}>
                 A journey towards becoming a Microsoft MVP, focusing on data governance, Microsoft Purview, and cloud solutions. Here you'll find insights, best practices, and lessons learned along the way.
               </p>
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
@@ -276,23 +296,23 @@ export default function Techwes() {
                   onClick={() => setCurrentPage('blog')}
                   style={{
                     padding: '12px 28px',
-                    background: '#1e3a8a',
-                    color: 'white',
+                    background: colors.primary,
+                    color: colors.white,
                     border: 'none',
                     borderRadius: '6px',
                     fontSize: '15px',
                     fontWeight: '500',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    boxShadow: '0 2px 8px rgba(30, 58, 138, 0.15)'
+                    boxShadow: '0 2px 8px rgba(0, 102, 204, 0.2)'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = '#162e6f';
-                    e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                    e.target.style.background = colors.primaryDark;
+                    e.target.style.boxShadow = '0 4px 12px rgba(0, 102, 204, 0.3)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = '#1e3a8a';
-                    e.target.style.boxShadow = '0 2px 8px rgba(30, 58, 138, 0.15)';
+                    e.target.style.background = colors.primary;
+                    e.target.style.boxShadow = '0 2px 8px rgba(0, 102, 204, 0.2)';
                   }}
                 >
                   Read the Blog
@@ -301,17 +321,21 @@ export default function Techwes() {
                   onClick={() => setCurrentPage('about')}
                   style={{
                     padding: '12px 28px',
-                    background: 'white',
-                    color: '#1e3a8a',
-                    border: '1px solid #1e3a8a',
+                    background: colors.white,
+                    color: colors.primary,
+                    border: `2px solid ${colors.primary}`,
                     borderRadius: '6px',
                     fontSize: '15px',
                     fontWeight: '500',
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
-                  onMouseEnter={(e) => e.target.style.background = '#f0f5ff'}
-                  onMouseLeave={(e) => e.target.style.background = 'white'}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = colors.primaryLight;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = colors.white;
+                  }}
                 >
                   Learn About Me
                 </button>
@@ -321,21 +345,21 @@ export default function Techwes() {
               {featuredPost && (
                 <div style={{
                   padding: '2.5rem',
-                  background: 'linear-gradient(135deg, #1e3a8a 0%, #162e6f 100%)',
+                  background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
                   borderRadius: '12px',
-                  color: 'white',
+                  color: colors.white,
                   marginBottom: '3rem',
                   cursor: 'pointer',
                   transition: 'all 0.3s',
-                  boxShadow: '0 4px 12px rgba(30, 58, 138, 0.2)'
+                  boxShadow: '0 4px 12px rgba(0, 102, 204, 0.2)'
                 }}
                 onClick={() => setSelectedPostId(featuredPost.id)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(30, 58, 138, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0, 102, 204, 0.3)';
                   e.currentTarget.style.transform = 'translateY(-4px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 102, 204, 0.2)';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
                 >
@@ -353,33 +377,33 @@ export default function Techwes() {
               )}
 
               {/* MVP Progress */}
-              <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '12px', marginTop: '3rem' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>MVP Journey Progress</h2>
+              <div style={{ background: colors.primaryLight, padding: '2rem', borderRadius: '12px', marginTop: '3rem', border: `1px solid ${colors.border}` }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>MVP Journey Progress</h2>
                 <div style={{ marginBottom: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
-                    <span style={{ color: '#6b7280' }}>Community Engagement</span>
-                    <span style={{ color: '#1e3a8a', fontWeight: '500' }}>45%</span>
+                    <span style={{ color: colors.textLight }}>Community Engagement</span>
+                    <span style={{ color: colors.primary, fontWeight: '500' }}>45%</span>
                   </div>
-                  <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: '45%', background: '#1e3a8a' }}></div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '45%', background: colors.primary }}></div>
                   </div>
                 </div>
                 <div style={{ marginBottom: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
-                    <span style={{ color: '#6b7280' }}>Blog & Content</span>
-                    <span style={{ color: '#1e3a8a', fontWeight: '500' }}>65%</span>
+                    <span style={{ color: colors.textLight }}>Blog & Content</span>
+                    <span style={{ color: colors.primary, fontWeight: '500' }}>65%</span>
                   </div>
-                  <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: '65%', background: '#1e3a8a' }}></div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '65%', background: colors.primary }}></div>
                   </div>
                 </div>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
-                    <span style={{ color: '#6b7280' }}>Technical Expertise</span>
-                    <span style={{ color: '#1e3a8a', fontWeight: '500' }}>70%</span>
+                    <span style={{ color: colors.textLight }}>Technical Expertise</span>
+                    <span style={{ color: colors.primary, fontWeight: '500' }}>70%</span>
                   </div>
-                  <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: '70%', background: '#1e3a8a' }}></div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '70%', background: colors.primary }}></div>
                   </div>
                 </div>
               </div>
@@ -392,8 +416,8 @@ export default function Techwes() {
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
             {/* MAIN BLOG SECTION */}
             <div>
-              <h1 style={{ fontSize: '36px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Blog</h1>
-              <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '2rem' }}>Insights and learnings on my path to Microsoft MVP</p>
+              <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Blog</h1>
+              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Insights and learnings on my path to Microsoft MVP</p>
               
               {/* Category Filter */}
               <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -401,9 +425,9 @@ export default function Techwes() {
                   onClick={() => setSelectedCategory(null)}
                   style={{
                     padding: '8px 16px',
-                    background: selectedCategory === null ? '#1e3a8a' : 'white',
-                    color: selectedCategory === null ? 'white' : '#6b7280',
-                    border: selectedCategory === null ? 'none' : '1px solid #e5e7eb',
+                    background: selectedCategory === null ? colors.primary : colors.white,
+                    color: selectedCategory === null ? colors.white : colors.textLight,
+                    border: selectedCategory === null ? 'none' : `1px solid ${colors.border}`,
                     borderRadius: '20px',
                     fontSize: '13px',
                     fontWeight: '500',
@@ -419,9 +443,9 @@ export default function Techwes() {
                     onClick={() => setSelectedCategory(cat)}
                     style={{
                       padding: '8px 16px',
-                      background: selectedCategory === cat ? categoryColors[cat] : 'white',
-                      color: selectedCategory === cat ? 'white' : '#6b7280',
-                      border: selectedCategory === cat ? 'none' : '1px solid #e5e7eb',
+                      background: selectedCategory === cat ? colors.primary : colors.white,
+                      color: selectedCategory === cat ? colors.white : colors.textLight,
+                      border: selectedCategory === cat ? 'none' : `1px solid ${colors.border}`,
                       borderRadius: '20px',
                       fontSize: '13px',
                       fontWeight: '500',
@@ -443,30 +467,30 @@ export default function Techwes() {
                     onMouseLeave={() => setHoveredPostId(null)}
                     style={{
                       padding: '1.5rem',
-                      border: '1px solid #e5e7eb',
+                      border: `1px solid ${colors.border}`,
                       borderRadius: '8px',
-                      background: hoveredPostId === post.id ? '#ffffff' : '#faf8f3',
+                      background: hoveredPostId === post.id ? colors.white : colors.background,
                       transition: 'all 0.3s ease',
-                      boxShadow: hoveredPostId === post.id ? '0 8px 24px rgba(30, 58, 138, 0.1)' : '0 2px 4px rgba(0, 0, 0, 0.05)',
+                      boxShadow: hoveredPostId === post.id ? '0 8px 24px rgba(0, 102, 204, 0.1)' : 'none',
                       transform: hoveredPostId === post.id ? 'translateY(-4px)' : 'translateY(0)',
                       cursor: 'pointer'
                     }}
                   >
                     <div style={{ marginBottom: '1rem' }}>
-                      <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>{post.title}</h2>
-                      <div style={{ display: 'flex', gap: '1rem', fontSize: '13px', color: '#9ca3af', marginBottom: '0.75rem' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>{post.title}</h2>
+                      <div style={{ display: 'flex', gap: '1rem', fontSize: '13px', color: colors.textLight, marginBottom: '0.75rem' }}>
                         <span>{post.date}</span>
                         <span>•</span>
-                        <span style={{ color: categoryColors[post.category] || '#1e3a8a', fontWeight: '500' }}>{post.category}</span>
+                        <span style={{ color: colors.primary, fontWeight: '500' }}>{post.category}</span>
                         <span>•</span>
                         <span>{post.readTime}</span>
                       </div>
                     </div>
-                    <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.6', marginBottom: '1rem' }}>{post.excerpt}</p>
+                    <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>{post.excerpt}</p>
                     
                     {/* AUTHOR BIO */}
-                    <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1rem', marginBottom: '1rem' }}>
-                      <p style={{ fontSize: '12px', color: '#6b7280' }}>By <strong style={{ color: '#1a1a1a' }}>Wesley de Marie</strong> • Data Governance Advocate</p>
+                    <div style={{ borderTop: `1px solid ${colors.border}`, paddingTop: '1rem', marginBottom: '1rem' }}>
+                      <p style={{ fontSize: '12px', color: colors.textLight }}>By <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Data Governance Advocate</p>
                     </div>
 
                     <button 
@@ -474,7 +498,7 @@ export default function Techwes() {
                       style={{
                         background: 'none',
                         border: 'none',
-                        color: '#1e3a8a',
+                        color: colors.primary,
                         fontSize: '14px',
                         fontWeight: '500',
                         cursor: 'pointer',
@@ -489,14 +513,14 @@ export default function Techwes() {
 
               {/* NEWSLETTER CTA */}
               <div style={{
-                background: '#f3f4f6',
+                background: colors.primaryLight,
                 padding: '2rem',
                 borderRadius: '12px',
                 marginBottom: '2rem',
-                border: '1px solid #e5e7eb'
+                border: `1px solid ${colors.border}`
               }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>📧 Don't Miss New Articles</h3>
-                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '1.5rem' }}>Get insights on data governance, Purview, and MVP journey delivered weekly</p>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>📧 Don't Miss New Articles</h3>
+                <p style={{ fontSize: '14px', color: colors.textLight, marginBottom: '1.5rem' }}>Get insights on data governance, Purview, and MVP journey delivered weekly</p>
                 <form onSubmit={handleNewsletterSignup} style={{ display: 'flex', gap: '0.5rem' }}>
                   <input
                     type="email"
@@ -507,7 +531,7 @@ export default function Techwes() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #d1d5db',
+                      border: `1px solid ${colors.border}`,
                       borderRadius: '6px',
                       fontSize: '14px',
                       outline: 'none'
@@ -517,8 +541,8 @@ export default function Techwes() {
                     type="submit"
                     style={{
                       padding: '10px 16px',
-                      background: '#1e3a8a',
-                      color: 'white',
+                      background: colors.primary,
+                      color: colors.white,
                       border: 'none',
                       borderRadius: '6px',
                       fontSize: '14px',
@@ -527,29 +551,29 @@ export default function Techwes() {
                       transition: 'all 0.2s',
                       whiteSpace: 'nowrap'
                     }}
-                    onMouseEnter={(e) => e.target.style.background = '#162e6f'}
-                    onMouseLeave={(e) => e.target.style.background = '#1e3a8a'}
+                    onMouseEnter={(e) => e.target.style.background = colors.primaryDark}
+                    onMouseLeave={(e) => e.target.style.background = colors.primary}
                   >
                     Subscribe
                   </button>
                 </form>
-                {showSuccess && <p style={{ fontSize: '13px', color: '#10b981', marginTop: '1rem' }}>✓ Thanks for subscribing!</p>}
+                {showSuccess && <p style={{ fontSize: '13px', color: colors.success, marginTop: '1rem' }}>✓ Thanks for subscribing!</p>}
               </div>
             </div>
 
             {/* SIDEBAR - LATEST POSTS */}
             <div style={{ display: 'grid', gap: '2rem' }}>
               {/* Latest Posts Widget */}
-              <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>Latest Posts</h3>
+              <div style={{ background: colors.white, border: `1px solid ${colors.border}`, borderRadius: '8px', padding: '1.5rem', boxShadow: '0 2px 4px rgba(0, 102, 204, 0.05)' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Latest Posts</h3>
                 <div style={{ display: 'grid', gap: '1.5rem' }}>
                   {latestPosts.map(post => (
-                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: '1px solid #e5e7eb', cursor: 'pointer' }} onClick={() => setSelectedPostId(post.id)}>
-                      <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '0.25rem' }}>{post.date}</p>
-                      <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem', lineHeight: '1.3' }}>
+                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: `1px solid ${colors.border}`, cursor: 'pointer' }} onClick={() => setSelectedPostId(post.id)}>
+                      <p style={{ fontSize: '13px', color: colors.textLight, marginBottom: '0.25rem' }}>{post.date}</p>
+                      <h4 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem', lineHeight: '1.3' }}>
                         {post.title}
                       </h4>
-                      <span style={{ fontSize: '12px', color: 'white', background: categoryColors[post.category], padding: '2px 8px', borderRadius: '4px' }}>
+                      <span style={{ fontSize: '12px', color: colors.white, background: colors.primary, padding: '2px 8px', borderRadius: '4px' }}>
                         {post.category}
                       </span>
                     </div>
@@ -558,18 +582,18 @@ export default function Techwes() {
               </div>
 
               {/* About the Author */}
-              <div style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', borderLeft: '4px solid #1e3a8a' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>About the Author</h3>
-                <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '1rem' }}>
+              <div style={{ background: colors.primaryLight, border: `1px solid ${colors.border}`, borderRadius: '8px', padding: '1.5rem', borderLeft: `4px solid ${colors.primary}` }}>
+                <h3 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>About the Author</h3>
+                <p style={{ fontSize: '13px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>
                   Wesley de Marie is een security consultant met 12 jaar ervaring. Gepassioneerd over data governance en Microsoft Purview.
                 </p>
                 <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-block',
                   fontSize: '13px',
-                  color: '#1e3a8a',
+                  color: colors.primary,
                   textDecoration: 'none',
                   fontWeight: '500',
-                  borderBottom: '1px solid #1e3a8a'
+                  borderBottom: `1px solid ${colors.primary}`
                 }}>
                   Connect on LinkedIn →
                 </a>
@@ -582,46 +606,46 @@ export default function Techwes() {
         {currentPage === 'about' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-              <h1 style={{ fontSize: '42px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Over Mij</h1>
-              <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '3rem', lineHeight: '1.7' }}>
+              <h1 style={{ fontSize: '42px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Over Mij</h1>
+              <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '3rem', lineHeight: '1.7' }}>
                 Hallo! Ik ben Wesley de Marie, 30 jaar oud en afkomstig uit Nederland. Ik ben een security consultant met een passie voor data governance en Microsoft Purview.
               </p>
 
               {/* Introduction */}
-              <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '12px', marginBottom: '3rem', borderLeft: '4px solid #1e3a8a' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Wie Ben Ik?</h2>
-                <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: '1.8' }}>
+              <div style={{ background: colors.primaryLight, padding: '2rem', borderRadius: '12px', marginBottom: '3rem', borderLeft: `4px solid ${colors.primary}`, border: `1px solid ${colors.border}` }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Wie Ben Ik?</h2>
+                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8' }}>
                   Met 12 jaar werkervaring heb ik mijn carrière opgebouwd in IT security en compliance. Ik ben ervan overtuigd dat goed beveiligde data de basis is van een veilige organisatie. Mijn specialiteit ligt in het configureren van Microsoft security solutions en het helpen van organisaties een betere data governance na te streven.
                 </p>
               </div>
 
               {/* My Journey */}
               <div style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>Mijn Carrière</h2>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Mijn Carrière</h2>
                 
-                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: '1px solid #e5e7eb' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Het Begin: GFK Servicedesk</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7' }}>
+                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${colors.border}` }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Het Begin: GFK Servicedesk</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>
                     Mijn eerste IT baan was op de servicedesk van GFK. Daar heb ik geleerd hoe supporteren werkt en hoe je users helpt met hun technische problemen. Dit is een waardevolle basis geweest voor alles wat ik nu doe.
                   </p>
                 </div>
 
-                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: '1px solid #e5e7eb' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Het Wendpunt: Security & Compliance Training</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7' }}>
+                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${colors.border}` }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Het Wendpunt: Security & Compliance Training</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>
                     Tijdens een Microsoft Fundamentals (MS900) training voelde ik iets klikken. Security en compliance spaken me aan - het was de connectie die ik zocht. Ik realiseerde me dat dit mijn volgende stap zou zijn. Ik wilde niet zomaar IT support geven, ik wilde organisaties helpen hun data veilig in te richten.
                   </p>
                 </div>
 
-                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: '1px solid #e5e7eb' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Mijn Technische Expertise</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7', marginBottom: '1rem' }}>
+                <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${colors.border}` }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Mijn Technische Expertise</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7', marginBottom: '1rem' }}>
                     In de loop der jaren heb ik diep kennis opgebouwd van diverse Microsoft security platforms:
                   </p>
                   <ul style={{ listStyle: 'none', padding: 0 }}>
                     {['Microsoft Entra (Azure AD)', 'Intune - Device Management', 'Microsoft Defender XDR - Threat Protection', 'Microsoft Defender for Office 365 (MDO)', 'Microsoft Purview - Data Governance'].map(item => (
-                      <li key={item} style={{ fontSize: '15px', color: '#6b7280', marginBottom: '0.75rem', paddingLeft: '24px', position: 'relative' }}>
-                        <span style={{ position: 'absolute', left: 0, color: '#1e3a8a', fontWeight: 'bold' }}>→</span>
+                      <li key={item} style={{ fontSize: '15px', color: colors.textLight, marginBottom: '0.75rem', paddingLeft: '24px', position: 'relative' }}>
+                        <span style={{ position: 'absolute', left: 0, color: colors.primary, fontWeight: 'bold' }}>→</span>
                         {item}
                       </li>
                     ))}
@@ -629,40 +653,40 @@ export default function Techwes() {
                 </div>
 
                 <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Waarom Purview?</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Waarom Purview?</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>
                     5 jaar geleden ontdekte ik Microsoft Purview. Op dat moment kwam AI om de hoek kijken, en ik besefte dat data beveiliging eigenlijk heel belangrijk gaat worden. Purview was voor mij het perfecte instrument om organisaties te helpen hun data governance op orde te krijgen. Nu, 5 jaar later, is dit mijn specialiteit en mijn passie.
                   </p>
                 </div>
               </div>
 
               {/* MVP Mission */}
-              <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '12px', marginBottom: '3rem', borderLeft: '4px solid #1e3a8a' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1rem' }}>Waarom Microsoft MVP?</h2>
-                <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: '1.8', marginBottom: '1rem' }}>
+              <div style={{ background: colors.primaryLight, padding: '2rem', borderRadius: '12px', marginBottom: '3rem', borderLeft: `4px solid ${colors.primary}`, border: `1px solid ${colors.border}` }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Waarom Microsoft MVP?</h2>
+                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8', marginBottom: '1rem' }}>
                   Ik geloof dat de juiste security configuratie van cruciaal belang is. Te veel organisaties hebben security configured, maar doen het niet goed. Dit leidt tot gaten in hun beveiliging en compliance issues.
                 </p>
-                <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: '1.8' }}>
+                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8' }}>
                   Mijn doel is om andere IT professionals de juiste weg te wijzen. Door MVP te worden, kan ik een groter platform krijgen om kennis te delen. Ik wil bloggen, presentaties geven, en misschien zelfs YouTube filmpjes maken. Mijn droom is om beter te worden in wat ik nu doe en mijn netwerk uit te breiden zodat ik meer kan helpen.
                 </p>
               </div>
 
               {/* What I'm Doing Now */}
               <div style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>Wat Ik Nu Doe</h2>
-                <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', padding: '2rem', borderRadius: '8px' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e3a8a', marginBottom: '0.5rem' }}>🖊️ Blogs Schrijven</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Wat Ik Nu Doe</h2>
+                <div style={{ background: colors.white, border: `1px solid ${colors.border}`, padding: '2rem', borderRadius: '8px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.primary, marginBottom: '0.5rem' }}>🖊️ Blogs Schrijven</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7', marginBottom: '2rem' }}>
                     Ik schrijf momenteel blogs over Microsoft Purview, data governance, en security best practices. Deze site (techwes.nl) is mijn platform om kennis te delen.
                   </p>
                   
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e3a8a', marginBottom: '0.5rem' }}>🎤 Toekomstige Presentaties</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7', marginBottom: '2rem' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.primary, marginBottom: '0.5rem' }}>🎤 Toekomstige Presentaties</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7', marginBottom: '2rem' }}>
                     Ik plan zeker presentaties te geven op conferenties en meetups. Dit wil ik verder uitbouwen en ontwikkelen.
                   </p>
                   
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e3a8a', marginBottom: '0.5rem' }}>📹 YouTube (Toekomst)</h3>
-                  <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: '1.7' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.primary, marginBottom: '0.5rem' }}>📹 YouTube (Toekomst)</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>
                     Ik overweeg YouTube video's te maken om technische concepts visueel uit te leggen. Dit is mijn volgende stap!
                   </p>
                 </div>
@@ -670,17 +694,17 @@ export default function Techwes() {
 
               {/* Personal */}
               <div style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a1a', marginBottom: '1.5rem' }}>Buiten Het Werk</h2>
-                <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: '1.8', marginBottom: '1rem' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Buiten Het Werk</h2>
+                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8', marginBottom: '1rem' }}>
                   Buiten werktijden ben ik graag bezig met sporten. Vissen is mijn favoriete hobby - het is een moment om even alles los te laten en van de natuur te genieten.
                 </p>
-                <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: '1.8' }}>
+                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8' }}>
                   Wat mij drijft is mijn overtuiging dat communicatie en samenwerking kunnen worden geleerd. Ik kijk alles positief in. Dat is mijn mindset: bekijk alles positief en je ziet mogelijkheden.
                 </p>
               </div>
 
               {/* Call to Action */}
-              <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #162e6f 100%)', padding: '2rem', borderRadius: '12px', color: 'white', textAlign: 'center' }}>
+              <div style={{ background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`, padding: '2rem', borderRadius: '12px', color: colors.white, textAlign: 'center' }}>
                 <h2 style={{ fontSize: '22px', fontWeight: '600', marginBottom: '1rem' }}>Laten We Verbinden!</h2>
                 <p style={{ fontSize: '15px', lineHeight: '1.7', marginBottom: '1.5rem', opacity: 0.95 }}>
                   Wil je discussiëren over data governance, Purview of security? Laten we contact opnemen!
@@ -688,8 +712,8 @@ export default function Techwes() {
                 <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-block',
                   padding: '12px 28px',
-                  background: 'white',
-                  color: '#1e3a8a',
+                  background: colors.white,
+                  color: colors.primary,
                   textDecoration: 'none',
                   borderRadius: '6px',
                   fontSize: '14px',
@@ -709,12 +733,12 @@ export default function Techwes() {
         {/* CONTACT PAGE */}
         {currentPage === 'contact' && (
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: '600px', margin: '0 auto' }}>
-            <h1 style={{ fontSize: '36px', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>Contact</h1>
-            <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '2rem' }}>Have questions or want to collaborate? I'd love to hear from you.</p>
+            <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Contact</h1>
+            <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Have questions or want to collaborate? I'd love to hear from you.</p>
             
             <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Name</label>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: colors.text, marginBottom: '0.5rem' }}>Name</label>
                 <input
                   type="text"
                   value={contactForm.name}
@@ -723,7 +747,7 @@ export default function Techwes() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid #d1d5db',
+                    border: `1px solid ${colors.border}`,
                     borderRadius: '6px',
                     fontSize: '14px',
                     boxSizing: 'border-box',
@@ -733,7 +757,7 @@ export default function Techwes() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Email</label>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: colors.text, marginBottom: '0.5rem' }}>Email</label>
                 <input
                   type="email"
                   value={contactForm.email}
@@ -742,7 +766,7 @@ export default function Techwes() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid #d1d5db',
+                    border: `1px solid ${colors.border}`,
                     borderRadius: '6px',
                     fontSize: '14px',
                     boxSizing: 'border-box',
@@ -752,7 +776,7 @@ export default function Techwes() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#1a1a1a', marginBottom: '0.5rem' }}>Message</label>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: colors.text, marginBottom: '0.5rem' }}>Message</label>
                 <textarea
                   value={contactForm.message}
                   onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
@@ -761,7 +785,7 @@ export default function Techwes() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid #d1d5db',
+                    border: `1px solid ${colors.border}`,
                     borderRadius: '6px',
                     fontSize: '14px',
                     boxSizing: 'border-box',
@@ -776,8 +800,8 @@ export default function Techwes() {
                 type="submit"
                 style={{
                   padding: '12px 28px',
-                  background: '#1e3a8a',
-                  color: 'white',
+                  background: colors.primary,
+                  color: colors.white,
                   border: 'none',
                   borderRadius: '6px',
                   fontSize: '15px',
@@ -786,17 +810,17 @@ export default function Techwes() {
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = '#162e6f';
-                  e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                  e.target.style.background = colors.primaryDark;
+                  e.target.style.boxShadow = '0 4px 12px rgba(0, 102, 204, 0.3)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = '#1e3a8a';
+                  e.target.style.background = colors.primary;
                   e.target.style.boxShadow = 'none';
                 }}
               >
                 Send Message
               </button>
-              {showSuccess && <p style={{ fontSize: '14px', color: '#10b981' }}>✓ Message sent! I'll get back to you soon.</p>}
+              {showSuccess && <p style={{ fontSize: '14px', color: colors.success }}>✓ Message sent! I'll get back to you soon.</p>}
             </form>
           </div>
         )}
@@ -804,15 +828,15 @@ export default function Techwes() {
 
       {/* Footer */}
       <footer style={{
-        borderTop: '1px solid #e5e7eb',
+        borderTop: `1px solid ${colors.border}`,
         padding: '2rem',
         marginTop: '3rem',
-        color: '#9ca3af',
+        color: colors.textLight,
         fontSize: '14px',
         textAlign: 'center',
-        background: '#faf8f3'
+        background: colors.background
       }}>
-        <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>LinkedIn</a></p>
+        <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
       </footer>
     </div>
   );
