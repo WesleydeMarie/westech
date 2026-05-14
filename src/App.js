@@ -54,11 +54,6 @@ export default function Techwes() {
     { label: 'Contact', page: 'contact' }
   ];
 
-  const categoryColors = {
-    'Purview': '#0066cc',
-    'DLP': '#0052a3',
-    'MVP Journey': '#059669'
-  };
 
   // Blog Detail Page
   if (selectedPostId) {
