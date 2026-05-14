@@ -18,7 +18,7 @@ export default function Techwes() {
     : allBlogPosts.filter(post => !post.featured);
   
   const latestPosts = [...allBlogPosts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
-  const categories = [...new Set(allBlogPosts.map(post => post.category))];
+  const categories = ['Purview', 'Entra', 'Intune', 'Defender'];
 
   // Color Palette: Modern Blue
   const colors = {
