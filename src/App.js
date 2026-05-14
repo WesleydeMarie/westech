@@ -230,7 +230,7 @@ export default function Techwes() {
           textAlign: 'center',
           background: colors.background
         }}>
-          <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
+          <p>© 2026 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
         </footer>
       </div>
     );
@@ -831,7 +831,7 @@ export default function Techwes() {
         textAlign: 'center',
         background: colors.background
       }}>
-        <p>© 2025 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
+        <p>© 2026 Techwes. All rights reserved. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.primary, textDecoration: 'none' }}>LinkedIn</a></p>
       </footer>
     </div>
   );

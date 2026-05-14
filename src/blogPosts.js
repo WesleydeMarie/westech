@@ -2,7 +2,7 @@ export const blogPosts = [
   {
     id: 1,
     title: "Getting Started with Microsoft Purview",
-    date: "May 15 2025",
+    date: "May 13 2026",
     category: "Purview",
     excerpt: "Leer hoe je Microsoft Purview implementeert: licenties, setup-tijd, policy synchronisatie, en praktische stappen om aan de slag te gaan.",
     readTime: "12 min read",
@@ -12,7 +12,7 @@ export const blogPosts = [
   {
     id: 2,
     title: "Getting Started with Microsoft Entra ID",
-    date: "May 20 2025",
+    date: "May 20 2026",
     category: "Entra",
     excerpt: "De complete beginnergids voor Microsoft Entra ID: wat het is, waarom identity de basis is van moderne security, en hoe Entra perfect samenwerkt met Microsoft Purview.",
     readTime: "13 min read",
