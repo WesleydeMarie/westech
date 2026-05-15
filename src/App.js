@@ -29,7 +29,7 @@ export default function Techwes() {
     : allHandleidingen;
   
   const latestPosts = [...allBlogPosts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
-  const categories = ['Purview', 'Entra', 'Intune', 'Defender'];
+  const categories = ['Purview', 'Entra', 'Intune', 'Defender' , 'AI'];
 
   // Royal Tech Color Palette
   const colors = {
