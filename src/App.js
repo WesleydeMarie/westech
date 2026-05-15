@@ -359,8 +359,8 @@ export default function Techwes() {
                 <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Mijn Carrière</h2>
                 
                 <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${colors.border}` }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Het Begin: GFK Servicedesk</h3>
-                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>Mijn eerste IT baan was op de servicedesk van GFK. Daar heb ik geleerd hoe supporten werkt en hoe je users helpt met hun technische problemen.</p>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Mijn passie voor IT begon al heel vroeg op school</h3>
+                  <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7' }}>Mijn eerste IT baan was op de servicedesk/werkplekbeheerder. Daar heb ik geleerd hoe supporten werkt en hoe je users helpt met hun technische problemen.</p>
                 </div>
 
                 <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${colors.border}` }}>
