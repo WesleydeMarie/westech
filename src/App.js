@@ -14,7 +14,11 @@ export default function Techwes() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedHandleidingCategory, setSelectedHandleidingCategory] = useState(null);
 
-  const allBlogPosts = blogPosts;
+  const today = new Date();
+  const allBlogPosts = blogPosts.filter(post => {
+    if (!post.publishDate) return true;
+    return new Date(post.publishDate) <= today;
+  });
   const allHandleidingen = handleidingen;
   const featuredPost = allBlogPosts.find(post => post.featured);
   const selectedPost = allBlogPosts.find(post => post.id === selectedPostId);
