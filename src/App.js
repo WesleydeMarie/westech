@@ -97,6 +97,10 @@ export default function Techwes() {
 
               <div style={{ fontSize: '16px', color: colors.text, lineHeight: '1.8', background: colors.white, padding: '2rem', borderRadius: '8px', border: `1px solid ${colors.border}` }}>
                 {selectedPost.content.split('\n').map((paragraph, index) => {
+                  const imageMatch = paragraph.match(/^!\[(.*?)\]\((.*?)\)$/);
+                  if (imageMatch) {
+                    return <img key={index} src={imageMatch[2]} alt={imageMatch[1]} style={{ maxWidth: '100%', borderRadius: '8px', margin: '1.5rem 0', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} />;
+                  }
                   if (paragraph.startsWith('# ')) return <h1 key={index} style={{ fontSize: '28px', fontWeight: '600', color: colors.text, marginTop: '2rem', marginBottom: '1rem' }}>{paragraph.replace('# ', '')}</h1>;
                   if (paragraph.startsWith('## ')) return <h2 key={index} style={{ fontSize: '22px', fontWeight: '600', color: colors.text, marginTop: '1.5rem', marginBottom: '1rem' }}>{paragraph.replace('## ', '')}</h2>;
                   if (paragraph.startsWith('### ')) return <h3 key={index} style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginTop: '1rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
@@ -152,6 +156,10 @@ export default function Techwes() {
               ) : (
                 <div style={{ fontSize: '16px', color: colors.text, lineHeight: '1.8', background: colors.white, padding: '2rem', borderRadius: '8px', border: `1px solid ${colors.border}` }}>
                   {selectedHandleiding.content.split('\n').map((paragraph, index) => {
+                    const imageMatch = paragraph.match(/^!\[(.*?)\]\((.*?)\)$/);
+                    if (imageMatch) {
+                      return <img key={index} src={imageMatch[2]} alt={imageMatch[1]} style={{ maxWidth: '100%', borderRadius: '8px', margin: '1.5rem 0', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} />;
+                    }
                     if (paragraph.startsWith('# ')) return <h1 key={index} style={{ fontSize: '28px', fontWeight: '600', color: colors.text, marginTop: '2rem', marginBottom: '1rem' }}>{paragraph.replace('# ', '')}</h1>;
                     if (paragraph.startsWith('## ')) return <h2 key={index} style={{ fontSize: '22px', fontWeight: '600', color: colors.text, marginTop: '1.5rem', marginBottom: '1rem' }}>{paragraph.replace('## ', '')}</h2>;
                     if (paragraph.startsWith('### ')) return <h3 key={index} style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginTop: '1rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
