@@ -207,7 +207,7 @@ export default function Techwes() {
           <div style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
             <div style={{ maxWidth: '700px' }}>
               <h1 style={{ fontSize: '48px', fontWeight: '600', color: colors.text, marginBottom: '1rem', lineHeight: '1.2' }}>Welkom bij Techwes</h1>
-              <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '2rem', lineHeight: '1.7' }}>Een reis richting Microsoft MVP, met focus op data governance, Microsoft Purview, en cloud security. Hier vind je inzichten, best practices, en lessons learned langs de weg.</p>
+              <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '2rem', lineHeight: '1.7' }}>Een reis richting Microsoft MVP, met focus op data governance, Microsoft Purview, en cloud security. Hier vind je inzichten, best practices, en lessons learned.</p>
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
                 <button onClick={() => setCurrentPage('blog')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', boxShadow: '0 2px 8px rgba(30, 64, 175, 0.2)' }}>Lees de Blog</button>
                 <button onClick={() => setCurrentPage('about')} style={{ padding: '12px 28px', background: colors.white, color: colors.primary, border: `2px solid ${colors.primary}`, borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Over Mij</button>
