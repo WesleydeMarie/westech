@@ -24,16 +24,9 @@ export default function Techwes() {
   const selectedPost = allBlogPosts.find(post => post.id === selectedPostId);
   const selectedHandleiding = allHandleidingen.find(h => h.id === selectedHandleidingId);
   
-  const blogPostsOnly = allBlogPosts.filter(post => post.section !== 'basics');
-  const basicsPostsOnly = allBlogPosts.filter(post => post.section === 'basics');
-
   const filteredPosts = selectedCategory 
-    ? blogPostsOnly.filter(post => post.category === selectedCategory && !post.featured)
-    : blogPostsOnly.filter(post => !post.featured);
-
-  const filteredBasicsPosts = selectedCategory
-    ? basicsPostsOnly.filter(post => post.category === selectedCategory)
-    : basicsPostsOnly;
+    ? allBlogPosts.filter(post => post.category === selectedCategory && !post.featured)
+    : allBlogPosts.filter(post => !post.featured);
 
   const filteredHandleidingen = selectedHandleidingCategory
     ? allHandleidingen.filter(h => h.category === selectedHandleidingCategory)
@@ -74,7 +67,6 @@ export default function Techwes() {
   const navItems = [
     { label: 'Home', page: 'home' },
     { label: 'Blog', page: 'blog' },
-    { label: 'Basics', page: 'basics' },
     { label: 'Handleidingen', page: 'handleidingen' },
     { label: 'Over Mij', page: 'about' },
     { label: 'Contact', page: 'contact' }
@@ -87,7 +79,7 @@ export default function Techwes() {
         <nav style={{ borderBottom: `1px solid ${colors.border}`, padding: '1.5rem 2rem', position: 'sticky', top: 0, background: colors.primary, zIndex: 10 }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedPostId(null); }}>techwes</div>
-            <button onClick={() => { setCurrentPage(selectedPost?.section === 'basics' ? 'basics' : 'blog'); setSelectedPostId(null); }} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar {selectedPost?.section === 'basics' ? 'Basics' : 'Blog'}</button>
+            <button onClick={() => { setCurrentPage('blog'); setSelectedPostId(null); }} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar Blog</button>
           </div>
         </nav>
 
@@ -226,6 +218,36 @@ export default function Techwes() {
                 </div>
               )}
 
+              <div style={{ background: colors.primaryLight, padding: '2rem', borderRadius: '12px', marginTop: '3rem', border: `1px solid ${colors.border}` }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>MVP Reis Voortgang</h2>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
+                    <span style={{ color: colors.textLight }}>Community Betrokkenheid</span>
+                    <span style={{ color: colors.accent, fontWeight: '600' }}>45%</span>
+                  </div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '45%', background: colors.accent }}></div>
+                  </div>
+                </div>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
+                    <span style={{ color: colors.textLight }}>Blog & Content</span>
+                    <span style={{ color: colors.accent, fontWeight: '600' }}>65%</span>
+                  </div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '65%', background: colors.accent }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '14px' }}>
+                    <span style={{ color: colors.textLight }}>Technische Expertise</span>
+                    <span style={{ color: colors.accent, fontWeight: '600' }}>70%</span>
+                  </div>
+                  <div style={{ height: '8px', background: colors.border, borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '70%', background: colors.accent }}></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -234,7 +256,7 @@ export default function Techwes() {
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
             <div>
               <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Blog</h1>
-              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Diepgaande analyses van Microsoft Purview, Entra, Intune en Defender — vanuit de praktijk</p>
+              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Inzichten en lessons learned op mijn pad naar Microsoft MVP</p>
               
               <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <button onClick={() => setSelectedCategory(null)} style={{ padding: '8px 16px', background: selectedCategory === null ? colors.primary : colors.white, color: selectedCategory === null ? colors.white : colors.textLight, border: selectedCategory === null ? 'none' : `1px solid ${colors.border}`, borderRadius: '20px', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>Alle Posts</button>
@@ -258,7 +280,7 @@ export default function Techwes() {
                     </div>
                     <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>{post.excerpt}</p>
                     <div style={{ borderTop: `1px solid ${colors.border}`, paddingTop: '1rem', marginBottom: '1rem' }}>
-                      <p style={{ fontSize: '12px', color: colors.textLight }}>Door <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Security Consultant</p>
+                      <p style={{ fontSize: '12px', color: colors.textLight }}>Door <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Data Governance Advocate</p>
                     </div>
                     <button onClick={() => setSelectedPostId(post.id)} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
                   </article>
@@ -294,52 +316,6 @@ export default function Techwes() {
                 <h3 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Over de Auteur</h3>
                 <p style={{ fontSize: '13px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>Wesley de Marie is een security consultant met 12 jaar ervaring. Gepassioneerd over data governance en Microsoft Purview.</p>
                 <a href="https://www.linkedin.com/in/wesley-d-551a019b/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', fontSize: '13px', color: colors.accent, textDecoration: 'none', fontWeight: '600', borderBottom: `1px solid ${colors.accent}` }}>Connect op LinkedIn →</a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {currentPage === 'basics' && (
-          <div style={{ paddingTop: '3rem', paddingBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
-            <div>
-              <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Basics</h1>
-              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Eerste stappen en quick references voor het Microsoft security-portfolio. Voor wie net begint of een snelle introductie nodig heeft.</p>
-
-              <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <button onClick={() => setSelectedCategory(null)} style={{ padding: '8px 16px', background: selectedCategory === null ? colors.primary : colors.white, color: selectedCategory === null ? colors.white : colors.textLight, border: selectedCategory === null ? 'none' : `1px solid ${colors.border}`, borderRadius: '20px', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>Alle Basics</button>
-                {categories.map(cat => (
-                  <button key={cat} onClick={() => setSelectedCategory(cat)} style={{ padding: '8px 16px', background: selectedCategory === cat ? colors.primary : colors.white, color: selectedCategory === cat ? colors.white : colors.textLight, border: selectedCategory === cat ? 'none' : `1px solid ${colors.border}`, borderRadius: '20px', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>{cat}</button>
-                ))}
-              </div>
-
-              <div style={{ display: 'grid', gap: '2rem', marginBottom: '3rem' }}>
-                {filteredBasicsPosts.map(post => (
-                  <article key={post.id} onMouseEnter={() => setHoveredPostId(post.id)} onMouseLeave={() => setHoveredPostId(null)} style={{ padding: '1.5rem', border: `1px solid ${colors.border}`, borderRadius: '8px', background: hoveredPostId === post.id ? colors.white : colors.background, boxShadow: hoveredPostId === post.id ? '0 8px 24px rgba(30, 64, 175, 0.1)' : 'none', transform: hoveredPostId === post.id ? 'translateY(-4px)' : 'translateY(0)', cursor: 'pointer', transition: 'all 0.3s ease' }}>
-                    <div style={{ marginBottom: '1rem' }}>
-                      <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>{post.title}</h2>
-                      <div style={{ display: 'flex', gap: '1rem', fontSize: '13px', color: colors.textLight, marginBottom: '0.75rem' }}>
-                        <span>{post.date}</span>
-                        <span>•</span>
-                        <span style={{ color: colors.primary, fontWeight: '500' }}>{post.category}</span>
-                        <span>•</span>
-                        <span>{post.readTime}</span>
-                      </div>
-                    </div>
-                    <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>{post.excerpt}</p>
-                    <div style={{ borderTop: `1px solid ${colors.border}`, paddingTop: '1rem', marginBottom: '1rem' }}>
-                      <p style={{ fontSize: '12px', color: colors.textLight }}>Door <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Security Consultant</p>
-                    </div>
-                    <button onClick={() => setSelectedPostId(post.id)} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
-                  </article>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gap: '2rem' }}>
-              <div style={{ background: colors.primaryLight, border: `1px solid ${colors.border}`, borderRadius: '8px', padding: '1.5rem', borderLeft: `4px solid ${colors.accent}` }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Klaar voor meer?</h3>
-                <p style={{ fontSize: '13px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>De Basics geven je een eerste beeld. Voor diepgaande analyses uit de praktijk — edge cases, valkuilen, en standpunten — kijk in de Blog.</p>
-                <button onClick={() => { setCurrentPage('blog'); setSelectedCategory(null); }} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: 0, borderBottom: `1px solid ${colors.accent}` }}>Naar de Blog →</button>
               </div>
             </div>
           </div>
