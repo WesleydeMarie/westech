@@ -472,7 +472,7 @@ export default function Techwes() {
       </div>
 
       <footer style={{ borderTop: `1px solid ${colors.border}`, padding: '2rem', marginTop: '3rem', color: colors.textLight, fontSize: '14px', textAlign: 'center', background: colors.background }}>
-        <p>© 2025 Techwes. Alle rechten voorbehouden. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.accent, textDecoration: 'none', fontWeight: '500' }}>LinkedIn</a></p>
+        <p>© 2026 Techwes. Alle rechten voorbehouden. | <a href="https://www.linkedin.com/in/wesley-d-551a019b/" style={{ color: colors.accent, textDecoration: 'none', fontWeight: '500' }}>LinkedIn</a></p>
       </footer>
     </div>
   );
