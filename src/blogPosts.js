@@ -1,5 +1,60 @@
 export const blogPosts = [
   {
+    id: 8,
+    section: "blog",
+    title: "Agents zijn de nieuwe gebruikers — en jouw tenant is er nog niet klaar voor",
+    excerpt: "Agent 365 is sinds mei generally available en AB-100 definieert de architectenrol voor agentic AI. Wat dit betekent voor identity, Purview en jouw governance.",
+    date: "June 12, 2026",
+    publishDate: "2026-06-12",
+    readTime: "8 min read",
+    category: "AI Governance",
+    featured: false,
+    content: `# Agents zijn de nieuwe gebruikers — en jouw tenant is er nog niet klaar voor
+
+Er draait op dit moment waarschijnlijk een agent in jouw tenant waar niemand van IT vanaf weet. Een marketeer die iets in Copilot Studio heeft geklikt, een developer die een Foundry-agent tegen productie-data heeft gezet, of een SaaS-leverancier die "AI-functionaliteit" heeft aangezet zonder dat iemand de DPIA heeft bijgewerkt. Het voelt als shadow IT anno 2010, met één belangrijk verschil: die agents lezen documenten, draaien code en triggeren workflows. De blast radius is een stuk groter dan een ongeautoriseerde Dropbox-account.
+
+Microsoft heeft daar nu twee antwoorden op. Agent 365, sinds 1 mei 2026 generally available, als control plane voor alles wat agent heet in je organisatie. En AB-100, het nieuwe expert-level examen dat toetst of je dit soort omgevingen kunt ontwerpen en governen. Ze horen bij elkaar, en als je in de security- en compliance-hoek zit, raken ze allebei jouw werk.
+
+## Wat Agent 365 wel en niet is
+
+De makkelijkste manier om Agent 365 te plaatsen: het is voor agents wat Intune is voor devices. Het bouwt geen agents en het draait ze ook niet. Het registreert ze, geeft ze een identiteit, en past dezelfde identity-, access- en data protection-controls toe die je al voor menselijke gebruikers afdwingt.
+
+Concreet krijgt elke goedgekeurde agent een eigen identiteit in Microsoft Entra — een Entra Agent ID — plus een eigen mailbox, agenda, OneDrive en Teams-account. Dat klinkt in eerste instantie absurd ("waarom heeft een script een agenda nodig?"), maar het is precies het punt: een agent die als volwaardige identiteit in je directory staat, kun je governen met de tooling die je al kent. Conditional Access, access reviews, audit logging — het werkt allemaal, omdat de agent geen vreemd object is maar gewoon een principal.
+
+De agent registry is daarbij het onderschatte onderdeel. Agent 365 inventariseert niet alleen de agents die netjes via het Microsoft 365 admin center zijn aangevraagd, maar surfacet via Defender en Intune ook shadow agents op Windows-endpoints. Multicloud-sync met AWS Bedrock en Google Cloud zit in public preview, zodat je cross-cloud agents in dezelfde inventory ziet. Wie ooit een CASB-uitrol heeft gedaan, herkent het patroon: eerst zichtbaarheid, dan pas policy.
+
+## Identiteit eerst, de rest volgt
+
+Mijn standpunt: behandel agents als medewerkers, niet als applicaties. Een app registration met een client secret en te brede Graph-permissies is precies het anti-patroon dat we de afgelopen jaren met workload identities probeerden op te ruimen. Agents maken dat probleem erger, want ze handelen autonoom en op schaal.
+
+Entra ID Governance trekt agents nu in hetzelfde governance-model als mensen. Access packages bepalen de scope van agent-permissies, en sponsor lifecycle workflows zorgen dat elke agent-identiteit een verantwoordelijke gebruiker heeft. Die sponsor-constructie is wat mij betreft non-negotiable: een agent zonder eigenaar is een agent die over twee jaar nog steeds draait met permissies die niemand meer kan verklaren. Wie weleens een access review heeft gedaan op service accounts van tien jaar oud, weet hoe dat eindigt.
+
+Voor de Purview-kant geldt hetzelfde principe. Je bestaande DLP-policies zijn waarschijnlijk geschreven met menselijke acties in gedachten. Controleer of ze ook agent-initiated acties in Exchange en Teams afdekken — meestal wel, maar "meestal" is geen audit-antwoord. De AI-observability rapportage in Purview laat zien welke agents sensitive data raken, en dat is de plek waar je begint: pak de agent met de meeste data access en traceer zijn permissies terug.
+
+Defender sluit de keten met threat detection op Agent IDs. Prompt injection die een agent mails laat doorsturen naar een externe partij is geen scenario dat je traditionele endpoint-tooling oppikt; daarvoor moet je signaal hebben op agent-gedrag zelf. Dat Defender, Entra en Purview hier dezelfde Agent ID als primitive gebruiken, is de architecturale keuze die het geheel werkbaar maakt.
+
+En voor de NIS2-lezers: een autonome agent met toegang tot productiesystemen valt gewoon onder je risicobeheersmaatregelen. "We wisten niet dat die agent bestond" gaat het bij de toezichthouder niet redden. De registry, sponsors en audit trail van Agent 365 zijn in die zin geen nice-to-have, maar het begin van aantoonbaarheid.
+
+## En dan is er AB-100
+
+Microsoft heeft begin 2026 de certificeringsportfolio flink omgegooid met de AB-serie — AB staat voor AI Business. AB-900 is het fundamentals-niveau, AB-730 en AB-731 richten zich op business users en leiders, en AB-100 is het expert-examen: Agentic AI Business Solutions Architect.
+
+Wat AB-100 toetst, is precies het verhaal hierboven, maar dan vanuit de ontwerpstoel. Multi-agent architecturen over Microsoft 365 Copilot, Copilot Studio en Microsoft Foundry heen. De afweging tussen een custom agent bouwen of Microsoft 365 Copilot extenden. Orchestratiepatronen, knowledge sources, en — niet toevallig het zwaarst wegende examendomein — deployen, governen en securen.
+
+Let wel op de instapeis: je hebt een actieve associate-certificering uit een vaste lijst nodig, waaronder AI-102 en een aantal MB-examens. Check de actuele lijst op Microsoft Learn voordat je je inschrijft, want meerdere kwalificerende examens gaan dit jaar met pensioen. Voor wie zoals ik uit de SC-hoek komt, is AI-102 de logische route — de SC-certificeringen staan op dit moment niet op de prerequisite-lijst, wat eerlijk gezegd een vreemde keuze is voor een examen waarvan bijna de helft over governance en security gaat.
+
+Of je AB-100 nodig hebt, hangt af van waar je staat. Doe je vooral tenant-hardening en Purview-implementaties, dan is de directe meerwaarde beperkt. Maar zit je in trajecten waar klanten agents willen uitrollen — en die vraag komt sneller dan de meeste organisaties aankunnen — dan is dit het examen dat de architectenrol voor die wereld definieert. Ik zie het als de agentic opvolger van wat SC-100 voor de Zero Trust-wereld was.
+
+## Waar je morgen begint
+
+Niet met licenties en niet met het examen. Open het Microsoft 365 admin center en kijk wat de agent registry nu al laat zien — grote kans dat daar iets staat wat je niet verwachtte. Wijs vervolgens voor elke agent een sponsor aan, zonder uitzonderingen, en zet expiratie op agent-permissies via access packages. Controleer je DLP-scoping op agent-acties. En voer het gesprek met je CISO dat toch al moest plaatsvinden: agents zijn identiteiten, en identiteiten zonder eigenaar, scope en einddatum horen niet in een tenant thuis — of er nu een mens achter zit of een model.
+
+---
+
+Door Wesley de Marie | Security Consultant`
+  },
+  
+  {
     id: 7,
     section: "blog",
     title: "Custom Sensitive Information Types in Purview DLP: voorbij de templates",
