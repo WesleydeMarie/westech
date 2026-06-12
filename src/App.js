@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { blogPosts } from './blogPosts';
 import { handleidingen } from './handleidingen';
 
+// --- Routing ----------------------------------------------------------------
+// Maakt van een titel een URL-slug: "Custom SITs in Purview" -> "custom-sits-in-purview"
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+const postSlug = (post) => post.slug || slugify(post.title);
+const guideSlug = (g) => g.slug || slugify(g.title);
+
+// Houdt React-state in sync met de browser-URL (pushState + popstate),
+// zodat F5, de terug-knop en directe links gewoon werken.
+function usePath() {
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+  const navigate = (to) => {
+    if (to !== window.location.pathname) {
+      window.history.pushState(null, '', to);
+    }
+    setPath(to);
+    window.scrollTo(0, 0);
+  };
+  return [path, navigate];
+}
+
 export default function Techwes() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedPostId, setSelectedPostId] = useState(null);
-  const [selectedHandleidingId, setSelectedHandleidingId] = useState(null);
+  const [path, navigate] = usePath();
   const [email, setEmail] = useState('');
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [showSuccess, setShowSuccess] = useState(false);
@@ -21,8 +52,26 @@ export default function Techwes() {
   });
   const allHandleidingen = handleidingen;
   const featuredPost = allBlogPosts.find(post => post.featured);
-  const selectedPost = allBlogPosts.find(post => post.id === selectedPostId);
-  const selectedHandleiding = allHandleidingen.find(h => h.id === selectedHandleidingId);
+
+  // De URL is de single source of truth voor pagina en artikel.
+  // Slugs uit de URL worden alleen gebruikt om op te zoeken in eigen data — nooit gerenderd.
+  let segments = [];
+  try {
+    segments = path.split('/').filter(Boolean).map(decodeURIComponent);
+  } catch (err) {
+    segments = [];
+  }
+  const pageMap = { blog: 'blog', basics: 'basics', handleidingen: 'handleidingen', 'over-mij': 'about', contact: 'contact' };
+  const currentPage = segments.length === 0 ? 'home' : (pageMap[segments[0]] || 'notfound');
+  const detailSlug = segments.length > 1 ? segments[1] : null;
+
+  const selectedPost = detailSlug && (segments[0] === 'blog' || segments[0] === 'basics')
+    ? allBlogPosts.find(post => postSlug(post) === detailSlug)
+    : undefined;
+  const selectedHandleiding = detailSlug && segments[0] === 'handleidingen'
+    ? allHandleidingen.find(h => guideSlug(h) === detailSlug)
+    : undefined;
+  const postPath = (post) => '/' + (post.section === 'basics' ? 'basics' : 'blog') + '/' + postSlug(post);
   
   const blogPostsOnly = allBlogPosts.filter(post => post.section !== 'basics');
   const basicsPostsOnly = allBlogPosts.filter(post => post.section === 'basics');
@@ -57,6 +106,16 @@ export default function Techwes() {
     success: '#10b981',
   };
 
+  useEffect(() => {
+    if (selectedPost) {
+      document.title = selectedPost.title + ' | Techwes';
+    } else if (selectedHandleiding) {
+      document.title = selectedHandleiding.title + ' | Techwes';
+    } else {
+      document.title = 'Techwes';
+    }
+  }, [selectedPost, selectedHandleiding]);
+
   const handleNewsletterSignup = (e) => {
     e.preventDefault();
     setEmail('');
@@ -72,22 +131,22 @@ export default function Techwes() {
   };
 
   const navItems = [
-    { label: 'Home', page: 'home' },
-    { label: 'Blog', page: 'blog' },
-    { label: 'Basics', page: 'basics' },
-    { label: 'Handleidingen', page: 'handleidingen' },
-    { label: 'Over Mij', page: 'about' },
-    { label: 'Contact', page: 'contact' }
+    { label: 'Home', page: 'home', path: '/' },
+    { label: 'Blog', page: 'blog', path: '/blog' },
+    { label: 'Basics', page: 'basics', path: '/basics' },
+    { label: 'Handleidingen', page: 'handleidingen', path: '/handleidingen' },
+    { label: 'Over Mij', page: 'about', path: '/over-mij' },
+    { label: 'Contact', page: 'contact', path: '/contact' }
   ];
 
   // BLOG DETAIL PAGE
-  if (selectedPostId) {
+  if (detailSlug && (segments[0] === 'blog' || segments[0] === 'basics')) {
     return (
       <div style={{ minHeight: '100vh', background: colors.background }}>
         <nav style={{ borderBottom: `1px solid ${colors.border}`, padding: '1.5rem 2rem', position: 'sticky', top: 0, background: colors.primary, zIndex: 10 }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedPostId(null); }}>techwes</div>
-            <button onClick={() => { setCurrentPage(selectedPost?.section === 'basics' ? 'basics' : 'blog'); setSelectedPostId(null); }} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar {selectedPost?.section === 'basics' ? 'Basics' : 'Blog'}</button>
+            <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => navigate('/')}>techwes</div>
+            <button onClick={() => navigate(selectedPost?.section === 'basics' ? '/basics' : '/blog')} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar {selectedPost?.section === 'basics' ? 'Basics' : 'Blog'}</button>
           </div>
         </nav>
 
@@ -125,6 +184,13 @@ export default function Techwes() {
               </div>
             </article>
           )}
+          {!selectedPost && (
+            <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+              <h1 style={{ fontSize: '28px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Artikel niet gevonden</h1>
+              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Dit artikel bestaat niet (meer), of de link klopt niet.</p>
+              <button onClick={() => navigate('/blog')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Naar de Blog</button>
+            </div>
+          )}
         </div>
 
         <footer style={{ borderTop: `1px solid ${colors.border}`, padding: '2rem', marginTop: '3rem', color: colors.textLight, fontSize: '14px', textAlign: 'center', background: colors.background }}>
@@ -135,13 +201,13 @@ export default function Techwes() {
   }
 
   // HANDLEIDING DETAIL PAGE
-  if (selectedHandleidingId) {
+  if (detailSlug && segments[0] === 'handleidingen') {
     return (
       <div style={{ minHeight: '100vh', background: colors.background }}>
         <nav style={{ borderBottom: `1px solid ${colors.border}`, padding: '1.5rem 2rem', position: 'sticky', top: 0, background: colors.primary, zIndex: 10 }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => { setCurrentPage('home'); setSelectedHandleidingId(null); }}>techwes</div>
-            <button onClick={() => { setCurrentPage('handleidingen'); setSelectedHandleidingId(null); }} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar Handleidingen</button>
+            <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => navigate('/')}>techwes</div>
+            <button onClick={() => navigate('/handleidingen')} style={{ background: colors.accent, color: colors.white, border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}>← Terug naar Handleidingen</button>
           </div>
         </nav>
 
@@ -179,6 +245,13 @@ export default function Techwes() {
               )}
             </article>
           )}
+          {!selectedHandleiding && (
+            <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+              <h1 style={{ fontSize: '28px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Handleiding niet gevonden</h1>
+              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Deze handleiding bestaat niet (meer), of de link klopt niet.</p>
+              <button onClick={() => navigate('/handleidingen')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Naar Handleidingen</button>
+            </div>
+          )}
         </div>
 
         <footer style={{ borderTop: `1px solid ${colors.border}`, padding: '2rem', marginTop: '3rem', color: colors.textLight, fontSize: '14px', textAlign: 'center', background: colors.background }}>
@@ -192,10 +265,10 @@ export default function Techwes() {
     <div style={{ minHeight: '100vh', background: colors.background }}>
       <nav style={{ borderBottom: `1px solid ${colors.border}`, padding: '1.5rem 2rem', position: 'sticky', top: 0, background: colors.primary, zIndex: 10, boxShadow: '0 2px 8px rgba(30, 64, 175, 0.15)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => setCurrentPage('home')}>techwes</div>
+          <div style={{ fontSize: '24px', fontWeight: '600', color: colors.white, cursor: 'pointer' }} onClick={() => navigate('/')}>techwes</div>
           <div style={{ display: 'flex', gap: '2rem' }}>
             {navItems.map(item => (
-              <button key={item.page} onClick={() => setCurrentPage(item.page)} style={{ background: 'none', border: 'none', fontSize: '15px', cursor: 'pointer', color: currentPage === item.page ? colors.white : 'rgba(255,255,255,0.8)', fontWeight: currentPage === item.page ? '500' : '400', paddingBottom: '4px', borderBottom: currentPage === item.page ? `2px solid ${colors.accent}` : 'none' }}>{item.label}</button>
+              <button key={item.page} onClick={() => navigate(item.path)} style={{ background: 'none', border: 'none', fontSize: '15px', cursor: 'pointer', color: currentPage === item.page ? colors.white : 'rgba(255,255,255,0.8)', fontWeight: currentPage === item.page ? '500' : '400', paddingBottom: '4px', borderBottom: currentPage === item.page ? `2px solid ${colors.accent}` : 'none' }}>{item.label}</button>
             ))}
           </div>
         </div>
@@ -209,12 +282,12 @@ export default function Techwes() {
               <h1 style={{ fontSize: '48px', fontWeight: '600', color: colors.text, marginBottom: '1rem', lineHeight: '1.2' }}>Welkom bij Techwes</h1>
               <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '2rem', lineHeight: '1.7' }}>Een reis richting Microsoft MVP, met focus op data governance, Microsoft Purview, en cloud security. Hier vind je inzichten, best practices, en lessons learned.</p>
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
-                <button onClick={() => setCurrentPage('blog')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', boxShadow: '0 2px 8px rgba(30, 64, 175, 0.2)' }}>Lees de Blog</button>
-                <button onClick={() => setCurrentPage('about')} style={{ padding: '12px 28px', background: colors.white, color: colors.primary, border: `2px solid ${colors.primary}`, borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Over Mij</button>
+                <button onClick={() => navigate('/blog')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', boxShadow: '0 2px 8px rgba(30, 64, 175, 0.2)' }}>Lees de Blog</button>
+                <button onClick={() => navigate('/over-mij')} style={{ padding: '12px 28px', background: colors.white, color: colors.primary, border: `2px solid ${colors.primary}`, borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Over Mij</button>
               </div>
 
               {featuredPost && (
-                <div style={{ padding: '2.5rem', background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`, borderRadius: '12px', color: colors.white, marginBottom: '3rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(30, 64, 175, 0.25)' }} onClick={() => setSelectedPostId(featuredPost.id)}>
+                <div style={{ padding: '2.5rem', background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`, borderRadius: '12px', color: colors.white, marginBottom: '3rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(30, 64, 175, 0.25)' }} onClick={() => navigate(postPath(featuredPost))}>
                   <div style={{ background: colors.accent, display: 'inline-block', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: '700', marginBottom: '1rem', letterSpacing: '0.5px' }}>⭐ UITGELICHT ARTIKEL</div>
                   <h2 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '1rem', lineHeight: '1.3' }}>{featuredPost.title}</h2>
                   <p style={{ fontSize: '15px', lineHeight: '1.6', marginBottom: '1.5rem', opacity: 0.95 }}>{featuredPost.excerpt}</p>
@@ -260,7 +333,7 @@ export default function Techwes() {
                     <div style={{ borderTop: `1px solid ${colors.border}`, paddingTop: '1rem', marginBottom: '1rem' }}>
                       <p style={{ fontSize: '12px', color: colors.textLight }}>Door <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Security Consultant</p>
                     </div>
-                    <button onClick={() => setSelectedPostId(post.id)} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
+                    <button onClick={() => navigate(postPath(post))} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
                   </article>
                 ))}
               </div>
@@ -281,7 +354,7 @@ export default function Techwes() {
                 <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.text, marginBottom: '1.5rem' }}>Laatste Posts</h3>
                 <div style={{ display: 'grid', gap: '1.5rem' }}>
                   {latestPosts.map(post => (
-                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: `1px solid ${colors.border}`, cursor: 'pointer' }} onClick={() => setSelectedPostId(post.id)}>
+                    <div key={post.id} style={{ paddingBottom: '1.5rem', borderBottom: `1px solid ${colors.border}`, cursor: 'pointer' }} onClick={() => navigate(postPath(post))}>
                       <p style={{ fontSize: '13px', color: colors.textLight, marginBottom: '0.25rem' }}>{post.date}</p>
                       <h4 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem', lineHeight: '1.3' }}>{post.title}</h4>
                       <span style={{ fontSize: '12px', color: colors.white, background: colors.primary, padding: '2px 8px', borderRadius: '4px' }}>{post.category}</span>
@@ -329,7 +402,7 @@ export default function Techwes() {
                     <div style={{ borderTop: `1px solid ${colors.border}`, paddingTop: '1rem', marginBottom: '1rem' }}>
                       <p style={{ fontSize: '12px', color: colors.textLight }}>Door <strong style={{ color: colors.text }}>Wesley de Marie</strong> • Security Consultant</p>
                     </div>
-                    <button onClick={() => setSelectedPostId(post.id)} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
+                    <button onClick={() => navigate(postPath(post))} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '14px', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Lees meer →</button>
                   </article>
                 ))}
               </div>
@@ -339,7 +412,7 @@ export default function Techwes() {
               <div style={{ background: colors.primaryLight, border: `1px solid ${colors.border}`, borderRadius: '8px', padding: '1.5rem', borderLeft: `4px solid ${colors.accent}` }}>
                 <h3 style={{ fontSize: '14px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Klaar voor meer?</h3>
                 <p style={{ fontSize: '13px', color: colors.textLight, lineHeight: '1.6', marginBottom: '1rem' }}>De Basics geven je een eerste beeld. Voor diepgaande analyses uit de praktijk — edge cases, valkuilen, en standpunten — kijk in de Blog.</p>
-                <button onClick={() => { setCurrentPage('blog'); setSelectedCategory(null); }} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: 0, borderBottom: `1px solid ${colors.accent}` }}>Naar de Blog →</button>
+                <button onClick={() => { navigate('/blog'); setSelectedCategory(null); }} style={{ background: 'none', border: 'none', color: colors.accent, fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: 0, borderBottom: `1px solid ${colors.accent}` }}>Naar de Blog →</button>
               </div>
             </div>
           </div>
@@ -359,7 +432,7 @@ export default function Techwes() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
               {filteredHandleidingen.map(handleiding => (
-                <div key={handleiding.id} onClick={() => setSelectedHandleidingId(handleiding.id)} onMouseEnter={() => setHoveredHandleidingId(handleiding.id)} onMouseLeave={() => setHoveredHandleidingId(null)} style={{ padding: '1.5rem', background: hoveredHandleidingId === handleiding.id ? colors.white : colors.background, border: `1px solid ${colors.border}`, borderRadius: '8px', cursor: 'pointer', boxShadow: hoveredHandleidingId === handleiding.id ? '0 8px 24px rgba(30, 64, 175, 0.1)' : 'none', transform: hoveredHandleidingId === handleiding.id ? 'translateY(-4px)' : 'translateY(0)', transition: 'all 0.3s ease', borderTop: `3px solid ${colors.accent}` }}>
+                <div key={handleiding.id} onClick={() => navigate('/handleidingen/' + guideSlug(handleiding))} onMouseEnter={() => setHoveredHandleidingId(handleiding.id)} onMouseLeave={() => setHoveredHandleidingId(null)} style={{ padding: '1.5rem', background: hoveredHandleidingId === handleiding.id ? colors.white : colors.background, border: `1px solid ${colors.border}`, borderRadius: '8px', cursor: 'pointer', boxShadow: hoveredHandleidingId === handleiding.id ? '0 8px 24px rgba(30, 64, 175, 0.1)' : 'none', transform: hoveredHandleidingId === handleiding.id ? 'translateY(-4px)' : 'translateY(0)', transition: 'all 0.3s ease', borderTop: `3px solid ${colors.accent}` }}>
                   <div style={{ fontSize: '36px', marginBottom: '0.75rem' }}>{handleiding.icon}</div>
                   <div style={{ display: 'inline-block', background: colors.primaryLight, color: colors.primary, padding: '2px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: '500', marginBottom: '0.75rem' }}>{handleiding.category}</div>
                   <h3 style={{ fontSize: '17px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem', lineHeight: '1.3' }}>{handleiding.title}</h3>
@@ -377,6 +450,14 @@ export default function Techwes() {
                 <p>Nog geen handleidingen in deze categorie.</p>
               </div>
             )}
+          </div>
+        )}
+
+        {currentPage === 'notfound' && (
+          <div style={{ paddingTop: '4rem', paddingBottom: '4rem', textAlign: 'center' }}>
+            <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>Pagina niet gevonden</h1>
+            <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>De pagina die je zoekt bestaat niet (meer).</p>
+            <button onClick={() => navigate('/')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Terug naar Home</button>
           </div>
         )}
 
