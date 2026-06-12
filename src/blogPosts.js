@@ -168,7 +168,7 @@ Door Wesley de Marie | Security Consultant`
     title: "Getting Started with Microsoft Copilot + Shadow AI Awareness",
     date: "May 26 2026",
     publishDate : "May 26 2026",
-    category: "AI Governance",
+    category: "AI",
     excerpt: "De beginnersgids voor Microsoft Copilot in de werkomgeving: de Copilot familie, hoe het werkt, en het cruciale Shadow AI risico waar elke security professional zich bewust van moet zijn.",
     readTime: "14 min read",
     featured: false,
