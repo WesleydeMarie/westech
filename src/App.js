@@ -89,7 +89,7 @@ export default function Techwes() {
     : allHandleidingen;
   
   const latestPosts = [...allBlogPosts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
-  const categories = ['Purview', 'Entra', 'Intune', 'Defender', 'AI'];
+  const categories = ['Purview', 'Defender', 'AI'];
   // Royal Tech Color Palette
   const colors = {
     primary: '#1e40af',
@@ -307,7 +307,7 @@ export default function Techwes() {
           <div style={{ paddingTop: '3rem', paddingBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
             <div>
               <h1 style={{ fontSize: '36px', fontWeight: '600', color: colors.text, marginBottom: '0.5rem' }}>Blog</h1>
-              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Diepgaande analyses van Microsoft Purview, Entra, Intune en Defender — vanuit de praktijk</p>
+              <p style={{ fontSize: '16px', color: colors.textLight, marginBottom: '2rem' }}>Diepgaande analyses van Microsoft Purview, ai & Defender — vanuit de praktijk</p>
               
               <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <button onClick={() => setSelectedCategory(null)} style={{ padding: '8px 16px', background: selectedCategory === null ? colors.primary : colors.white, color: selectedCategory === null ? colors.white : colors.textLight, border: selectedCategory === null ? 'none' : `1px solid ${colors.border}`, borderRadius: '20px', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>Alle Posts</button>
