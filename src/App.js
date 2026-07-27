@@ -156,18 +156,67 @@ export default function Techwes() {
               </div>
 
               <div style={{ fontSize: '18px', color: colors.text, lineHeight: '1.75' }}>
-                {selectedPost.content.split('\n').map((paragraph, index) => {
-                  const imageMatch = paragraph.match(/^!\[(.*?)\]\((.*?)\)$/);
-                  if (imageMatch) {
-                    return <img key={index} src={imageMatch[2]} alt={imageMatch[1]} style={{ maxWidth: '100%', borderRadius: '8px', margin: '1.5rem 0', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} />;
+                {(() => {
+                  const lines = selectedPost.content.split('\n');
+                  const elements = [];
+                  let i = 0;
+                  while (i < lines.length) {
+                    const line = lines[i];
+                    const isTableRow = /^\s*\|.*\|\s*$/.test(line);
+                    const isSeparatorRow = /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1] || '');
+                    if (isTableRow && isSeparatorRow) {
+                      const headerCells = line.split('|').slice(1, -1).map(c => c.trim());
+                      let j = i + 2;
+                      const rows = [];
+                      while (j < lines.length && /^\s*\|.*\|\s*$/.test(lines[j])) {
+                        rows.push(lines[j].split('|').slice(1, -1).map(c => c.trim()));
+                        j++;
+                      }
+                      elements.push(
+                        <div key={i} style={{ overflowX: 'auto', margin: '1.5rem 0' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px' }}>
+                            <thead>
+                              <tr>
+                                {headerCells.map((cell, ci) => (
+                                  <th key={ci} style={{ textAlign: 'left', padding: '10px 14px', borderBottom: `2px solid ${colors.border}`, fontWeight: '600', color: colors.text }}>{cell}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {rows.map((row, ri) => (
+                                <tr key={ri} style={{ background: ri % 2 === 1 ? colors.background : 'transparent' }}>
+                                  {row.map((cell, ci) => (
+                                    <td key={ci} style={{ padding: '10px 14px', borderBottom: `1px solid ${colors.border}`, color: colors.textLight, verticalAlign: 'top' }}>{cell}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                      i = j;
+                      continue;
+                    }
+                    const imageMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
+                    if (imageMatch) {
+                      elements.push(<img key={i} src={imageMatch[2]} alt={imageMatch[1]} style={{ maxWidth: '100%', borderRadius: '8px', margin: '1.5rem 0', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} />);
+                    } else if (line.startsWith('# ')) {
+                      // titel wordt elders al getoond
+                    } else if (line.startsWith('## ')) {
+                      elements.push(<h2 key={i} style={{ fontFamily: fonts.serif, fontSize: '28px', fontWeight: '400', color: colors.text, marginTop: '3rem', marginBottom: '1rem', lineHeight: '1.3' }}>{line.replace('## ', '')}</h2>);
+                    } else if (line.startsWith('### ')) {
+                      elements.push(<h3 key={i} style={{ fontFamily: fonts.serif, fontSize: '21px', fontWeight: '500', color: colors.text, marginTop: '2rem', marginBottom: '0.5rem' }}>{line.replace('### ', '')}</h3>);
+                    } else if (line.startsWith('- ')) {
+                      elements.push(<li key={i} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{line.replace('- ', '')}</li>);
+                    } else if (line.trim() === '') {
+                      elements.push(<div key={i} style={{ height: '0.5rem' }}></div>);
+                    } else {
+                      elements.push(<p key={i} style={{ marginBottom: '1.5rem' }}>{line}</p>);
+                    }
+                    i++;
                   }
-                  if (paragraph.startsWith('# ')) return null;
-                  if (paragraph.startsWith('## ')) return <h2 key={index} style={{ fontFamily: fonts.serif, fontSize: '28px', fontWeight: '400', color: colors.text, marginTop: '3rem', marginBottom: '1rem', lineHeight: '1.3' }}>{paragraph.replace('## ', '')}</h2>;
-                  if (paragraph.startsWith('### ')) return <h3 key={index} style={{ fontFamily: fonts.serif, fontSize: '21px', fontWeight: '500', color: colors.text, marginTop: '2rem', marginBottom: '0.5rem' }}>{paragraph.replace('### ', '')}</h3>;
-                  if (paragraph.startsWith('- ')) return <li key={index} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{paragraph.replace('- ', '')}</li>;
-                  if (paragraph.trim() === '') return <div key={index} style={{ height: '0.5rem' }}></div>;
-                  return <p key={index} style={{ marginBottom: '1.5rem' }}>{paragraph}</p>;
-                })}
+                  return elements;
+                })()}
               </div>
 
               <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start', marginTop: '4rem', paddingTop: '2rem', borderTop: `1px solid ${colors.border}` }}>
