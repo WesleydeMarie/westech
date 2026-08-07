@@ -70,11 +70,20 @@ export default function Techwes() {
     : undefined;
   const postPath = (post) => '/blog/' + postSlug(post);
 
-  const filteredPosts = selectedCategory
+  // Chronologische volgorde: publishDate is leidend (ISO, betrouwbaar sorteerbaar).
+  // date is vrije tekst en wordt alleen als terugval gebruikt.
+  const byPublishDateDesc = (a, b) => {
+    const da = a.publishDate || a.date;
+    const db = b.publishDate || b.date;
+    return new Date(db) - new Date(da);
+  };
+
+  const filteredPosts = (selectedCategory
     ? allBlogPosts.filter(post => post.category === selectedCategory && !post.featured)
-    : allBlogPosts.filter(post => !post.featured);
-  
-  const latestPosts = [...allBlogPosts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
+    : allBlogPosts.filter(post => !post.featured)
+  ).sort(byPublishDateDesc);
+
+  const latestPosts = [...allBlogPosts].sort(byPublishDateDesc).slice(0, 4);
   const categories = ['Purview', 'Defender', 'AI'];
   // Royal Tech Color Palette
   const colors = {
