@@ -429,12 +429,6 @@ export default function Techwes() {
                 <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8' }}>Mijn doel is om andere IT professionals de juiste weg te wijzen. Door MVP te worden, kan ik een groter platform krijgen om kennis te delen.</p>
               </div>
 
-              <div style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontFamily: fonts.serif, fontSize: '28px', fontWeight: '400', color: colors.text, marginBottom: '1.5rem' }}>Buiten het werk</h2>
-                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8', marginBottom: '1rem' }}>Buiten werktijden ben ik graag bezig met sporten. Vissen is mijn favoriete hobby, een moment om alles los te laten.</p>
-                <p style={{ fontSize: '16px', color: colors.textLight, lineHeight: '1.8' }}>Wat mij drijft is mijn overtuiging dat communiceren je kunt leren. Ik kijk alles positief in.</p>
-              </div>
-
               <div style={{ background: colors.primaryDark, padding: '2.5rem', borderRadius: '12px', color: colors.white }}>
                 <h2 style={{ fontFamily: fonts.serif, fontSize: '26px', fontWeight: '400', marginBottom: '0.75rem' }}>Laten we verbinden</h2>
                 <p style={{ fontSize: '15px', lineHeight: '1.7', marginBottom: '1.5rem', opacity: 0.95 }}>Wil je sparren over data governance, Purview of de securitykant van AI? Ik hoor het graag.</p>
