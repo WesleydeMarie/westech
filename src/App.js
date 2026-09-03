@@ -40,7 +40,6 @@ function usePath() {
 
 export default function Techwes() {
   const [path, navigate] = usePath();
-  const [email, setEmail] = useState('');
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [showSuccess, setShowSuccess] = useState(false);
   const [hoveredPostId, setHoveredPostId] = useState(null);
@@ -119,13 +118,6 @@ export default function Techwes() {
       document.title = 'Techwes';
     }
   }, [selectedPost]);
-
-  const handleNewsletterSignup = (e) => {
-    e.preventDefault();
-    setEmail('');
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-  };
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
@@ -331,15 +323,6 @@ export default function Techwes() {
                 ))}
               </div>
 
-              <div style={{ background: colors.primaryLight, padding: '2rem', borderRadius: '12px', marginBottom: '2rem', border: `1px solid ${colors.border}`, borderLeft: `4px solid ${colors.accent}` }}>
-                <h3 style={{ fontFamily: fonts.serif, fontSize: '20px', fontWeight: '500', color: colors.text, marginBottom: '0.5rem' }}>Mis geen nieuwe artikelen</h3>
-                <p style={{ fontSize: '14px', color: colors.textLight, marginBottom: '1.5rem' }}>Krijg nieuwe analyses over Purview, Defender en AI-security wekelijks in je inbox</p>
-                <form onSubmit={handleNewsletterSignup} style={{ display: 'flex', gap: '0.5rem' }}>
-                  <input type="email" placeholder="jouw@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ flex: 1, padding: '10px 12px', border: `1px solid ${colors.border}`, borderRadius: '6px', fontSize: '14px', outline: 'none' }} />
-                  <button type="submit" style={{ padding: '10px 16px', background: colors.accent, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 2px 8px rgba(249, 115, 22, 0.3)' }}>Abonneer</button>
-                </form>
-                {showSuccess && <p style={{ fontSize: '13px', color: colors.success, marginTop: '1rem' }}>Bedankt, je bent aangemeld.</p>}
-              </div>
             </div>
 
             <div style={{ display: 'grid', gap: '2rem' }}>
