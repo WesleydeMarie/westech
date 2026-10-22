@@ -13,8 +13,7 @@ const S=[
  {f:[2540,2100,880,560],a:'#a98bff',r:0,fr:4,d:{x:2640,y:1850,s:.42,l:3,ok:1,rot:6}},
  {f:[560,1300,1060,720],a:'#4fd8ff',r:0,d:{x:950,y:1010,s:.42,l:3}},
  {f:[1680,1300,2980,2150],a:'#5cf2a0',r:0,fr:3,d:{x:2062,y:1240,s:.38,l:4,lock:1}},
- {f:[2100,2615,1720,640],a:'#3fe0c5',r:0,d:{x:2790,y:2380,s:.42,l:3}},
- {f:[2100,1450,3600,2500],a:'#3fe0c5',r:0,ov:1,d:{x:2062,y:1240,s:.38,l:4,lock:1}}
+ {f:[2100,2615,1720,640],a:'#3fe0c5',r:0,d:{x:2790,y:2380,s:.42,l:3}}
 ];
 S.forEach((s,i)=>{s.ch=TX.steps[i][0];s.t=TX.steps[i][1]});
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -51,7 +50,7 @@ function apply(){
   if(s.cycle&&!mapMode){let i=3;markTier(i);cycleT=setInterval(()=>{i=i%4+1;setLabel(i);markTier(i)},1500)}
   document.getElementById('chn').textContent=mapMode?TX.ui.map:s.ch;
   document.getElementById('cht').textContent=mapMode?TX.ui.all:s.t;
-  document.getElementById('cnt').textContent=(step>0&&step<S.length-1)?String(step).padStart(2,'0')+' / '+String(S.length-2).padStart(2,'0'):'';
+  document.getElementById('cnt').textContent=step>0?String(step).padStart(2,'0')+' / '+String(S.length-1).padStart(2,'0'):'';
   document.getElementById('map').setAttribute('aria-pressed',mapMode);
   segs.forEach((b,i)=>{b.classList.toggle('cur',i===step);b.classList.toggle('done',i<step)});
   document.getElementById('sr').textContent=(mapMode?TX.ui.map:s.ch)+': '+s.t;
