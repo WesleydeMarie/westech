@@ -199,7 +199,11 @@ export default function Techwes() {
                       continue;
                     }
                     const imageMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
-                    if (imageMatch) {
+                    const linkMatch = line.match(/^\[(.+?)\]\((\/[^)\s]*|https:\/\/[^)\s]*)\)$/);
+                    if (linkMatch) {
+                      const external = linkMatch[2].startsWith('https://');
+                      elements.push(<p key={i} style={{ marginBottom: '1rem' }}><a href={linkMatch[2]} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'inline-block', padding: '12px 22px', background: colors.accent, color: colors.white, textDecoration: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500' }}>{linkMatch[1]} →</a></p>);
+                    } else if (imageMatch) {
                       elements.push(<img key={i} src={imageMatch[2]} alt={imageMatch[1]} style={{ maxWidth: '100%', borderRadius: '8px', margin: '1.5rem 0', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} />);
                     } else if (line.startsWith('# ')) {
                       // titel wordt elders al getoond
