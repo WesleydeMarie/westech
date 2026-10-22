@@ -7,10 +7,10 @@ const S=[
  {f:[2570,900,660,380],a:'#6aa8ff',r:1,d:{x:2300,y:790,s:.62,l:3},cycle:1},
  {f:[1780,1735,960,590],a:'#3fe0c5',r:-1,d:{x:1980,y:760,s:1,l:3}},
  {f:[2330,1250,2100,1700],a:'#ffb547',r:0,d:{x:2700,y:500,s:.85,l:3,rot:-8}},
- {f:[3560,440,1180,720],a:'#ff5a5f',r:1.5,fr:4,d:{x:3950,y:150,s:.5,l:3,leak:1}},
+ {f:[3560,440,1180,720],a:'#ff5a5f',r:1.5,fr:4,d:{x:3790,y:165,s:.5,l:3,leak:1}},
  {f:[3620,1300,1100,680],a:'#4fd8ff',r:-1,d:{x:3950,y:1035,s:.55,l:4,lock:1}},
  {f:[3560,2190,1180,740],a:'#ffb547',r:1,d:{x:3950,y:1895,s:.55,l:4,broken:1}},
- {f:[2540,2100,880,560],a:'#a98bff',r:0,fr:4,d:{x:2640,y:1850,s:.42,l:3,ok:1,rot:6}},
+ {f:[2490,2165,960,720],a:'#a98bff',r:0,fr:4,d:{x:2640,y:1850,s:.42,l:3,ok:1,rot:6}},
  {f:[560,1300,1060,720],a:'#4fd8ff',r:0,d:{x:950,y:1010,s:.42,l:3}},
  {f:[1680,1300,2980,2150],a:'#5cf2a0',r:0,fr:3,d:{x:2062,y:1240,s:.38,l:4,lock:1}},
  {f:[2100,2615,1720,640],a:'#3fe0c5',r:0,d:{x:2790,y:2380,s:.42,l:3}}
@@ -57,17 +57,35 @@ function apply(){
 }
 function markTier(i){document.querySelectorAll('.tier').forEach(t=>t.classList.toggle('cur',+t.dataset.t===i))}
 function setLabel(l){dlab.textContent=LAB[l][0];doc.style.setProperty('--lab',LAB[l][1])}
+let dcur=null,dtw=null;
+function docXf(p){doc.style.transform=`translate(${p.x}px,${p.y}px) rotate(${p.rot}deg) scale(${p.s})`}
+function docCls(d){setLabel(d.l);doc.classList.toggle('lock',!!d.lock);doc.classList.toggle('leak',!!d.leak);doc.classList.toggle('broken',!!d.broken);doc.classList.toggle('ok',!!d.ok)}
 function setDoc(d){
-  doc.style.transform=`translate(${d.x}px,${d.y}px) rotate(${d.rot||0}deg) scale(${d.s})`;
-  setLabel(d.l);
-  doc.classList.toggle('lock',!!d.lock);doc.classList.toggle('leak',!!d.leak);
-  doc.classList.toggle('broken',!!d.broken);doc.classList.toggle('ok',!!d.ok);
+  const to={x:d.x,y:d.y,s:d.s,rot:d.rot||0};
+  if(!dcur){dcur=to;docXf(to);docCls(d);return}
+  if(dtw&&dtw.d===d)return;
+  if(!dtw&&dcur.x===to.x&&dcur.y===to.y&&dcur.s===to.s&&dcur.rot===to.rot){docCls(d);return}
+  doc.classList.remove('leak','broken','ok','lock');
+  const dx=to.x-dcur.x,dy=to.y-dcur.y;
+  const c={x:(dcur.x+to.x)/2-dy*.22,y:(dcur.y+to.y)/2+dx*.22};
+  dtw={from:{...dcur},to,c,d,t0:performance.now(),dur:RM?300:1500,applied:false,last:{...dcur}};
+}
+function stepDoc(now){
+  if(!dtw)return;
+  const t=Math.max(0,Math.min(1,(now-dtw.t0)/dtw.dur)),e=ease(t),u=1-e,a=dtw.from,b=dtw.to,c=dtw.c;
+  const p={x:u*u*a.x+2*u*e*c.x+e*e*b.x,y:u*u*a.y+2*u*e*c.y+e*e*b.y,s:Math.exp(Math.log(a.s)+(Math.log(b.s)-Math.log(a.s))*e),rot:a.rot+(b.rot-a.rot)*e};
+  const vx=(p.x-dtw.last.x)*cam.s,vy=(p.y-dtw.last.y)*cam.s,sp=Math.hypot(vx,vy);
+  dtw.last={...p};
+  if(!RM){p.rot+=Math.max(-12,Math.min(12,vx*.35));doc.style.filter=`blur(${(Math.min(6,sp*.09)/Math.max(.05,cam.s*p.s)).toFixed(2)}px)`}
+  docXf(p);dcur=p;
+  if(!dtw.applied&&t>.72){docCls(dtw.d);dtw.applied=true}
+  if(t>=1){if(!dtw.applied)docCls(dtw.d);dcur=b;docXf(b);doc.style.filter='';dtw=null}
 }
 function go(i,f){
   i=Math.max(0,Math.min(S.length-1,i));
   const moved=i!==step||mapMode;
   step=i;frag=f!=null?f:0;mapMode=false;apply();
-  if(moved)fly(target(step),S[step].a);
+  if(moved){fly(target(step),S[step].a);if(dtw){dtw.t0=fl.t0;dtw.dur=fl.dur*.9}}
 }
 function next(){if(mapMode){go(step,frag);return}const s=S[step];if(s.fr&&frag<s.fr){frag++;apply();return}if(step<S.length-1)go(step+1)}
 function prev(){if(mapMode){go(step,frag);return}if(frag>0){frag--;apply();return}if(step>0){const p=step-1;go(p,S[p].fr||0)}}
@@ -101,6 +119,7 @@ function render(now){
     setCol(colFrom.map((c,i)=>c+(colTo[i]-c)*e));
     if(t>=1){fl=null;world.style.willChange='auto'}
   }
+  stepDoc(now);
   const v=view(),Cx=v.w/2,Cy=v.h/2;
   world.style.transform=`translate(${Cx}px,${Cy}px) rotate(${cam.r}deg) scale(${cam.s}) translate(${-cam.x}px,${-cam.y}px)`;
   cx.clearRect(0,0,innerWidth,innerHeight);

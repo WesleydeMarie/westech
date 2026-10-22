@@ -66,7 +66,7 @@ p{margin:0}
 
 /* document traveler */
 #doc{position:absolute;left:0;top:0;width:150px;height:200px;transform-origin:0 0;
-  transition:transform 1.7s cubic-bezier(.65,0,.35,1), filter .6s;--lab:#6d7a8f}
+  will-change:transform;--lab:#6d7a8f}
 #doc .sheet{position:absolute;inset:0;background:#eef2f7;border-radius:6px;overflow:hidden;
   box-shadow:0 0 0 2px var(--lab),0 0 40px color-mix(in srgb,var(--lab) 55%,transparent),0 24px 50px rgba(0,0,0,.6);transition:box-shadow .6s}
 #doc .bar{height:30px;background:var(--lab);color:#0b1020;font:600 10px/30px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:0 10px;white-space:nowrap;overflow:hidden;transition:background .5s}
@@ -80,6 +80,18 @@ p{margin:0}
 #doc .stamp{position:absolute;left:8px;right:8px;top:92px;text-align:center;font:600 22px var(--mono);color:#ff5a5f;border:3px solid #ff5a5f;
   transform:rotate(-14deg) scale(1.6);opacity:0;transition:opacity .4s, transform .5s cubic-bezier(.3,1.5,.5,1)}
 #doc.leak .stamp{opacity:1;transform:rotate(-14deg) scale(1)}
+#doc.leak::before,#doc.leak::after{content:"";position:absolute;inset:-14px;border-radius:12px;border:2px solid #ff5a5f;animation:alarm 1.8s ease-out infinite;pointer-events:none}
+#doc.leak::after{animation-delay:.9s}
+#doc.leak .sheet{box-shadow:0 0 0 2px #ff5a5f,0 0 60px rgba(255,60,70,.75),0 24px 50px rgba(0,0,0,.6);animation:glitch 2.6s steps(1) infinite}
+@keyframes alarm{from{opacity:.9;transform:scale(.92)}to{opacity:0;transform:scale(1.35)}}
+.threat{position:absolute;width:130px;transition:opacity .8s ease .8s}
+.threat svg{display:block;width:130px;height:160px;overflow:visible}
+.threat .halo{transform-origin:65px 80px;animation:halo 2.4s ease-in-out infinite}
+.threat .eye{filter:drop-shadow(0 0 5px #ff2e3b) drop-shadow(0 0 12px #ff2e3b);animation:eyes 3.2s steps(1) infinite}
+.threat p{margin-top:6px;text-align:center;font:500 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#ff5a5f}
+.threat .exfil{position:absolute;left:-58px;top:78px;width:54px;height:3px;background:repeating-linear-gradient(90deg,#ff5a5f 0 8px,transparent 8px 14px);background-size:28px 3px;animation:flow .8s linear infinite}
+@keyframes halo{0%,100%{opacity:.55;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}}
+@keyframes eyes{0%,92%,100%{opacity:1}94%{opacity:.15}96%{opacity:1}97%{opacity:.3}}
 #doc.broken .sheet{filter:grayscale(1) contrast(.8);animation:glitch 2.4s steps(1) infinite}
 @keyframes glitch{0%,86%,100%{transform:none}88%{transform:translateX(-4px)}91%{transform:translateX(5px) skewX(-4deg)}94%{transform:translateX(-2px)}}
 
@@ -164,4 +176,4 @@ button:focus-visible{outline:2px solid rgb(var(--accent-rgb));outline-offset:2px
 .top b{color:rgb(var(--accent-rgb));font-weight:500}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:640px){.hint{display:none}.segs{order:3;flex-basis:100%}.cht{font-size:15px}}
-@media (prefers-reduced-motion:reduce){.ring,.link,#doc.broken .sheet{animation:none}.on .rv{animation-duration:.01s;animation-delay:0s}}
+@media (prefers-reduced-motion:reduce){.ring,.link,#doc.broken .sheet,#doc.leak .sheet,#doc.leak::before,#doc.leak::after,.threat .halo,.threat .eye,.threat .exfil{animation:none}.on .rv{animation-duration:.01s;animation-delay:0s}}
