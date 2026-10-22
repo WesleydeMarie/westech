@@ -72,7 +72,7 @@
     <!-- 05 breach -->
     <section class="panel" data-on="5" style="left:3020px;top:120px;width:1080px;height:640px">
       <p class="eyebrow rv">05 · Breach</p>
-      <h2 class="rv" style="--i:1;max-width:800px">The file is out. What does the attacker get?</h2>
+      <h2 class="rv" style="--i:1;max-width:700px">The file is out. What does the attacker get?</h2>
       <div class="cols3">
         <div class="col fr" data-frag="5:1" style="--c:#8fa3b8"><span class="tag">No label</span><h3>Everything</h3><p>Readable and untracked. You can't tell what was in it without a manual search.</p></div>
         <div class="col fr" data-frag="5:2" style="--c:#ffb547"><span class="tag">Labeled</span><h3>Known and traced</h3><p>Still readable, but DLP logged or blocked it, and you know what leaked for the 72-hour GDPR notification.</p></div>
@@ -81,6 +81,19 @@
       <p class="caveat fr" data-frag="5:4">If the attacker controls a user's own account, encryption opens for them too. MFA and Conditional Access still matter.</p>
     </section>
 
+    <div class="threat only" data-show="5" aria-hidden="true" style="left:3920px;top:128px">
+      <div class="exfil"></div>
+      <svg viewBox="0 0 130 160">
+        <defs><radialGradient id="threatGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff3b47" stop-opacity=".55"/><stop offset="1" stop-color="#ff3b47" stop-opacity="0"/></radialGradient></defs>
+        <circle class="halo" cx="65" cy="80" r="72" fill="url(#threatGlow)"/>
+        <path d="M65 10 C47 10 33 22 28 40 L18 18 L20 54 C14 74 14 104 20 128 L26 156 L104 156 L110 128 C116 104 116 74 110 54 L112 18 L102 40 C97 22 83 10 65 10 Z" fill="#14080d" stroke="#ff5a5f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M65 40 C49 40 40 54 40 72 C40 94 51 110 65 110 C79 110 90 94 90 72 C90 54 81 40 65 40 Z" fill="#040205"/>
+        <ellipse class="eye" cx="54" cy="72" rx="8" ry="3" fill="#ff3b47" transform="rotate(16 54 72)"/>
+        <ellipse class="eye" cx="76" cy="72" rx="8" ry="3" fill="#ff3b47" transform="rotate(-16 76 72)"/>
+        <path d="M52 92 Q65 99 78 92" fill="none" stroke="#ff5a5f" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+      </svg>
+      <p>Threat actor</p>
+    </div>
     <!-- 06 encryption -->
     <section class="panel" data-on="6" style="left:3120px;top:1000px;width:1000px;height:600px">
       <p class="eyebrow rv">06 · Encryption</p>
