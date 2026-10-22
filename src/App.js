@@ -200,7 +200,11 @@ export default function Techwes() {
                     }
                     const imageMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
                     const linkMatch = line.match(/^\[(.+?)\]\((\/[^)\s]*|https:\/\/[^)\s]*)\)$/);
-                    if (linkMatch) {
+                    const linkedImageMatch = line.match(/^\[!\[(.*?)\]\((.*?)\)\]\((\/[^)\s]*|https:\/\/[^)\s]*)\)$/);
+                    if (linkedImageMatch) {
+                      const external = linkedImageMatch[3].startsWith('https://');
+                      elements.push(<a key={i} href={linkedImageMatch[3]} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'block', margin: '1.5rem 0' }}><img src={linkedImageMatch[2]} alt={linkedImageMatch[1]} style={{ display: 'block', maxWidth: '100%', borderRadius: '8px', border: `1px solid ${colors.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', cursor: 'pointer' }} /></a>);
+                    } else if (linkMatch) {
                       const external = linkMatch[2].startsWith('https://');
                       elements.push(<p key={i} style={{ marginBottom: '1rem' }}><a href={linkMatch[2]} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'inline-block', padding: '12px 22px', background: colors.accent, color: colors.white, textDecoration: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500' }}>{linkMatch[1]} →</a></p>);
                     } else if (imageMatch) {
