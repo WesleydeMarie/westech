@@ -5,6 +5,7 @@ import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import { blogPosts } from './blogPosts';
+import { PostAnimation } from './animaties';
 
 // --- Routing ----------------------------------------------------------------
 // Maakt van een titel een URL-slug: "Custom SITs in Purview" -> "custom-sits-in-purview"
@@ -200,6 +201,12 @@ export default function Techwes() {
                     }
                     const imageMatch = line.match(/^!\[(.*?)\]\((.*?)\)$/);
                     const linkMatch = line.match(/^\[(.+?)\]\((\/[^)\s]*|https:\/\/[^)\s]*)\)$/);
+                    const animMatch = line.match(/^::animatie ([a-z0-9-]+)$/);
+                    if (animMatch) {
+                      elements.push(<PostAnimation key={i} name={animMatch[1]} />);
+                      i++;
+                      continue;
+                    }
                     const linkedImageMatch = line.match(/^\[!\[(.*?)\]\((.*?)\)\]\((\/[^)\s]*|https:\/\/[^)\s]*)\)$/);
                     if (linkedImageMatch) {
                       const external = linkedImageMatch[3].startsWith('https://');
