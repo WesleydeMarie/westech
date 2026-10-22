@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bewaren en vernietigen · Techwes</title>
+<meta name="description" content="Een tijdlijnpresentatie over retentie in Microsoft Purview: hoe lang je moet bewaren, wanneer je moet vernietigen en hoe Purview dat afdwingt.">
+<link rel="alternate" hreflang="en" href="https://techwes.nl/presentaties/keep-or-delete.html">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="data-story.css">
+<link rel="stylesheet" href="track.css">
+</head>
+<body>
+<div id="stage" aria-label="Presentatiecanvas. Klik of gebruik de pijltjestoetsen om verder te gaan.">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="world">
+    <div id="grid"></div>
+
+    <!-- 0 start -->
+    <div class="titleblock only" data-show="0" style="left:250px;top:300px;width:1500px">
+      <p class="eyebrow">Microsoft Purview · retentie</p>
+      <h1>Bewaren en vernietigen</h1>
+      <p>Een contract reist door de tijd. Onderweg zie je welke wet wat eist en hoe Purview dat afdwingt, van de dag dat het ontstaat tot de dag dat het weg mag.</p>
+    </div>
+
+    <!-- 1 dag 0 -->
+    <section class="scene" data-on="1" style="left:2000px;top:225px;width:1500px">
+      <p class="eyebrow rv">01 · Dag 0</p>
+      <h2 class="rv" style="--i:1">Een contract ontstaat, en krijgt meteen een bewaartermijn</h2>
+      <div class="split">
+        <p class="lede rv" style="--i:2;margin-top:0">Een leverancierscontract wordt opgeslagen in SharePoint. Een auto-apply policy herkent het als contract en zet er een retention label op. Niemand hoeft er iets voor te doen.</p>
+        <div class="rlabel rv" style="--i:3"><b>Contracten</b><span>bewaren tot 7 jaar na einde contract</span><span>daarna disposition review</span></div>
+      </div>
+      <p class="log rv" style="--i:4">RetentionLabelApplied · /sites/Inkoop · <b>Contracten</b> · auto-apply</p>
+    </section>
+
+    <!-- 2 de wet -->
+    <section class="scene" data-on="2" style="left:3800px;top:225px;width:1500px">
+      <p class="eyebrow rv">02 · De wet</p>
+      <h2 class="rv" style="--i:1">De wet trekt aan twee kanten</h2>
+      <div class="balance rv" style="--i:2">
+        <div class="pillar"></div><div class="base"></div><div class="beam"></div><div class="pivot"></div>
+        <div class="pan l"><div class="rope"></div><div class="card fr" data-frag="2:1" style="--c:#ffb547"><span class="tag">Te kort bewaren</span><h3>Je overtreedt een bewaarplicht</h3><p>De fiscale bewaarplicht is 7 jaar, voor gegevens over onroerende zaken 10 jaar. Overheden moeten zich daarnaast aan de Archiefwet houden.</p></div></div>
+        <div class="pan r"><div class="rope"></div><div class="card fr" data-frag="2:2" style="--c:#ff5a5f"><span class="tag">Te lang bewaren</span><h3>Je overtreedt de AVG</h3><p>Persoonsgegevens bewaar je niet langer dan nodig. Elk jaar extra maakt een datalek groter en een Woo-verzoek of eDiscovery-zaak zwaarder.</p></div></div>
+        <div class="verdict fr" data-frag="2:3">Bewaren zolang het moet, vernietigen zodra het mag</div>
+      </div>
+    </section>
+
+    <!-- 3 policy of label -->
+    <section class="scene" data-on="3" style="left:5600px;top:225px;width:1500px">
+      <p class="eyebrow rv">03 · Policy of label</p>
+      <h2 class="rv" style="--i:1">Twee manieren om te bewaren</h2>
+      <div class="split">
+        <div class="card rv" style="--i:2;--c:#6aa8ff"><span class="tag">Retention policy</span><h3>Voor een hele locatie</h3><p>Geldt voor alles in een site, mailbox of Teams-omgeving. Er kunnen meerdere policies op hetzelfde item zitten.</p><p><b>Goed als vangnet</b> voor de hele organisatie.</p></div>
+        <div class="card rv" style="--i:3;--c:#3fe0c5"><span class="tag">Retention label</span><h3>Voor één item</h3><p>Reist mee als het item binnen de tenant verhuist. Alleen een label kan de termijn starten bij een gebeurtenis, een item als record markeren en een disposition review afdwingen.</p></div>
+      </div>
+    </section>
+
+    <!-- 4 verwijderd -->
+    <section class="scene" data-on="4" style="left:7400px;top:225px;width:1500px">
+      <p class="eyebrow rv">04 · Jaar 1</p>
+      <h2 class="rv" style="--i:1">Weg voor de gebruiker, niet voor Purview</h2>
+      <div class="vaultrow">
+        <p class="lede rv" style="--i:2;margin-top:0">Een gebruiker ruimt op en verwijdert het contract. Voor hem is het weg. Omdat het label nog loopt, bewaart Purview een kopie op een afgeschermde plek.</p>
+        <div class="rv" style="--i:3"><div class="vault"><div class="copy"></div><div class="door"></div><div class="vlabel">Preservation Hold library</div></div></div>
+        <div class="card fr" data-frag="4:2" style="--c:#ff8a5f"><span class="tag">Bewaren wint</span><p>SharePoint en OneDrive bewaren de kopie in de Preservation Hold library, Exchange in Recoverable Items. Die library telt mee voor de opslag van de site.</p></div>
+      </div>
+    </section>
+
+    <!-- 5 gebeurtenis -->
+    <section class="scene" data-on="5" style="left:9200px;top:225px;width:1500px">
+      <p class="eyebrow rv">05 · Jaar 2</p>
+      <h2 class="rv" style="--i:1">De klok start bij een gebeurtenis</h2>
+      <div class="eventrow">
+        <svg class="bigclock rv" style="--i:2" viewBox="0 0 300 300" aria-label="Klok">
+          <circle class="face" cx="150" cy="150" r="130" fill="none" stroke="#5b6780" stroke-width="8"/>
+          <g stroke="#8e9bb2" stroke-width="6" stroke-linecap="round"><line x1="150" y1="34" x2="150" y2="54"/><line x1="266" y1="150" x2="246" y2="150"/><line x1="150" y1="266" x2="150" y2="246"/><line x1="34" y1="150" x2="54" y2="150"/></g>
+          <line class="hand" x1="150" y1="150" x2="150" y2="62" stroke="#4fd8ff" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="150" cy="150" r="12" fill="#4fd8ff"/>
+        </svg>
+        <div class="card rv" style="--i:3;--c:#4fd8ff"><span class="tag">Event-based retention</span><h3>Bewaren tot 7 jaar na einde contract</h3><p>Zolang het contract loopt, staat de klok stil. Pas als iemand de gebeurtenis registreert, begint de termijn te tellen. Dit kan alleen met retention labels.</p></div>
+        <div class="card fr" data-frag="5:1" style="--c:#ffb547;flex:0 0 360px"><span class="tag">Gebeurtenis</span><h3>Einde contract</h3><p style="font-family:var(--mono);font-size:20px">Asset ID: CTR-0142<br>klok loopt</p></div>
+      </div>
+    </section>
+
+    <!-- 6 conflicten -->
+    <section class="scene" data-on="6" style="left:11000px;top:225px;width:1500px">
+      <p class="eyebrow rv">06 · Jaar 4</p>
+      <h2 class="rv" style="--i:1">Meerdere regels op één item: zo beslist Purview</h2>
+      <div class="funnel">
+        <div class="fstep fr" data-frag="6:1" style="width:1180px"><span class="n">1</span><b>Bewaren wint van verwijderen</b><span>niets gaat definitief weg zolang iets het nog bewaart</span></div>
+        <div class="fstep fr" data-frag="6:2" style="width:1060px"><span class="n">2</span><b>De langste termijn wint</b><span>het item blijft tot de langste bewaartermijn afloopt</span></div>
+        <div class="fstep fr" data-frag="6:3" style="width:940px"><span class="n">3</span><b>Een label gaat voor een policy</b><span>bij het verwijderen</span></div>
+        <div class="fstep fr" data-frag="6:4" style="width:820px"><span class="n">4</span><b>De kortste verwijdertermijn wint</b><span>als het dan nog niet beslist is</span></div>
+      </div>
+      <p class="log rv" style="--i:2;text-align:center">Een eDiscovery hold gaat boven alles: zolang die staat, wordt niets definitief verwijderd.</p>
+    </section>
+
+    <!-- 7 einde termijn -->
+    <section class="scene" data-on="7" style="left:12800px;top:225px;width:1500px">
+      <p class="eyebrow rv">07 · Jaar 9</p>
+      <h2 class="rv" style="--i:1">Einde termijn: eerst beoordelen, dan vernietigen</h2>
+      <div class="split">
+        <div class="card fr" data-frag="7:1" style="--c:#5cf2a0"><span class="tag">Disposition review</span><h3>De eigenaar beslist</h3><p>Purview legt het contract voor aan de aangewezen beoordelaars. Zij kiezen: vernietigen, langer bewaren of een ander label.</p></div>
+        <div class="cert fr" data-frag="7:2"><div class="seal">OK</div><h3>Bewijs van vernietiging</h3><p>Contract_0142.pdf<br>label: Contracten<br>vernietigd na review<br>bewijs blijft tot 7 jaar bewaard</p></div>
+      </div>
+    </section>
+
+    <!-- 8 archiefwet -->
+    <section class="scene" data-on="8" style="left:14600px;top:225px;width:1500px">
+      <p class="eyebrow rv">08 · Voor overheden</p>
+      <div style="display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap">
+        <div class="bigdate rv" style="--i:1">1-1-2027</div>
+        <h2 class="rv" style="--i:2;font-size:46px;max-width:760px;padding-bottom:10px">De nieuwe Archiefwet treedt in werking</h2>
+      </div>
+      <div class="facts">
+        <div class="card rv" style="--i:3"><span class="tag">Sneller</span><h3>10 in plaats van 20 jaar</h3><p>Zoveel tijd krijgen overheden om belangrijke informatie over te brengen naar een archiefdienst.</p></div>
+        <div class="card rv" style="--i:4"><span class="tag">Vanaf het begin</span><h3>Ook chatberichten</h3><p>E-mail, chat, video en websites moeten vanaf het ontstaan duurzaam en toegankelijk worden bewaard.</p></div>
+        <div class="card rv" style="--i:5"><span class="tag">Toezicht</span><h3>Meldplicht en boetes</h3><p>Het toezicht op de informatiehuishouding wordt strenger.</p></div>
+      </div>
+    </section>
+
+    <!-- 9 start -->
+    <section class="scene" data-on="9" style="left:16400px;top:225px;width:1500px">
+      <p class="eyebrow rv">09 · Waar je begint</p>
+      <h2 class="rv" style="--i:1">Vier stappen, in deze volgorde</h2>
+      <div class="steps4">
+        <div class="st rv" style="--i:2"><div class="n">01</div><h3>Bewaartermijnen</h3><p>Leg per soort informatie vast hoe lang en waarom. Overheden starten bij de selectielijst.</p></div>
+        <div class="st rv" style="--i:3"><div class="n">02</div><h3>Vangnet</h3><p>Zet organisatiebrede retention policies op e-mail, Teams en sites.</p></div>
+        <div class="st rv" style="--i:4"><div class="n">03</div><h3>Labels</h3><p>Gebruik retention labels voor records en voor termijnen die bij een gebeurtenis starten.</p></div>
+        <div class="st rv" style="--i:5"><div class="n">04</div><h3>Review</h3><p>Wijs per label eigenaren aan voor de disposition review, voordat de eerste termijn afloopt.</p></div>
+      </div>
+    </section>
+
+    <!-- document -->
+    <div id="doc" aria-hidden="true">
+      <div class="sheet">
+        <div class="bar" id="dtag">Geen label</div>
+        <div class="nm">Contract_0142.pdf</div>
+        <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="clock" id="clock" aria-hidden="true" hidden></div>
+<div class="top" aria-hidden="true"><span>Purview <b>//</b> bewaren en vernietigen</span><span><span class="hint">← → of klik · M voor de tijdlijn · </span><b id="cnt"></b></span></div>
+<nav class="hud" aria-label="Bediening presentatie">
+  <div class="hud-l"><span class="chn" id="chn">Start</span><span class="cht" id="cht">Bewaren en vernietigen</span></div>
+  <div class="segs" id="segs"></div>
+  <div class="hud-r">
+    <a class="btn" href="/" aria-label="Terug naar techwes.nl">Techwes</a>
+    <a class="btn" href="keep-or-delete.html" hreflang="en" lang="en" aria-label="English version">EN</a>
+    <button class="btn" id="prev" aria-label="Vorige">←</button>
+    <button class="btn" id="map" aria-pressed="false">Tijdlijn</button>
+    <button class="btn pri" id="next">Volgende →</button>
+  </div>
+</nav>
+<div class="sr" aria-live="polite" id="sr"></div>
+<script type="application/json" id="track-config">{
+"ui":{"map":"Tijdlijn","all":"Hele tijdlijn"},
+"world":{"w":18100,"h":1700,"axisY":1180,"camY":735,"camH":1110},
+"steps":[
+ {"ch":"Start","t":"Bewaren en vernietigen","x":950,"a":"#3fe0c5","d":{"tag":"Geen label"}},
+ {"ch":"01 · Dag 0","t":"Een contract krijgt een bewaartermijn","x":2750,"a":"#3fe0c5","r":-1,"clock":"Dag 0","tick":"Dag 0","d":{"tag":"Contract · 7 jr"}},
+ {"ch":"02 · De wet","t":"De wet trekt aan twee kanten","x":4550,"a":"#ffb547","r":1,"clock":"Dag 0","fr":3,"d":{"tag":"Contract · 7 jr"}},
+ {"ch":"03 · Policy of label","t":"Twee manieren om te bewaren","x":6350,"a":"#6aa8ff","r":-1,"clock":"Dag 0","d":{"tag":"Contract · 7 jr"}},
+ {"ch":"04 · Verwijderd","t":"Weg voor de gebruiker, niet voor Purview","x":8150,"a":"#ff8a5f","r":1,"clock":"Jaar 1","tick":"Jaar 1","fr":2,"d":{"cls":"age1","tag":"Contract · 7 jr"},"dfr":{"1":{"cls":"age1 deleted"}}},
+ {"ch":"05 · Gebeurtenis","t":"De klok start bij een gebeurtenis","x":9950,"a":"#4fd8ff","r":-1,"clock":"Jaar 2","tick":"Jaar 2 · einde contract","fr":1,"d":{"cls":"age1 deleted","tag":"Contract · 7 jr"}},
+ {"ch":"06 · Conflicten","t":"Zo beslist Purview","x":11750,"a":"#a98bff","r":1,"clock":"Jaar 4","tick":"Jaar 4","fr":4,"d":{"cls":"age2 deleted","tag":"Contract · 7 jr"}},
+ {"ch":"07 · Einde termijn","t":"Eerst beoordelen, dan vernietigen","x":13550,"a":"#5cf2a0","r":-1,"clock":"Jaar 9","tick":"Jaar 9 · termijn voorbij","fr":2,"d":{"cls":"age3 deleted","tag":"Review"},"dfr":{"2":{"cls":"age3 gone"}}},
+ {"ch":"08 · Overheid","t":"De nieuwe Archiefwet","x":15350,"a":"#ffb547","r":0,"clock":"1 jan 2027","d":{"cls":"gone","tag":""}},
+ {"ch":"09 · Waar je begint","t":"Vier stappen, in deze volgorde","x":17150,"a":"#3fe0c5","r":0,"clock":"","d":{"cls":"gone","tag":""}}
+]}</script>
+<script src="track.js"></script>
+</body>
+</html>
