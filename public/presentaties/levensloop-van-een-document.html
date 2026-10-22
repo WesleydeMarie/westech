@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>De levensloop van een document · Techwes</title>
+<meta name="description" content="Een zoomend verhaal over Sensitivity Labels, encryptie en DLP in Microsoft Purview, aan de hand van één document dat de organisatie verlaat.">
+<link rel="alternate" hreflang="en" href="https://techwes.nl/presentaties/life-of-a-document.html">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="data-story.css">
+</head>
+<body>
+
+<div id="stage" aria-label="Presentatiecanvas. Klik of gebruik de pijltjestoetsen om verder te gaan.">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="world">
+    <div id="grid"></div>
+    <svg class="rings" viewBox="0 0 4200 3000" aria-hidden="true">
+      <circle class="ring" cx="2100" cy="1300" r="900"/>
+      <circle class="ring inner only" data-show="10,12" data-frag="10:2" cx="2100" cy="1300" r="560"/>
+      <circle class="ring inner only" data-show="10,12" data-frag="10:3" cx="2100" cy="1300" r="230"/>
+    </svg>
+    <div class="ringlabel" style="left:2100px;top:400px">Tenantgrens</div>
+
+    <!-- 01 created -->
+    <section class="panel" data-on="1" style="left:1400px;top:700px;width:820px;height:470px">
+      <div style="max-width:520px">
+        <p class="eyebrow rv">01 · Aangemaakt</p>
+        <h2 class="rv" style="--i:1">Elk bestand begint als gewoon een bestand</h2>
+        <p class="lede rv" style="--i:2">Een leverancierscontract wordt opgeslagen in SharePoint. Er staan prijzen, een BSN en bankgegevens in. Niets in het bestand zegt dat het gevoelig is.</p>
+        <p class="log rv" style="--i:3">FileCreated · /sites/Procurement · <b>label: geen</b></p>
+      </div>
+    </section>
+
+    <!-- 02 classified -->
+    <section class="panel" data-on="2" style="left:2280px;top:740px;width:580px;height:320px;padding:22px 24px">
+      <div style="margin-left:126px">
+        <p class="eyebrow rv" style="font-size:11px;margin-bottom:8px">02 · Geclassificeerd</p>
+        <h3 class="rv" style="--i:1;font-size:19px">Een label is metadata die met het bestand meereist</h3>
+        <div class="ladder rv" style="--i:2" id="ladder">
+          <div class="tier" data-t="1" style="--c:#8fa3b8"><i style="background:#8fa3b8"></i><b>Openbaar</b><span>geen beperkingen</span></div>
+          <div class="tier" data-t="2" style="--c:#6aa8ff"><i style="background:#6aa8ff"></i><b>Algemeen</b><span>intern gebruik, geen markering</span></div>
+          <div class="tier" data-t="3" style="--c:#ffb547"><i style="background:#ffb547"></i><b>Vertrouwelijk</b><span>markering in header · DLP actief</span></div>
+          <div class="tier" data-t="4" style="--c:#ff5a5f"><i style="background:#ff5a5f"></i><b>Strikt vertrouwelijk</b><span>versleuteld · alleen benoemde gebruikers</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 why -->
+    <section class="panel" data-on="3" style="left:1350px;top:1480px;width:860px;height:510px">
+      <p class="eyebrow rv">03 · Waarom labelen</p>
+      <h2 class="rv" style="--i:1;font-size:36px">Eén label stuurt alles wat daarna komt</h2>
+      <div class="grid2">
+        <div class="item rv" style="--i:2"><span class="k">Zien</span><h3>Zicht</h3><p>Activity explorer en Content explorer laten zien waar gevoelige data staat en wie eraan zit.</p></div>
+        <div class="item rv" style="--i:3"><span class="k">Automatiseren</span><h3>Bescherming</h3><p>DLP, encryptie en retentie lezen het label, dus gebruikers hoeven geen regels te onthouden.</p></div>
+        <div class="item rv" style="--i:4"><span class="k">Aantonen</span><h3>Compliance</h3><p>Bewijs van classificatie voor de AVG, NIS2 en het assetbeheer uit ISO 27001.</p></div>
+        <div class="item rv" style="--i:5"><span class="k">Sturen</span><h3>Copilot</h3><p>Copilot respecteert labels, en nieuwe content erft het label van de bron.</p></div>
+      </div>
+    </section>
+
+    <!-- 04 leaving -->
+    <div class="only" data-show="4" style="position:absolute;left:1500px;top:1130px;width:960px">
+      <p class="eyebrow" style="font-size:20px">04 · Vertrek</p>
+      <h2 style="font-size:60px">Data blijft niet waar je hem neerzet</h2>
+      <p class="lede" style="font-size:28px">Elke route naar buiten gaat over dezelfde grens. De vraag is wat het bestand buiten nog over zichzelf zegt.</p>
+    </div>
+    <div class="chip off" data-on="4" style="left:2408px;top:454px">E-mail<small>verkeerde ontvanger</small></div>
+    <div class="chip off" data-on="4" style="left:2930px;top:760px">Deellink<small>gasten, anyone-links</small></div>
+    <div class="chip off" data-on="4" style="left:3010px;top:1150px">Shadow IT<small>USB, privécloud, AI-tools</small></div>
+    <div class="chip off" data-on="4" style="left:2700px;top:1640px">Inbraak<small>gephisht account</small></div>
+
+    <!-- 05 breach -->
+    <section class="panel" data-on="5" style="left:3020px;top:120px;width:1080px;height:640px">
+      <p class="eyebrow rv">05 · Datalek</p>
+      <h2 class="rv" style="--i:1;max-width:800px">Het bestand is buiten. Wat heeft de aanvaller in handen?</h2>
+      <div class="cols3">
+        <div class="col fr" data-frag="5:1" style="--c:#8fa3b8"><span class="tag">Geen label</span><h3>Alles</h3><p>Leesbaar en niet gevolgd. Zonder handmatig zoekwerk weet je niet wat erin stond.</p></div>
+        <div class="col fr" data-frag="5:2" style="--c:#ffb547"><span class="tag">Gelabeld</span><h3>Bekend en herleidbaar</h3><p>Nog leesbaar, maar DLP heeft het gelogd of geblokkeerd, en je weet wat er gelekt is voor de meldplicht binnen 72 uur.</p></div>
+        <div class="col fr" data-frag="5:3" style="--c:#4fd8ff"><span class="tag">Gelabeld + versleuteld</span><h3>Niets bruikbaars</h3><p>Opent alleen voor geautoriseerde identiteiten. Elke opening wordt gelogd en je kunt toegang intrekken.</p></div>
+      </div>
+      <p class="caveat fr" data-frag="5:4">Heeft de aanvaller het account van de gebruiker zelf in handen, dan opent de encryptie ook voor hem. MFA en Conditional Access blijven dus nodig.</p>
+    </section>
+
+    <!-- 06 encryption -->
+    <section class="panel" data-on="6" style="left:3120px;top:1000px;width:1000px;height:600px">
+      <p class="eyebrow rv">06 · Encryptie</p>
+      <h2 class="rv" style="--i:1;max-width:720px">Bescherming hangt aan identiteit, niet aan locatie</h2>
+      <div class="chain rv" style="--i:2">
+        <div class="node"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><h3>Versleuteld bestand</h3><p>Het label past de beveiliging toe</p></div>
+        <div class="link"></div>
+        <div class="node"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><h3>Openen</h3><p>Elk apparaat, elke locatie</p></div>
+        <div class="link"></div>
+        <div class="node"><svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><h3>Entra ID-check</h3><p>Wie vraagt erom?</p></div>
+        <div class="link"></div>
+        <div class="node"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg><h3>Gebruiksrechten</h3><p>Lezen, bewerken, printen, vervaldatum of geweigerd</p></div>
+      </div>
+      <div class="pair rv" style="--i:3">
+        <p><b>Sterk:</b> de beveiliging reist mee met het bestand en is achteraf in te trekken.</p>
+        <p><b>Voorwaarde:</b> elke lezer heeft een account nodig en een app die het ondersteunt.</p>
+      </div>
+    </section>
+
+    <!-- 07 catch -->
+    <section class="panel" data-on="7" style="left:3020px;top:1860px;width:1080px;height:660px">
+      <p class="eyebrow rv">07 · Het addertje</p>
+      <h2 class="rv" style="--i:1;max-width:800px">Encryptie vraagt om een account. Veel systemen hebben er geen.</h2>
+      <div class="sys">
+        <div class="chip3p rv" style="--i:2"><b>Leveranciersportaal</b><span>401 · geen identiteit</span></div>
+        <div class="chip3p rv" style="--i:3"><b>E-signing platform</b><span>401 · geen identiteit</span></div>
+        <div class="chip3p rv" style="--i:4"><b>OCR- en verwerkings-SaaS</b><span>kan niet ontsleutelen</span></div>
+        <div class="chip3p rv" style="--i:5"><b>Legacy DMS</b><span>geen SDK-ondersteuning</span></div>
+        <div class="chip3p rv" style="--i:6"><b>Mailgateway</b><span>kan inhoud niet scannen</span></div>
+        <div class="chip3p rv" style="--i:7"><b>Burgers</b><span>geen Microsoft 365</span></div>
+      </div>
+      <p class="result rv" style="--i:8">Bestanden gaan niet open, processen lopen vast en gebruikers <em>verlagen het label</em> om hun werk gedaan te krijgen.</p>
+    </section>
+
+    <!-- 08 DLP -->
+    <div class="gate off" data-on="8" style="left:2676px;top:1876px"><span>DLP</span></div>
+    <section class="panel" data-on="8" style="left:2200px;top:2050px;width:520px;height:400px;padding:24px 28px">
+      <p class="eyebrow rv" style="font-size:12px;margin-bottom:8px">08 · DLP</p>
+      <h3 class="rv" style="--i:1;font-size:24px">Bewaak de uitgang, houd het bestand bruikbaar</h3>
+      <p class="small rv" style="--i:2">Herkent labels, BSN, IBAN en trainable classifiers in Exchange, Teams, SharePoint, OneDrive, endpoints en cloud-apps.</p>
+      <div class="acts">
+        <div class="act fr" data-frag="8:1" style="--c:#8e9bb2"><b>Audit</b><span>leer de datastromen kennen</span></div>
+        <div class="act fr" data-frag="8:2" style="--c:#6aa8ff"><b>Waarschuwen</b><span>policy tip</span></div>
+        <div class="act fr" data-frag="8:3" style="--c:#ffb547"><b>Blokkeren met override</b><span>motivatie gelogd</span></div>
+        <div class="act fr" data-frag="8:4" style="--c:#ff5a5f"><b>Blokkeren</b><span>geen override</span></div>
+      </div>
+      <p class="log rv" style="--i:3;font-size:11px;margin-top:12px">DLPRuleMatch · Confidential → external · <b>policy tip</b></p>
+    </section>
+
+    <!-- 09 compare -->
+    <section class="panel" data-on="9" style="left:80px;top:980px;width:960px;height:640px">
+      <p class="eyebrow rv">09 · Vergelijking</p>
+      <h2 class="rv" style="--i:1">Encryptie of DLP</h2>
+      <table class="rv" style="--i:2">
+        <tr><th></th><th style="color:#4fd8ff">Encryptie</th><th style="color:#a98bff">DLP</th></tr>
+        <tr><td>Beschermt na vertrek</td><td class="yes">Ja</td><td class="no">Nee, bewaakt de uitgang</td></tr>
+        <tr><td>Tools van derden</td><td class="no">Identiteit en SDK nodig</td><td class="yes">Werken gewoon</td></tr>
+        <tr><td>Externe ontvangers</td><td class="no">Account nodig</td><td class="yes">Krijgen een gewoon bestand</td></tr>
+        <tr><td>Achteraf intrekken</td><td class="yes">Ja</td><td class="no">Nee</td></tr>
+        <tr><td>Hinder voor gebruikers</td><td class="no">Hoog</td><td class="yes">Laag, met policy tips</td></tr>
+        <tr><td>Geschikt voor</td><td>Een paar kroonjuwelen</td><td>Een basislaag op alle data</td></tr>
+      </table>
+    </section>
+
+    <!-- 10 model -->
+    <div class="only" data-show="10" style="position:absolute;left:220px;top:300px;width:780px">
+      <p class="eyebrow" style="font-size:22px">10 · Het model</p>
+      <h2 style="font-size:64px">Hoe smaller de dataset, hoe zwaarder de maatregel</h2>
+      <p class="lede" style="font-size:28px">De ring waar je doorheen vloog, is het model. Bouw hem op van buiten naar binnen.</p>
+    </div>
+    <div class="pill only fr" data-show="10,12" data-frag="10:1" style="left:2100px;top:400px;--c:#5cf2a0"><b>1 · Label alles</b><span>default label en auto-labeling, alle data</span></div>
+    <div class="pill only fr" data-show="10,12" data-frag="10:2" style="left:2100px;top:740px;--c:#a98bff"><b>2 · DLP als basis</b><span>Vertrouwelijk en sensitive info types</span></div>
+    <div class="pill only fr" data-show="10,12" data-frag="10:3" style="left:2100px;top:1440px;--c:#ff5a5f"><b>3 · Versleutel</b><span>Strikt vertrouwelijk, bekende ontvangers</span></div>
+
+    <!-- 11 start -->
+    <section class="panel" data-on="11" style="left:1300px;top:2340px;width:1600px;height:540px">
+      <p class="eyebrow rv">11 · Waar je begint</p>
+      <h2 class="rv" style="--i:1;max-width:1100px">Vier stappen, in deze volgorde</h2>
+      <div class="steps4">
+        <div class="st rv" style="--i:2"><div class="n">01</div><h3>Taxonomie</h3><p>Vier of vijf labels die mensen echt begrijpen.</p></div>
+        <div class="st rv" style="--i:3"><div class="n">02</div><h3>Default label</h3><p>Zet het aan, met een korte uitleg voor gebruikers.</p></div>
+        <div class="st rv" style="--i:4"><div class="n">03</div><h3>DLP in audit</h3><p>Leer de echte datastromen kennen en voeg daarna policy tips toe.</p></div>
+        <div class="st rv" style="--i:5"><div class="n">04</div><h3>Versleutel de top</h3><p>Pas nadat je elke koppeling met derden hebt getest.</p></div>
+      </div>
+    </section>
+
+    <!-- document -->
+    <div id="doc" aria-hidden="true">
+      <div class="sheet">
+        <div class="bar" id="dlab">No label</div>
+        <div class="nm">Contract_2026.docx</div>
+        <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div>
+        <div class="stamp">GELEKT</div>
+      </div>
+      <div class="ic lk"><svg viewBox="0 0 24 24" fill="none" stroke="#4fd8ff" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <div class="ic okk"><svg viewBox="0 0 24 24" fill="none" stroke="#a98bff" stroke-width="2.6"><path d="M4 12l5 5L20 6"/></svg></div>
+      <div class="ic no"><svg viewBox="0 0 24 24" fill="none" stroke="#ff8a7a" stroke-width="2.6"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+
+    <!-- titles (paint last) -->
+    <div class="title only" data-show="0" style="left:1350px;top:1010px;width:1500px">
+      <p class="eyebrow">Microsoft Purview · een dataverhaal</p>
+      <h1>De levensloop van een document</h1>
+      <p>Volg één bestand vanaf het aanmaken tot het moment dat het de organisatie verlaat, en zie wat labels, encryptie en DLP onderweg doen.</p>
+    </div>
+    <div class="title only" data-show="12" style="left:1350px;top:1700px;width:1500px">
+      <p class="eyebrow">Ken je data · bescherm je data</p>
+      <h1>Vragen?</h1>
+    </div>
+  </div>
+</div>
+
+<div class="top" aria-hidden="true"><span>Purview <b>//</b> dataverhaal</span><span><span class="hint">← → of klik · M voor de kaart · </span><b id="cnt"></b></span></div>
+<nav class="hud" aria-label="Bediening presentatie">
+  <div class="hud-l"><span class="chn" id="chn">Overzicht</span><span class="cht" id="cht">De levensloop van een document</span></div>
+  <div class="segs" id="segs"></div>
+  <div class="hud-r">
+    <a class="btn" href="/" aria-label="Terug naar techwes.nl">Techwes</a>
+    <a class="btn" href="life-of-a-document.html" hreflang="en" lang="en" aria-label="English version">EN</a>
+    <button class="btn" id="prev" aria-label="Vorige">←</button>
+    <button class="btn" id="map" aria-pressed="false">Kaart</button>
+    <button class="btn pri" id="next">Volgende →</button>
+  </div>
+</nav>
+<div class="sr" aria-live="polite" id="sr"></div>
+
+<script type="application/json" id="story-text">{"labels": ["Geen label", "Openbaar", "Algemeen", "Vertrouwelijk", "Strikt vertrouwelijk"], "ui": {"map": "Kaart", "all": "Alle hoofdstukken"}, "steps": [["Overzicht", "De levensloop van een document"], ["01 · Aangemaakt", "Elk bestand begint als gewoon een bestand"], ["02 · Geclassificeerd", "Een label reist mee met het bestand"], ["03 · Waarom labelen", "Eén label stuurt alles wat daarna komt"], ["04 · Vertrek", "Data blijft niet waar je hem neerzet"], ["05 · Datalek", "Het bestand is buiten"], ["06 · Encryptie", "Bescherming hangt aan identiteit"], ["07 · Het addertje", "Encryptie vraagt om een account"], ["08 · DLP", "Bewaak de uitgang, houd het bestand bruikbaar"], ["09 · Vergelijking", "Encryptie of DLP"], ["10 · Het model", "Hoe smaller de dataset, hoe zwaarder de maatregel"], ["11 · Waar je begint", "Vier stappen, in deze volgorde"], ["Einde", "Vragen?"]]}</script>
+<script src="data-story.js"></script>
+</body>
+</html>
