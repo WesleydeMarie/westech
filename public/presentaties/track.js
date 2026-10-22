@@ -25,7 +25,7 @@ let cam={x:S[0].x,y:W.camY,s:.1,r:0},fl=null;
 let col=hex(S[0].a),colFrom=col,colTo=col;
 function hex(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
 function setCol(c){col=c;document.documentElement.style.setProperty('--accent-rgb',c.map(Math.round).join(','))}
-function view(){return{w:innerWidth,h:Math.max(200,innerHeight-hud.offsetHeight)}}
+function view(){return{w:Math.max(320,innerWidth||stage.clientWidth),h:Math.max(200,(innerHeight||stage.clientHeight)-hud.offsetHeight)}}
 function target(i){const v=view();
   if(i<0){const w=W.w,h=W.camH*1.2;return{x:W.w/2,y:W.camY,s:Math.min(v.w/(w*1.02),v.h/(h*1.1)),r:0}}
   const s=S[i],w=s.w||1760,h=W.camH;return{x:s.x,y:W.camY,s:Math.min(v.w/(w*1.03),v.h/(h*1.04)),r:s.r||0}}
@@ -121,6 +121,7 @@ function render(now){
     setCol(colFrom.map((c,i)=>c+(colTo[i]-c)*e));
     if(t>=1){fl=null;world.style.willChange='auto'}
   }
+  if(!isFinite(cam.s)||!isFinite(cam.x)||cam.s<=0){fl=null;cam=target(mapMode?-1:step)}
   stepDoc(now);
   nowm.style.transform=`translateX(${(dcur?dcur.x+75:cam.x)}px)`;
   const v=view(),Cx=v.w/2,Cy=v.h/2;
@@ -144,6 +145,7 @@ function render(now){
   requestAnimationFrame(render);
 }
 addEventListener('resize',()=>{resize();if(!fl)cam=target(mapMode?-1:step)});
+if(window.ResizeObserver)new ResizeObserver(()=>{resize();if(!fl)cam=target(mapMode?-1:step)}).observe(stage);
 resize();
 const end=target(0);cam=target(-1);
 apply();fl={from:{...cam},to:end,k:0,t0:performance.now()+500,dur:RM?10:3200};colFrom=col;colTo=hex(S[0].a);
