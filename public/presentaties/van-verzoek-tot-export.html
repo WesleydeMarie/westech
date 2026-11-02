@@ -22,11 +22,11 @@
 .env .letter b{display:block;font:600 22px var(--display);color:#1a2438;margin-bottom:16px}
 .env .letter i{display:block;height:9px;background:#c9d1de;border-radius:5px;margin-top:12px}
 .env .letter i:nth-child(4){width:60%}
-.scene.on .env .letter{animation:letterup 1.2s cubic-bezier(.3,1.3,.5,1) 1.9s forwards}
+.layer.on .env .letter{animation:letterup 1.2s cubic-bezier(.3,1.3,.5,1) 1.9s forwards}
 @keyframes letterup{to{transform:translateY(-95px)}}
 .env .front{position:absolute;left:0;right:0;bottom:0;height:190px;background:linear-gradient(160deg,#22304a,#141d30);border:2px solid rgb(var(--accent-rgb));border-top:0;border-radius:0 0 8px 8px;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:2}
 .env .flap{position:absolute;left:0;right:0;top:0;height:170px;background:#2a3958;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;z-index:3}
-.scene.on .env .flap{animation:flap .8s ease-in-out 1.2s forwards}
+.layer.on .env .flap{animation:flap .8s ease-in-out 1.2s forwards}
 @keyframes flap{60%{opacity:.7}to{transform:rotateX(180deg);z-index:0;opacity:0}}
 .trig{display:flex;flex-wrap:wrap;gap:16px;margin-top:26px}
 .trig span{font:500 22px var(--mono);padding:12px 20px;border:1px solid rgba(var(--accent-rgb),.6);border-radius:30px;color:rgb(var(--accent-rgb));background:rgba(var(--accent-rgb),.08)}
@@ -39,24 +39,24 @@
 .folder .body b{font:500 34px var(--display)}
 .folder .mem{display:flex;gap:12px;margin-top:26px}
 .folder .mem i{width:46px;height:46px;border-radius:50%;background:#3a4a63;border:2px solid var(--bg);transform:scale(0)}
-.scene.on .folder .mem i{animation:pop .5s cubic-bezier(.3,1.6,.5,1) forwards}
+.layer.on .folder .mem i{animation:pop .5s cubic-bezier(.3,1.6,.5,1) forwards}
 @keyframes pop{to{transform:scale(1)}}
 .folder small{display:block;font:500 17px var(--mono);color:var(--fg);opacity:.8;margin-top:14px;letter-spacing:.1em;text-transform:uppercase}
 .warn{margin-top:26px;display:flex;gap:22px;align-items:center;padding:22px 26px;border:2px solid #ffb547;border-radius:6px;background:rgba(255,181,71,.08);font-size:24px;line-height:1.45}
 .warn b{color:#ffb547}
 .warn .tri{flex:none;width:52px;height:46px;background:#ffb547;clip-path:polygon(50% 0,100% 100%,0 100%)}
-.scene.on .warn:not(.fh){animation:warnpulse 2.2s ease-in-out infinite}
+.layer.on .warn:not(.fh){animation:warnpulse 2.2s ease-in-out infinite}
 @keyframes warnpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,181,71,0)}50%{box-shadow:0 0 40px 4px rgba(255,181,71,.35)}}
 
 /* 3 netwerk */
 .netrow{display:grid;grid-template-columns:640px 1fr;gap:50px;align-items:center;margin-top:16px}
 .net{width:640px;height:420px}
 .net line{stroke:rgb(var(--accent-rgb));stroke-width:3;stroke-dasharray:300;stroke-dashoffset:300}
-.scene.on .net line{animation:draw 1s ease-out forwards}
+.layer.on .net line{animation:draw 1s ease-out forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 .net .nd circle{fill:#0a1222;stroke:rgb(var(--accent-rgb));stroke-width:3}
 .net .nd{opacity:0}
-.scene.on .net .nd{animation:fadein .5s forwards}
+.layer.on .net .nd{animation:fadein .5s forwards}
 .net text{font:500 19px var(--mono);fill:var(--fg)}
 .net .ctr circle{fill:rgba(var(--accent-rgb),.25)}
 @keyframes fadein{to{opacity:1}}
@@ -65,11 +65,11 @@
 .holdrow{display:grid;grid-template-columns:300px 1fr;gap:60px;align-items:center;margin-top:28px}
 .lock{width:300px;height:340px}
 .lock .shackle{fill:none;stroke:rgb(var(--accent-rgb));stroke-width:26;stroke-linecap:round;transform:translateY(-58px);transition:transform .9s cubic-bezier(.5,1.8,.5,1)}
-#world[data-s="4"][data-f="1"] .lock .shackle{transform:translateY(0)}
+#stage[data-s="4"][data-f="1"] .lock .shackle{transform:translateY(0)}
 .lock .bodyl{fill:rgba(var(--accent-rgb),.18);stroke:rgb(var(--accent-rgb));stroke-width:5}
 .lock .hole{fill:rgb(var(--accent-rgb))}
 .lock .halo{fill:none;stroke:rgb(var(--accent-rgb));stroke-width:3;opacity:0;transform-origin:150px 230px}
-#world[data-s="4"][data-f="1"] .lock .halo{animation:halo 2s ease-out .7s infinite}
+#stage[data-s="4"][data-f="1"] .lock .halo{animation:halo 2s ease-out .7s infinite}
 @keyframes halo{0%{opacity:.8;transform:scale(.6)}100%{opacity:0;transform:scale(1.5)}}
 .foot{margin-top:24px;font:400 22px var(--mono);color:var(--muted);padding-left:20px;border-left:3px solid rgb(var(--accent-rgb));line-height:1.5}
 
@@ -77,14 +77,14 @@
 .qbar{display:flex;align-items:center;gap:18px;margin-top:30px;padding:20px 26px;background:#0a1222;border:2px solid rgb(var(--accent-rgb));border-radius:40px;font:500 28px var(--mono)}
 .qbar svg{width:34px;height:34px;flex:none;fill:none;stroke:rgb(var(--accent-rgb));stroke-width:3}
 .qbar .q{overflow:hidden;white-space:nowrap;width:0;border-right:3px solid rgb(var(--accent-rgb))}
-.scene.on .qbar .q{animation:typeq 1.6s steps(var(--n),end) .9s forwards,caret .8s step-end infinite}
+.layer.on .qbar .q{animation:typeq 1.6s steps(var(--n),end) .9s forwards,caret .8s step-end infinite}
 @keyframes typeq{to{width:calc(var(--n) * 1ch)}}
 @keyframes caret{50%{border-color:transparent}}
 .srow{display:grid;grid-template-columns:520px 1fr;gap:56px;align-items:end;margin-top:30px}
 .bars{display:flex;align-items:flex-end;gap:26px;height:260px;border-bottom:2px solid rgba(255,255,255,.2);padding:0 10px}
 .bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
 .bars i{width:100%;height:var(--h);background:linear-gradient(rgb(var(--accent-rgb)),rgba(var(--accent-rgb),.25));border-radius:4px 4px 0 0;transform:scaleY(0);transform-origin:bottom}
-.scene.on .bars i{animation:grow 1s cubic-bezier(.2,.8,.2,1) forwards}
+.layer.on .bars i{animation:grow 1s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes grow{to{transform:scaleY(1)}}
 .bars span{white-space:nowrap;font:500 16px var(--mono);color:var(--muted);margin-top:10px;position:absolute;transform:translateY(34px)}
 .bars div{position:relative}
@@ -95,12 +95,12 @@
 .bin .lbl{position:absolute;bottom:-40px;left:0;right:0;text-align:center;font:500 18px var(--mono);color:rgb(var(--accent-rgb));letter-spacing:.06em}
 .bin .pg{position:absolute;width:62px;height:82px;background:#eef2f7;border-radius:5px;opacity:0;transform:translate(var(--fx),-260px) rotate(var(--r))}
 .bin .pg::before{content:"";position:absolute;left:9px;right:9px;top:16px;height:5px;background:#c9d1de;box-shadow:0 11px 0 #c9d1de,0 22px 0 #c9d1de}
-.scene.on .bin .pg{animation:dropin .9s cubic-bezier(.4,1.4,.6,1) forwards}
+.layer.on .bin .pg{animation:dropin .9s cubic-bezier(.4,1.4,.6,1) forwards}
 @keyframes dropin{to{opacity:1;transform:translate(0,0) rotate(var(--r))}}
 .bin .pg.enc{background:#d9dfe8;box-shadow:0 0 0 3px #ffb547}
 .bin .pg.enc::after{content:"";position:absolute;left:50%;top:-20px;width:24px;height:22px;margin-left:-12px;border:5px solid #ffb547;border-bottom:0;border-radius:14px 14px 0 0;box-sizing:border-box;transition:transform .7s cubic-bezier(.5,1.8,.5,1),border-color .5s}
-#world[data-s="6"][data-f="1"] .bin .pg.enc{box-shadow:0 0 0 3px #5cf2a0,0 0 26px #5cf2a0}
-#world[data-s="6"][data-f="1"] .bin .pg.enc::after{transform:translate(10px,-8px) rotate(30deg);border-color:#5cf2a0}
+#stage[data-s="6"][data-f="1"] .bin .pg.enc{box-shadow:0 0 0 3px #5cf2a0,0 0 26px #5cf2a0}
+#stage[data-s="6"][data-f="1"] .bin .pg.enc::after{transform:translate(10px,-8px) rotate(30deg);border-color:#5cf2a0}
 .chips{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
 .chips span{font:500 19px var(--mono);padding:9px 16px;border-radius:24px;border:1px solid rgba(255,255,255,.22);color:var(--muted)}
 
@@ -108,9 +108,9 @@
 .clrow{display:grid;grid-template-columns:700px 1fr;gap:50px;align-items:center;margin-top:20px}
 .field{position:relative;height:420px}
 .field .dt{position:absolute;left:0;top:0;width:34px;height:44px;border-radius:4px;background:#c9d1de;transform:translate(var(--x0),var(--y0)) rotate(var(--r));transition:transform 1.6s cubic-bezier(.6,0,.3,1),background .8s ease .9s}
-#world[data-s="7"][data-f="1"] .field .dt{transform:translate(var(--x1),var(--y1)) rotate(0deg);background:var(--c)}
+#stage[data-s="7"][data-f="1"] .field .dt{transform:translate(var(--x1),var(--y1)) rotate(0deg);background:var(--c)}
 .field .gl{position:absolute;top:350px;width:200px;text-align:center;font:500 20px var(--mono);color:var(--c);opacity:0;transition:opacity .6s ease 1.4s}
-#world[data-s="7"][data-f="1"] .field .gl{opacity:1}
+#stage[data-s="7"][data-f="1"] .field .gl{opacity:1}
 
 /* 8 export */
 .exrow{display:grid;grid-template-columns:360px 1fr;gap:70px;align-items:center;margin-top:24px}
@@ -118,7 +118,7 @@
 .ring svg{width:360px;height:360px;transform:rotate(-90deg)}
 .ring .bg{fill:none;stroke:#1a2438;stroke-width:22}
 .ring .fg{fill:none;stroke:rgb(var(--accent-rgb));stroke-width:22;stroke-linecap:round;stroke-dasharray:1005;stroke-dashoffset:0}
-.scene.on .ring .fg{animation:drain 9s linear 1s infinite}
+.layer.on .ring .fg{animation:drain 9s linear 1s infinite}
 @keyframes drain{0%{stroke-dashoffset:0}90%{stroke-dashoffset:930;stroke:#ff5a5f}100%{stroke-dashoffset:930;stroke:#ff5a5f}}
 .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring .num b{font:500 120px/1 var(--display);color:rgb(var(--accent-rgb))}
@@ -129,47 +129,82 @@
 .xl svg{width:30px;height:30px;flex:none;fill:none;stroke:rgb(var(--accent-rgb));stroke-width:3}
 .prem{margin-top:22px;font:400 18px var(--mono);color:var(--dim)}
 @media (prefers-reduced-motion:reduce){.ring .fg,.warn,.lock .halo,.qbar .q{animation:none!important}.qbar .q{width:auto;border:0}.env .letter,.env .flap,.net line,.net .nd,.folder .mem i,.bars i,.bin .pg{animation-duration:.01s!important;animation-delay:0s!important}.field .dt,.lock .shackle{transition:none}}
+
+#world{display:none}
+.layer{position:absolute;width:1600px;height:900px;transform-origin:50% 50%;will-change:transform,opacity}
+.lz{position:absolute;inset:0;will-change:transform,opacity}
+.layer .scene{position:absolute;left:150px;top:50px;width:1410px;background:rgba(7,12,24,.92)}
+#stage.ov .layer{cursor:pointer}
+#stage.ov .layer .scene{box-shadow:0 0 0 3px rgba(var(--accent-rgb),.25)}
+#stage.ov .layer.cur-map .scene{box-shadow:0 0 0 4px rgb(var(--accent-rgb))}
+.layer .rv{animation:none}
+.layer.on .rv{animation:rise .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 110ms + 700ms)}
+/* laag 0: de tenant als veld van punten */
+.org{position:absolute;left:0;top:0;width:1600px;height:900px}
+.org .tt{position:absolute;left:170px;top:220px;width:760px}
+.org .tt .eyebrow{font-size:24px;margin-bottom:24px}
+.org .tt h1{font-size:104px;line-height:1.02;font-weight:500}
+.org .tt p{font-size:30px;line-height:1.45;color:var(--muted);margin-top:28px}
+.dots{position:absolute;left:960px;top:150px;display:grid;grid-template-columns:repeat(14,1fr);gap:16px;width:560px}
+.dots i{width:24px;height:24px;border-radius:50%;background:#1f2a40;opacity:0}
+.layer.on .dots i{animation:dotin .5s ease forwards;animation-delay:calc(var(--d) * 1ms + 400ms)}
+@keyframes dotin{to{opacity:1}}
+.dots i.m{border-radius:4px}.dots i.t{border-radius:4px 4px 12px 4px}
+.dots i.hit{background:rgb(var(--accent-rgb));box-shadow:0 0 0 0 rgba(var(--accent-rgb),.7);animation:dotin .5s ease forwards,hit 1.8s ease-out 2.2s infinite!important}
+@keyframes hit{0%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),.8)}100%{box-shadow:0 0 0 26px rgba(var(--accent-rgb),0)}}
+.orgcap{position:absolute;left:960px;top:760px;font:500 18px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+/* dieptemeter */
+#gauge{position:fixed;left:22px;top:50%;transform:translateY(-58%);z-index:7;display:flex;flex-direction:column;gap:14px;padding-left:18px}
+#gauge::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:2px;background:rgba(255,255,255,.12)}
+#gauge::after{content:"";position:absolute;left:4px;top:8px;width:2px;height:calc((100% - 16px) * var(--p,0));background:rgb(var(--accent-rgb));box-shadow:0 0 12px rgb(var(--accent-rgb));transition:height .9s cubic-bezier(.7,0,.25,1)}
+#gauge .gl{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);transition:color .5s}
+#gauge .gl i{position:absolute;left:0;width:10px;height:10px;margin-top:0;border-radius:50%;background:#1f2a40;border:2px solid #04070d;transition:background .5s,box-shadow .5s}
+#gauge .gl span{padding-left:6px}
+#gauge .gl.done{color:rgba(var(--accent-rgb),.6)}#gauge .gl.done i{background:rgba(var(--accent-rgb),.6)}
+#gauge .gl.cur{color:rgb(var(--accent-rgb))}#gauge .gl.cur i{background:rgb(var(--accent-rgb));box-shadow:0 0 14px rgb(var(--accent-rgb))}
+#gauge .gl:focus-visible{outline:2px solid rgb(var(--accent-rgb));outline-offset:4px}
+#gauge .hd{font:500 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+@media (max-width:900px){#gauge{display:none}}
 </style>
 </head>
 <body>
 <div id="stage" aria-label="Presentatiecanvas. Klik of gebruik de pijltjestoetsen om verder te gaan.">
   <canvas id="bg" aria-hidden="true"></canvas>
-  <div id="world">
-    <div id="grid"></div>
+  <div id="world"></div>
+  <div class="layer" data-i="0"><div class="lz"><div class="org">
+      <div class="tt"><p class="eyebrow">Microsoft Purview · eDiscovery</p><h1>Van verzoek tot export</h1><p>Er komt een verzoek binnen. Je volgt het van de dag dat het op je bureau ligt tot het exportpakket, en ziet onderweg waar het misgaat.</p></div>
+      <div class="dots"><i class="m" style="--d:0"></i><i class="" style="--d:35"></i><i class="" style="--d:70"></i><i class="m" style="--d:105"></i><i class="" style="--d:140"></i><i class="t" style="--d:175"></i><i class="m" style="--d:210"></i><i class="" style="--d:245"></i><i class="" style="--d:280"></i><i class="m" style="--d:315"></i><i class="t" style="--d:350"></i><i class="" style="--d:385"></i><i class="m" style="--d:420"></i><i class="" style="--d:455"></i><i class="" style="--d:35"></i><i class="m" style="--d:70"></i><i class="" style="--d:105"></i><i class="" style="--d:140"></i><i class="m" style="--d:175"></i><i class="" style="--d:210"></i><i class="t" style="--d:245"></i><i class="m" style="--d:280"></i><i class="" style="--d:315"></i><i class="" style="--d:350"></i><i class="m" style="--d:385"></i><i class="t" style="--d:420"></i><i class="" style="--d:455"></i><i class="m" style="--d:490"></i><i class="" style="--d:70"></i><i class="" style="--d:105"></i><i class="m" style="--d:140"></i><i class="" style="--d:175"></i><i class="" style="--d:210"></i><i class="m" style="--d:245"></i><i class="" style="--d:280"></i><i class="t" style="--d:315"></i><i class="m" style="--d:350"></i><i class="" style="--d:385"></i><i class="" style="--d:420"></i><i class="m" style="--d:455"></i><i class="t" style="--d:490"></i><i class="" style="--d:525"></i><i class="m" style="--d:105"></i><i class="" style="--d:140"></i><i class="" style="--d:175"></i><i class="m" style="--d:210"></i><i class="" style="--d:245"></i><i class="" style="--d:280"></i><i class="m" style="--d:315"></i><i class="" style="--d:350"></i><i class="t" style="--d:385"></i><i class="m" style="--d:420"></i><i class="" style="--d:455"></i><i class="" style="--d:490"></i><i class="m" style="--d:525"></i><i class="t" style="--d:560"></i><i class="" style="--d:140"></i><i class="m" style="--d:175"></i><i class="" style="--d:210"></i><i class="" style="--d:245"></i><i class="m" style="--d:280"></i><i class="" style="--d:315"></i><i class="" style="--d:350"></i><i class="m" style="--d:385"></i><i class="" style="--d:420"></i><i class="hit" data-focus style="--d:455"></i><i class="m" style="--d:490"></i><i class="" style="--d:525"></i><i class="" style="--d:560"></i><i class="m" style="--d:595"></i><i class="t" style="--d:175"></i><i class="" style="--d:210"></i><i class="m" style="--d:245"></i><i class="" style="--d:280"></i><i class="" style="--d:315"></i><i class="m" style="--d:350"></i><i class="" style="--d:385"></i><i class="" style="--d:420"></i><i class="m" style="--d:455"></i><i class="" style="--d:490"></i><i class="t" style="--d:525"></i><i class="m" style="--d:560"></i><i class="" style="--d:595"></i><i class="" style="--d:630"></i><i class="m" style="--d:210"></i><i class="t" style="--d:245"></i><i class="" style="--d:280"></i><i class="m" style="--d:315"></i><i class="" style="--d:350"></i><i class="" style="--d:385"></i><i class="m" style="--d:420"></i><i class="" style="--d:455"></i><i class="" style="--d:490"></i><i class="m" style="--d:525"></i><i class="" style="--d:560"></i><i class="t" style="--d:595"></i><i class="m" style="--d:630"></i><i class="" style="--d:665"></i><i class="" style="--d:245"></i><i class="m" style="--d:280"></i><i class="t" style="--d:315"></i><i class="" style="--d:350"></i><i class="m" style="--d:385"></i><i class="" style="--d:420"></i><i class="" style="--d:455"></i><i class="m" style="--d:490"></i><i class="" style="--d:525"></i><i class="" style="--d:560"></i><i class="m" style="--d:595"></i><i class="" style="--d:630"></i><i class="t" style="--d:665"></i><i class="m" style="--d:700"></i><i class="" style="--d:280"></i><i class="" style="--d:315"></i><i class="m" style="--d:350"></i><i class="t" style="--d:385"></i><i class="" style="--d:420"></i><i class="m" style="--d:455"></i><i class="" style="--d:490"></i><i class="" style="--d:525"></i><i class="m" style="--d:560"></i><i class="" style="--d:595"></i><i class="" style="--d:630"></i><i class="m" style="--d:665"></i><i class="" style="--d:700"></i><i class="t" style="--d:735"></i><i class="m" style="--d:315"></i><i class="" style="--d:350"></i><i class="" style="--d:385"></i><i class="m" style="--d:420"></i><i class="t" style="--d:455"></i><i class="" style="--d:490"></i><i class="m" style="--d:525"></i><i class="" style="--d:560"></i><i class="" style="--d:595"></i><i class="m" style="--d:630"></i><i class="" style="--d:665"></i><i class="" style="--d:700"></i><i class="m" style="--d:735"></i><i class="" style="--d:770"></i><i class="t" style="--d:350"></i><i class="m" style="--d:385"></i><i class="" style="--d:420"></i><i class="" style="--d:455"></i><i class="m" style="--d:490"></i><i class="t" style="--d:525"></i><i class="" style="--d:560"></i><i class="m" style="--d:595"></i><i class="" style="--d:630"></i><i class="" style="--d:665"></i><i class="m" style="--d:700"></i><i class="" style="--d:735"></i><i class="" style="--d:770"></i><i class="m" style="--d:805"></i></div><p class="orgcap">Jouw tenant · mailboxen, sites en chats</p></div></div></div>
 
-    <div class="titleblock only" data-show="0" style="left:250px;top:300px;width:1500px">
-      <p class="eyebrow">Microsoft Purview · eDiscovery</p><h1>Van verzoek tot export</h1><p>Er komt een verzoek binnen. Je volgt het van de dag dat het op je bureau ligt tot het exportpakket, en ziet onderweg waar het misgaat.</p>
-    </div>
 
-    <section class="scene" data-on="1" style="left:2000px;top:225px;width:1500px">
+    <div class="layer" data-i="1"><div class="lz"><section class="scene">
       <p class="eyebrow rv">01 · Dag 0 · Verzoek</p><h2 class="rv" style="--i:1">Iemand vraagt wat er bewaard is</h2>
       <div class="req">
-        <div class="env rv" style="--i:2;perspective:900px"><div class="back"></div><div class="letter"><b>Verzoek om informatie</b><i></i><i></i><i></i></div><div class="front"></div><div class="flap"></div></div>
+        <div class="env rv" style="--i:2;perspective:900px"><div class="back"></div><div class="letter" data-focus><b>Verzoek om informatie</b><i></i><i></i><i></i></div><div class="front"></div><div class="flap"></div></div>
         <div><p class="lede rv" style="--i:2;margin-top:0">De aanleiding verschilt, de vraag is steeds dezelfde: welke informatie is er, waar staat ze, en kun je dat aantonen.</p><div class="trig"><span class="rv" style="--i:3">Rechtszaak</span><span class="rv" style="--i:4">Intern onderzoek</span><span class="rv" style="--i:5">Woo-verzoek</span><span class="rv" style="--i:6">Insider Risk-case</span></div></div>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="2" style="left:3800px;top:225px;width:1500px">
+    <div class="layer" data-i="2"><div class="lz"><section class="scene">
       <p class="eyebrow rv">02 · De case</p><h2 class="rv" style="--i:1">Alles begint bij een case</h2>
       <div class="caserow">
-        <div class="folder rv" style="--i:2"><div class="tab"></div><div class="body"><b>Case</b><small>Leden</small><div class="mem"><i style="animation-delay:1.0s"></i><i style="animation-delay:1.2s"></i><i style="animation-delay:1.4s"></i><i style="animation-delay:1.6s"></i></div></div></div>
+        <div class="folder rv" data-focus style="--i:2"><div class="tab"></div><div class="body"><b>Case</b><small>Leden</small><div class="mem"><i style="animation-delay:1.0s"></i><i style="animation-delay:1.2s"></i><i style="animation-delay:1.4s"></i><i style="animation-delay:1.6s"></i></div></div></div>
         <div class="card rv" style="--i:3"><span class="tag">Case</span><h3>De centrale eenheid</h3><p>Zoekopdrachten, holds en review sets horen bij een case. Je bepaalt wie lid is. Content Search bestaat nog als door het systeem aangemaakte case.</p></div>
       </div>
       <div class="warn fr" data-frag="2:1"><div class="tri"></div><div>De Content Search-case is standaard zichtbaar voor alle leden van <b>eDiscovery Manager</b> en <b>Administrator</b>. Beperken doe je zelf in de case settings.</div></div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="3" style="left:5600px;top:225px;width:1500px">
+    <div class="layer" data-i="3"><div class="lz"><section class="scene">
       <p class="eyebrow rv">03 · Data sources</p><h2 class="rv" style="--i:1">Kies een persoon, eDiscovery vindt de locaties</h2>
       <div class="netrow">
-        <svg class="net" viewBox="0 0 640 420" role="img" aria-label="Gebruiker"><line x1="320" y1="210" x2="120" y2="80" style="animation-delay:0.9s"/><line x1="320" y1="210" x2="520" y2="80" style="animation-delay:1.2s"/><line x1="320" y1="210" x2="120" y2="340" style="animation-delay:1.5s"/><line x1="320" y1="210" x2="520" y2="340" style="animation-delay:1.8s"/><g class="nd ctr" style="animation-delay:.7s"><circle cx="320" cy="210" r="46"/><text x="320" y="282" text-anchor="middle">Gebruiker</text></g><g class="nd" style="animation-delay:1.4s"><circle cx="120" cy="80" r="30"/><text x="120" y="36" text-anchor="middle">Mailbox</text></g><g class="nd" style="animation-delay:1.7s"><circle cx="520" cy="80" r="30"/><text x="520" y="36" text-anchor="middle">OneDrive</text></g><g class="nd" style="animation-delay:2.0s"><circle cx="120" cy="340" r="30"/><text x="120" y="394" text-anchor="middle">SharePoint-sites</text></g><g class="nd" style="animation-delay:2.3s"><circle cx="520" cy="340" r="30"/><text x="520" y="394" text-anchor="middle">Teams</text></g></svg>
+        <svg class="net" data-focus viewBox="0 0 640 420" role="img" aria-label="Gebruiker"><line x1="320" y1="210" x2="120" y2="80" style="animation-delay:0.9s"/><line x1="320" y1="210" x2="520" y2="80" style="animation-delay:1.2s"/><line x1="320" y1="210" x2="120" y2="340" style="animation-delay:1.5s"/><line x1="320" y1="210" x2="520" y2="340" style="animation-delay:1.8s"/><g class="nd ctr" style="animation-delay:.7s"><circle cx="320" cy="210" r="46"/><text x="320" y="282" text-anchor="middle">Gebruiker</text></g><g class="nd" style="animation-delay:1.4s"><circle cx="120" cy="80" r="30"/><text x="120" y="36" text-anchor="middle">Mailbox</text></g><g class="nd" style="animation-delay:1.7s"><circle cx="520" cy="80" r="30"/><text x="520" y="36" text-anchor="middle">OneDrive</text></g><g class="nd" style="animation-delay:2.0s"><circle cx="120" cy="340" r="30"/><text x="120" y="394" text-anchor="middle">SharePoint-sites</text></g><g class="nd" style="animation-delay:2.3s"><circle cx="520" cy="340" r="30"/><text x="520" y="394" text-anchor="middle">Teams</text></g></svg>
         <p class="lede rv" style="--i:3;margin-top:0">Je voegt een gebruiker of groep toe. eDiscovery zoekt zelf de bijbehorende mailbox, OneDrive en sites erbij. Daarna verfijn je wat er wel en niet bij hoort.</p>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="4" style="left:7400px;top:225px;width:1500px">
+    <div class="layer" data-i="4"><div class="lz"><section class="scene">
       <p class="eyebrow rv">04 · Dag 1 · Hold</p><h2 class="rv" style="--i:1">Eerst vasthouden, dan zoeken</h2>
       <div class="holdrow">
-        <svg class="lock rv" style="--i:2" viewBox="0 0 300 340" aria-hidden="true">
+        <svg class="lock rv" data-focus style="--i:2" viewBox="0 0 300 340" aria-hidden="true">
           <circle class="halo" cx="150" cy="230" r="120"/>
           <path class="shackle" d="M85 150 V95 a65 65 0 0 1 130 0 V150"/>
           <rect class="bodyl" x="40" y="140" width="220" height="180" rx="22"/>
@@ -180,43 +215,43 @@
           <div class="card rv" style="--i:4;--c:#4fd8ff"><span class="tag">Hold</span><h3>Query-based hold</h3><p>Alleen wat aan een zoekvraag voldoet, blijft bewaard.</p></div>
         </div><p class="foot rv" style="--i:5">Een hold is optioneel, maar zolang hij staat gaat niets definitief weg. Hij verdwijnt ook niet vanzelf: je geeft hem zelf vrij.</p></div>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="5" style="left:9200px;top:225px;width:1500px">
+    <div class="layer" data-i="5"><div class="lz"><section class="scene">
       <p class="eyebrow rv">05 · Dag 2 · Zoeken</p><h2 class="rv" style="--i:1">Eerst meten, dan verzamelen</h2>
-      <div class="qbar rv" style="--i:2"><svg viewBox="0 0 34 34"><circle cx="14" cy="14" r="10"/><path d="M22 22l9 9"/></svg><span class="q" style="--n:24">contract AND leverancier</span></div>
+      <div class="qbar rv" data-focus style="--i:2"><svg viewBox="0 0 34 34"><circle cx="14" cy="14" r="10"/><path d="M22 22l9 9"/></svg><span class="q" style="--n:24">contract AND leverancier</span></div>
       <div class="srow"><div class="bars"><div><i style="--h:82%;animation-delay:2.4s"></i><span>Items</span></div><div><i style="--h:58%;animation-delay:2.6s"></i><span>Volume</span></div><div><i style="--h:70%;animation-delay:2.8s"></i><span>Top-locaties</span></div><div><i style="--h:34%;animation-delay:3.0s"></i><span>Steekproef</span></div></div><p class="lede rv" style="--i:4;margin-top:0">Statistieken en een steekproef laten zien wat een zoekopdracht oplevert voordat je iets verzamelt. Zoekopdrachten blijven aanpasbaar, ook als er al resultaten in een review set staan. Met premium features draait advanced indexing automatisch mee.</p></div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="6" style="left:11000px;top:225px;width:1500px">
+    <div class="layer" data-i="6"><div class="lz"><section class="scene">
       <p class="eyebrow rv">06 · Week 1 · Review set</p><h2 class="rv" style="--i:1">Een vaste kopie om op te werken</h2>
       <div class="rsrow">
-        <div class="rv" style="--i:2"><div class="bin"><i class="pg" style="left:40px;top:120px;--r:-8deg;--fx:-120px;animation-delay:0.90s"></i><i class="pg" style="left:132px;top:190px;--r:5deg;--fx:60px;animation-delay:1.15s"></i><i class="pg" style="left:224px;top:120px;--r:-3deg;--fx:-40px;animation-delay:1.40s"></i><i class="pg enc" style="left:316px;top:190px;--r:7deg;--fx:90px;animation-delay:1.65s"></i><i class="pg" style="left:408px;top:120px;--r:-6deg;--fx:-70px;animation-delay:1.90s"></i><div class="lbl">Review set · Azure-opslag</div></div></div>
+        <div class="rv" style="--i:2"><div class="bin"><i class="pg" style="left:40px;top:120px;--r:-8deg;--fx:-120px;animation-delay:0.90s"></i><i class="pg" style="left:132px;top:190px;--r:5deg;--fx:60px;animation-delay:1.15s"></i><i class="pg" style="left:224px;top:120px;--r:-3deg;--fx:-40px;animation-delay:1.40s"></i><i class="pg enc" data-focus style="left:316px;top:190px;--r:7deg;--fx:90px;animation-delay:1.65s"></i><i class="pg" style="left:408px;top:120px;--r:-6deg;--fx:-70px;animation-delay:1.90s"></i><div class="lbl">Review set · Azure-opslag</div></div></div>
         <div><div class="card fr" data-frag="6:1" style="--c:#5cf2a0"><span class="tag">Decryptie</span><h3>Encryptie houdt je niet tegen</h3><p>Content met een Sensitivity Label, Azure Rights Management of Purview Message Encryption wordt automatisch ontsleuteld zodra hij in de review set komt.</p></div>
           <div class="chips rv" style="--i:4"><span>OCR</span><span>Conversation threading</span><span>Cloud attachments</span></div></div>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="7" style="left:12800px;top:225px;width:1500px">
+    <div class="layer" data-i="7"><div class="lz"><section class="scene">
       <p class="eyebrow rv">07 · Week 2 · Analyse</p><h2 class="rv" style="--i:1">Van stapel naar structuur</h2>
       <div class="clrow">
-        <div class="field rv" style="--i:2"><i class="dt" style="--x0:331px;--y0:77px;--x1:50px;--y1:138px;--r:15deg;--c:#a98bff"></i><i class="dt" style="--x0:49px;--y0:37px;--x1:92px;--y1:138px;--r:33deg;--c:#a98bff"></i><i class="dt" style="--x0:96px;--y0:187px;--x1:134px;--y1:138px;--r:-28deg;--c:#a98bff"></i><i class="dt" style="--x0:519px;--y0:109px;--x1:50px;--y1:190px;--r:-31deg;--c:#a98bff"></i><i class="dt" style="--x0:88px;--y0:222px;--x1:92px;--y1:190px;--r:18deg;--c:#a98bff"></i><i class="dt" style="--x0:71px;--y0:123px;--x1:134px;--y1:190px;--r:-24deg;--c:#a98bff"></i><i class="dt" style="--x0:564px;--y0:217px;--x1:50px;--y1:242px;--r:-28deg;--c:#a98bff"></i><i class="dt" style="--x0:579px;--y0:63px;--x1:300px;--y1:112px;--r:-7deg;--c:#5cf2a0"></i><i class="dt" style="--x0:645px;--y0:321px;--x1:342px;--y1:112px;--r:-28deg;--c:#5cf2a0"></i><i class="dt" style="--x0:590px;--y0:299px;--x1:384px;--y1:112px;--r:15deg;--c:#5cf2a0"></i><i class="dt" style="--x0:50px;--y0:113px;--x1:300px;--y1:164px;--r:-30deg;--c:#5cf2a0"></i><i class="dt" style="--x0:570px;--y0:68px;--x1:342px;--y1:164px;--r:2deg;--c:#5cf2a0"></i><i class="dt" style="--x0:429px;--y0:73px;--x1:384px;--y1:164px;--r:34deg;--c:#5cf2a0"></i><i class="dt" style="--x0:120px;--y0:292px;--x1:300px;--y1:216px;--r:4deg;--c:#5cf2a0"></i><i class="dt" style="--x0:573px;--y0:92px;--x1:342px;--y1:216px;--r:-22deg;--c:#5cf2a0"></i><i class="dt" style="--x0:595px;--y0:292px;--x1:384px;--y1:216px;--r:-11deg;--c:#5cf2a0"></i><i class="dt" style="--x0:381px;--y0:49px;--x1:550px;--y1:138px;--r:35deg;--c:#5b6780"></i><i class="dt" style="--x0:64px;--y0:288px;--x1:592px;--y1:138px;--r:-28deg;--c:#5b6780"></i><i class="dt" style="--x0:633px;--y0:105px;--x1:634px;--y1:138px;--r:28deg;--c:#5b6780"></i><i class="dt" style="--x0:544px;--y0:218px;--x1:550px;--y1:190px;--r:5deg;--c:#5b6780"></i><i class="dt" style="--x0:476px;--y0:299px;--x1:592px;--y1:190px;--r:23deg;--c:#5b6780"></i><i class="dt" style="--x0:370px;--y0:153px;--x1:634px;--y1:190px;--r:-4deg;--c:#5b6780"></i><i class="dt" style="--x0:184px;--y0:124px;--x1:550px;--y1:242px;--r:-25deg;--c:#5b6780"></i><i class="dt" style="--x0:588px;--y0:153px;--x1:592px;--y1:242px;--r:32deg;--c:#5b6780"></i><div class="gl" style="left:20px;--c:#a98bff">Near duplicates</div><div class="gl" style="left:270px;--c:#5cf2a0">Relevant</div><div class="gl" style="left:520px;--c:#5b6780">Niet relevant</div></div>
+        <div class="field rv" data-focus style="--i:2"><i class="dt" style="--x0:331px;--y0:77px;--x1:50px;--y1:138px;--r:15deg;--c:#a98bff"></i><i class="dt" style="--x0:49px;--y0:37px;--x1:92px;--y1:138px;--r:33deg;--c:#a98bff"></i><i class="dt" style="--x0:96px;--y0:187px;--x1:134px;--y1:138px;--r:-28deg;--c:#a98bff"></i><i class="dt" style="--x0:519px;--y0:109px;--x1:50px;--y1:190px;--r:-31deg;--c:#a98bff"></i><i class="dt" style="--x0:88px;--y0:222px;--x1:92px;--y1:190px;--r:18deg;--c:#a98bff"></i><i class="dt" style="--x0:71px;--y0:123px;--x1:134px;--y1:190px;--r:-24deg;--c:#a98bff"></i><i class="dt" style="--x0:564px;--y0:217px;--x1:50px;--y1:242px;--r:-28deg;--c:#a98bff"></i><i class="dt" style="--x0:579px;--y0:63px;--x1:300px;--y1:112px;--r:-7deg;--c:#5cf2a0"></i><i class="dt" style="--x0:645px;--y0:321px;--x1:342px;--y1:112px;--r:-28deg;--c:#5cf2a0"></i><i class="dt" style="--x0:590px;--y0:299px;--x1:384px;--y1:112px;--r:15deg;--c:#5cf2a0"></i><i class="dt" style="--x0:50px;--y0:113px;--x1:300px;--y1:164px;--r:-30deg;--c:#5cf2a0"></i><i class="dt" style="--x0:570px;--y0:68px;--x1:342px;--y1:164px;--r:2deg;--c:#5cf2a0"></i><i class="dt" style="--x0:429px;--y0:73px;--x1:384px;--y1:164px;--r:34deg;--c:#5cf2a0"></i><i class="dt" style="--x0:120px;--y0:292px;--x1:300px;--y1:216px;--r:4deg;--c:#5cf2a0"></i><i class="dt" style="--x0:573px;--y0:92px;--x1:342px;--y1:216px;--r:-22deg;--c:#5cf2a0"></i><i class="dt" style="--x0:595px;--y0:292px;--x1:384px;--y1:216px;--r:-11deg;--c:#5cf2a0"></i><i class="dt" style="--x0:381px;--y0:49px;--x1:550px;--y1:138px;--r:35deg;--c:#5b6780"></i><i class="dt" style="--x0:64px;--y0:288px;--x1:592px;--y1:138px;--r:-28deg;--c:#5b6780"></i><i class="dt" style="--x0:633px;--y0:105px;--x1:634px;--y1:138px;--r:28deg;--c:#5b6780"></i><i class="dt" style="--x0:544px;--y0:218px;--x1:550px;--y1:190px;--r:5deg;--c:#5b6780"></i><i class="dt" style="--x0:476px;--y0:299px;--x1:592px;--y1:190px;--r:23deg;--c:#5b6780"></i><i class="dt" style="--x0:370px;--y0:153px;--x1:634px;--y1:190px;--r:-4deg;--c:#5b6780"></i><i class="dt" style="--x0:184px;--y0:124px;--x1:550px;--y1:242px;--r:-25deg;--c:#5b6780"></i><i class="dt" style="--x0:588px;--y0:153px;--x1:592px;--y1:242px;--r:32deg;--c:#5b6780"></i><div class="gl" style="left:20px;--c:#a98bff">Near duplicates</div><div class="gl" style="left:270px;--c:#5cf2a0">Relevant</div><div class="gl" style="left:520px;--c:#5b6780">Niet relevant</div></div>
         <p class="lede rv" style="--i:3;margin-top:0">Near duplicate detection, email threading en themes brengen het aantal documenten terug. Met tags leg je vast wat relevant is.</p>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="8" style="left:14600px;top:225px;width:1500px">
+    <div class="layer" data-i="8"><div class="lz"><section class="scene">
       <p class="eyebrow rv">08 · Week 3 · Export</p><h2 class="rv" style="--i:1">Het pakket, en de klok die dan loopt</h2>
       <div class="exrow">
-        <div class="ring rv" style="--i:2"><svg viewBox="0 0 360 360"><circle class="bg" cx="180" cy="180" r="160"/><circle class="fg" cx="180" cy="180" r="160"/></svg>
+        <div class="ring rv" data-focus style="--i:2"><svg viewBox="0 0 360 360"><circle class="bg" cx="180" cy="180" r="160"/><circle class="fg" cx="180" cy="180" r="160"/></svg>
           <div class="num"><b>14</b><span>dagen</span><small>tot het pakket verloopt</small></div></div>
         <div><div class="xl">
           <div class="rv" style="--i:3"><svg viewBox="0 0 30 30"><path d="M7 3h11l6 6v18H7z"/><path d="M18 3v6h6"/></svg>PST of losse berichten</div><div class="rv" style="--i:4"><svg viewBox="0 0 30 30"><path d="M7 3h11l6 6v18H7z"/><path d="M18 3v6h6"/></svg>Native documenten</div><div class="rv" style="--i:5"><svg viewBox="0 0 30 30"><path d="M7 3h11l6 6v18H7z"/><path d="M18 3v6h6"/></svg>Export-, samenvattings- en foutenrapport</div>
         </div><p class="foot rv" style="--i:6">Een export van zoekresultaten verloopt na 14 dagen. Niet op tijd gedownload? Dan begin je opnieuw.</p></div>
       </div>
-    </section>
+    </section></div></div>
 
-    <section class="scene" data-on="9" style="left:16400px;top:225px;width:1500px">
+    <div class="layer" data-i="9"><div class="lz"><section class="scene">
       <p class="eyebrow rv">09 · Waar je begint</p><h2 class="rv" style="--i:1">Richt het in voordat iemand erom vraagt</h2>
       <div class="steps4">
         <div class="st rv" style="--i:2"><div class="n">01</div><h3>Rollen</h3><p>Leg vast wie eDiscovery Manager is, en wie niet.</p></div>
@@ -225,20 +260,13 @@
         <div class="st rv" style="--i:5"><div class="n">04</div><h3>Afronden</h3><p>Geef holds vrij als het onderzoek klaar is.</p></div>
       </div>
       <p class="prem rv" style="--i:6">Premium: Office 365 E5, Microsoft 365 E5 of E5 add-on</p>
-    </section>
+    </section></div></div>
 
-    <div id="doc" aria-hidden="true">
-      <div class="sheet">
-        <div class="bar" id="dtag">Verzoek</div>
-        <div class="nm">Dossier</div>
-        <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div>
-      </div>
-    </div>
-  </div>
+    
 </div>
+<nav id="gauge" aria-label="Diepte"><div class="hd">Diepte</div></nav>
 
-<div class="clock" id="clock" aria-hidden="true" hidden></div>
-<div class="top" aria-hidden="true"><span>Purview <b>//</b> van verzoek tot export</span><span><span class="hint">← → of klik · M voor de tijdlijn · </span><b id="cnt"></b></span></div>
+<div class="top" aria-hidden="true"><span>Purview <b>//</b> van verzoek tot export</span><span><span class="hint">← → of klik · M voor alle lagen · </span><b id="cnt"></b></span></div>
 <nav class="hud" aria-label="Bediening presentatie">
   <div class="hud-l"><span class="chn" id="chn">Start</span><span class="cht" id="cht">Van verzoek tot export</span></div>
   <div class="segs" id="segs"></div>
@@ -246,12 +274,12 @@
     <a class="btn" href="/" aria-label="Terug naar techwes.nl">Techwes</a>
     <a class="btn" href="from-request-to-export.html" hreflang="en" lang="en" aria-label="English version">EN</a>
     <button class="btn" id="prev" aria-label="Vorige">←</button>
-    <button class="btn" id="map" aria-pressed="false">Tijdlijn</button>
+    <button class="btn" id="map" aria-pressed="false">Lagen</button>
     <button class="btn pri" id="next">Volgende →</button>
   </div>
 </nav>
 <div class="sr" aria-live="polite" id="sr"></div>
-<script type="application/json" id="track-config">{"ui": {"map": "Tijdlijn", "all": "Hele tijdlijn"}, "world": {"w": 18100, "h": 1700, "axisY": 1180, "camY": 735, "camH": 1110}, "steps": [{"ch": "Start", "t": "Van verzoek tot export", "x": 950, "a": "#4fd8ff", "d": {"tag": "Verzoek", "cls": ""}}, {"ch": "01 · Verzoek", "t": "Iemand vraagt wat er bewaard is", "x": 2750, "a": "#ffb547", "d": {"tag": "Verzoek", "cls": ""}, "r": 1, "clock": "Dag 0", "tick": "Dag 0"}, {"ch": "02 · De case", "t": "Alles begint bij een case", "x": 4550, "a": "#a98bff", "d": {"tag": "Case", "cls": ""}, "r": -1, "clock": "Dag 0", "fr": 1}, {"ch": "03 · Data sources", "t": "Persoon kiezen, locaties vinden", "x": 6350, "a": "#4fd8ff", "d": {"tag": "Case", "cls": ""}, "r": 1, "clock": "Dag 1", "tick": "Dag 1"}, {"ch": "04 · Hold", "t": "Eerst vasthouden", "x": 8150, "a": "#3fe0c5", "d": {"tag": "Hold", "cls": "held"}, "r": -1, "clock": "Dag 1", "fr": 1}, {"ch": "05 · Zoeken", "t": "Eerst meten, dan verzamelen", "x": 9950, "a": "#6aa8ff", "d": {"tag": "Hold · gezocht", "cls": "held"}, "r": 1, "clock": "Dag 2", "tick": "Dag 2"}, {"ch": "06 · Review set", "t": "Een vaste kopie", "x": 11750, "a": "#a98bff", "d": {"tag": "Review set", "cls": "held"}, "r": -1, "clock": "Week 1", "tick": "Week 1", "fr": 1}, {"ch": "07 · Analyse", "t": "Van stapel naar structuur", "x": 13550, "a": "#5cf2a0", "d": {"tag": "Getagd", "cls": "held"}, "r": 1, "clock": "Week 2", "tick": "Week 2", "fr": 1}, {"ch": "08 · Export", "t": "Het pakket en de klok", "x": 15350, "a": "#ff8a5f", "d": {"tag": "Export", "cls": "held"}, "r": 0, "clock": "Week 3", "tick": "Week 3"}, {"ch": "09 · Waar je begint", "t": "Richt het vooraf in", "x": 17150, "a": "#4fd8ff", "d": {"tag": "Afgerond", "cls": "done"}, "r": 0, "clock": ""}]}</script>
-<script src="track.js"></script>
+<script type="application/json" id="zoom-config">{"ui": {"map": "Lagen", "all": "Alle lagen", "depth": "Diepte"}, "steps": [{"ch": "Start", "t": "Van verzoek tot export", "a": "#4fd8ff", "lvl": "Tenant", "dir": "in"}, {"ch": "01 · Verzoek", "t": "Iemand vraagt wat er bewaard is", "a": "#ffb547", "lvl": "Verzoek", "dir": "in"}, {"ch": "02 · De case", "t": "Alles begint bij een case", "a": "#a98bff", "lvl": "Case", "dir": "in", "fr": 1}, {"ch": "03 · Data sources", "t": "Persoon kiezen, locaties vinden", "a": "#4fd8ff", "lvl": "Persoon", "dir": "in"}, {"ch": "04 · Hold", "t": "Eerst vasthouden", "a": "#3fe0c5", "lvl": "Hold", "dir": "in", "fr": 1}, {"ch": "05 · Zoeken", "t": "Eerst meten, dan verzamelen", "a": "#6aa8ff", "lvl": "Zoekopdracht", "dir": "in"}, {"ch": "06 · Review set", "t": "Een vaste kopie", "a": "#a98bff", "lvl": "Review set", "dir": "in", "fr": 1}, {"ch": "07 · Analyse", "t": "Van stapel naar structuur", "a": "#5cf2a0", "lvl": "Analyse", "dir": "in", "fr": 1}, {"ch": "08 · Export", "t": "Het pakket en de klok", "a": "#ff8a5f", "lvl": "Export", "dir": "out"}, {"ch": "09 · Waar je begint", "t": "Richt het vooraf in", "a": "#4fd8ff", "lvl": "Inrichting", "dir": "out"}]}</script>
+<script src="zoom.js"></script>
 </body>
 </html>
