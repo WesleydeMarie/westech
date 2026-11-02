@@ -43,13 +43,15 @@ function fly(to,c){const from={...cam};const dr=Math.abs(to.r-from.r);
 let bcur=null,btw=null;
 function bpos(i){const s=S[i];if(!i)return{...polar(180,760),ang:0};return{...polar(s.ang,R-PH/2-300),ang:s.ang}}
 function setBlip(i){const to=bpos(i);btag.textContent=S[i].blip||'';blip.className='blip-'+(S[i].bc||'');
-  if(!bcur){bcur=to;place(to);return}btw={from:{...bcur},to,t0:performance.now(),dur:RM?300:1600}}
+  if(!bcur){bcur=to;place(to);ping();return}btw={from:{...bcur},to,t0:performance.now(),dur:RM?300:1600}}
 function place(p){blip.style.transform=`translate(${p.x}px,${p.y}px) rotate(${p.ang}deg)`}
 function stepBlip(now){if(!btw)return;const t=Math.min(1,(now-btw.t0)/btw.dur),e=ease(t),a=btw.from,b=btw.to;
   // langs de cirkel interpoleren
   const ra=Math.hypot(a.x-C,a.y-C),rb=Math.hypot(b.x-C,b.y-C),aa=a.ang,ab=unwrap(b.ang,aa);
   const ang=aa+(ab-aa)*e,r=ra+(rb-ra)*e-Math.sin(Math.PI*e)*300,q=polar(ang,Math.max(0,r));
-  bcur={...q,ang};place(bcur);if(t>=1){bcur=b;place(b);btw=null}}
+  bcur={...q,ang};place(bcur);if(t>=1){bcur=b;place(b);btw=null;ping()}}
+// één keer pulseren bij aankomst, niet de hele tijd
+function ping(){blip.classList.remove('ping');void blip.offsetWidth;blip.classList.add('ping')}
 
 function apply(){
   const s=S[step];world.classList.toggle('ov',mapMode);
