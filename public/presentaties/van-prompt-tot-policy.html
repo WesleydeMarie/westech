@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Van prompt tot policy · Techwes</title>
+<meta name="description" content="Een tijdlijnpresentatie over DSPM in Microsoft Purview: hoe je ziet wat er met AI-prompts gebeurt en hoe je daar policies op zet.">
+<link rel="alternate" hreflang="en" href="https://techwes.nl/presentaties/from-prompt-to-policy.html">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="data-story.css">
+<link rel="stylesheet" href="track.css">
+<style>
+/* prompt als chatbubbel */
+#doc .sheet{border-radius:18px 18px 18px 4px}
+#doc .nm{font-size:13px}
+#doc.seen .sheet{box-shadow:0 0 0 3px #4fd8ff,0 0 50px rgba(79,216,255,.6),0 24px 50px rgba(0,0,0,.6)}
+#doc.flag .sheet{box-shadow:0 0 0 3px #ffb547,0 0 50px rgba(255,181,71,.7),0 24px 50px rgba(0,0,0,.6)}
+#doc.safe .sheet{box-shadow:0 0 0 3px #5cf2a0,0 0 50px rgba(92,242,160,.55),0 24px 50px rgba(0,0,0,.6)}
+#doc.safe::after{content:"";position:absolute;right:-22px;top:-22px;width:52px;height:60px;background:#5cf2a0;clip-path:polygon(50% 0,100% 18%,100% 55%,50% 100%,0 55%,0 18%);box-shadow:0 0 30px #5cf2a0}
+
+/* 1 chat */
+.chatrow{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;margin-top:34px;align-items:start}
+.chat{background:#0a1222;border:1px solid rgba(var(--accent-rgb),.35);border-radius:14px;padding:28px 30px;min-height:330px}
+.chat .who{font:500 18px var(--mono);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.chat .msg{display:inline-block;max-width:100%;background:rgba(var(--accent-rgb),.12);border:1px solid rgba(var(--accent-rgb),.5);border-radius:18px 18px 4px 18px;padding:18px 22px;font-size:27px;line-height:1.4;overflow:hidden;white-space:nowrap;width:0}
+.scene.on .chat .msg{animation:typein 2.6s steps(48,end) .9s forwards}
+@keyframes typein{to{width:100%;white-space:normal}}
+.chat .think{margin-top:34px;display:flex;align-items:center;gap:16px;font:400 21px var(--mono);color:var(--muted);opacity:0}
+.scene.on .chat .think{animation:fadein .6s 3.7s forwards}
+.chat .think i{width:12px;height:12px;border-radius:50%;background:rgb(var(--accent-rgb));animation:dots 1.2s infinite}
+.chat .think i:nth-child(2){animation-delay:.2s}.chat .think i:nth-child(3){animation-delay:.4s}
+@keyframes dots{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-6px)}}
+@keyframes fadein{to{opacity:1}}
+.chat .src{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.chat .src span{font:500 17px var(--mono);padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.18);color:var(--muted);opacity:0}
+.scene.on .chat .src span{animation:fadein .5s forwards}
+
+/* 2 schakelaars */
+.toggles{display:grid;grid-template-columns:1fr 1fr;gap:22px 40px;margin-top:36px}
+.tg{display:flex;align-items:center;gap:24px;padding:22px 26px;background:rgba(255,255,255,.035);border-left:4px solid rgb(var(--accent-rgb))}
+.tg .sw{flex:none;position:relative;width:84px;height:44px;border-radius:22px;background:#26324a;transition:background .5s}
+.tg .sw::after{content:"";position:absolute;left:5px;top:5px;width:34px;height:34px;border-radius:50%;background:#8e9bb2}
+.scene.on .tg:not(.fh) .sw{animation:swbg .5s .5s forwards}
+.scene.on .tg:not(.fh) .sw::after{animation:swknob .5s cubic-bezier(.3,1.5,.5,1) .5s forwards}
+@keyframes swbg{to{background:rgb(var(--accent-rgb));box-shadow:0 0 24px rgba(var(--accent-rgb),.6)}}
+@keyframes swknob{to{transform:translateX(40px);background:#04070d}}
+.tg b{display:block;font:500 28px var(--display)}
+.tg span{display:block;font-size:21px;color:var(--muted);margin-top:4px}
+.callout{margin-top:30px;font:500 24px var(--body);color:rgb(var(--accent-rgb));border:2px dashed rgba(var(--accent-rgb),.6);padding:18px 24px;border-radius:6px}
+
+/* 3 radar */
+.radarrow{display:grid;grid-template-columns:420px 1fr;gap:190px;align-items:center;margin-top:24px}
+.radar{position:relative;width:420px;height:420px;border-radius:50%;
+  background:repeating-radial-gradient(circle,transparent 0 51px,rgba(var(--accent-rgb),.28) 51px 53px),radial-gradient(circle,rgba(var(--accent-rgb),.10),transparent 70%);
+  border:2px solid rgba(var(--accent-rgb),.6);overflow:visible}
+.radar::before,.radar::after{content:"";position:absolute;background:rgba(var(--accent-rgb),.22)}
+.radar::before{left:50%;top:0;bottom:0;width:2px;margin-left:-1px}.radar::after{top:50%;left:0;right:0;height:2px;margin-top:-1px}
+.radar .sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,rgba(var(--accent-rgb),0) 10deg,rgba(var(--accent-rgb),.55) 60deg,transparent 60.5deg);animation:sweep 4.0s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.blip{position:absolute;width:0;height:0}
+.blip i{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:rgb(var(--accent-rgb));opacity:.25;animation:ping 4.0s infinite}
+.blip span{position:absolute;left:18px;top:-14px;white-space:nowrap;font:500 19px var(--mono);color:var(--fg);opacity:.35;animation:pinglabel 4.0s infinite}
+.blip.hi i{background:#ff5a5f}
+@keyframes ping{0%{opacity:1;box-shadow:0 0 0 0 rgba(var(--accent-rgb),.8)}30%{opacity:.85;box-shadow:0 0 0 22px rgba(var(--accent-rgb),0)}100%{opacity:.25}}
+@keyframes pinglabel{0%,35%{opacity:1}100%{opacity:.35}}
+
+/* 4 eventstroom */
+.stream{display:flex;flex-direction:column;gap:14px;margin-top:30px}
+.ev{display:grid;grid-template-columns:22px 360px 1fr;gap:22px;align-items:center;padding:18px 24px;background:rgba(255,255,255,.035);border-left:4px solid var(--c);font-size:23px}
+.ev i{width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 16px var(--c)}
+.ev b{font:500 24px var(--mono);color:var(--fg)}
+.ev span{color:var(--muted)}
+.scene.on .ev{animation:slidein .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 450ms + 700ms)}
+@keyframes slidein{from{opacity:0;transform:translateX(-60px)}}
+
+/* 5 heatmap */
+.hmrow{display:grid;grid-template-columns:420px 1fr;gap:70px;align-items:center;margin-top:24px}
+.hm{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;width:420px}
+.hm i{aspect-ratio:1;border-radius:4px;background:#1a2438}
+.scene.on .hm i{animation:scan .5s ease-out forwards;animation-delay:calc(var(--d) * 1ms + 600ms)}
+.scene.on .hm i.hot{animation:scan .5s ease-out forwards,hot .6s ease-out forwards;animation-delay:calc(var(--d) * 1ms + 600ms),calc(var(--d) * 1ms + 1300ms)}
+.scene.on .hm i.warm{animation:scan .5s ease-out forwards,warm .6s ease-out forwards;animation-delay:calc(var(--d) * 1ms + 600ms),calc(var(--d) * 1ms + 1300ms)}
+@keyframes scan{0%{background:rgb(var(--accent-rgb));box-shadow:0 0 18px rgb(var(--accent-rgb))}100%{background:#2a3650}}
+@keyframes hot{to{background:#ff5a5f;box-shadow:0 0 18px rgba(255,90,95,.8)}}
+@keyframes warm{to{background:#ffb547;box-shadow:0 0 14px rgba(255,181,71,.6)}}
+.hmcap{font:500 18px var(--mono);color:var(--dim);margin-top:14px;letter-spacing:.1em;text-transform:uppercase}
+.key{display:flex;gap:30px;margin-top:26px;font-size:22px;color:var(--muted)}
+.key span::before{content:"";display:inline-block;width:18px;height:18px;border-radius:4px;margin-right:10px;vertical-align:-2px;background:var(--c)}
+
+/* 6 routes */
+.routes{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px}
+.route{position:relative;padding:30px 26px 28px;background:rgba(255,255,255,.035);border-top:5px solid var(--c)}
+.route .ic{width:64px;height:64px;margin-bottom:18px}
+.route .ic svg{width:64px;height:64px;fill:none;stroke:var(--c);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.route h3{font-size:27px;margin-bottom:10px}
+.route p{font-size:22px;line-height:1.5;color:var(--muted)}
+
+/* 7 waarschuwing */
+.warn{margin-top:30px;display:flex;gap:24px;align-items:center;padding:24px 28px;border:2px solid #ffb547;border-radius:6px;background:rgba(255,181,71,.08);font-size:25px;line-height:1.45}
+.warn b{color:#ffb547}
+.warn .tri{flex:none;width:56px;height:50px;background:#ffb547;clip-path:polygon(50% 0,100% 100%,0 100%);position:relative}
+.scene.on .warn:not(.fh){animation:warnpulse 2.2s ease-in-out infinite}
+@keyframes warnpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,181,71,0)}50%{box-shadow:0 0 40px 4px rgba(255,181,71,.35)}}
+
+.foot{margin-top:28px;font:400 22px var(--mono);color:var(--muted);padding-left:20px;border-left:3px solid rgb(var(--accent-rgb))}
+@media (prefers-reduced-motion:reduce){.radar .sweep,.blip i,.blip span,.chat .think i,.warn{animation:none!important}.chat .msg{width:auto;white-space:normal}.hm i,.ev,.tg .sw,.tg .sw::after{animation-duration:.01s!important;animation-delay:0s!important}}
+</style>
+</head>
+<body>
+<div id="stage" aria-label="Presentatiecanvas. Klik of gebruik de pijltjestoetsen om verder te gaan.">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="world">
+    <div id="grid"></div>
+
+    <div class="titleblock only" data-show="0" style="left:250px;top:300px;width:1500px">
+      <p class="eyebrow">Microsoft Purview · DSPM voor AI</p>
+      <h1>Van prompt tot policy</h1>
+      <p>Eén vraag aan Copilot reist door Purview. Onderweg zie je wat DSPM ervan ziet, wat het je laat doen en waar je moet opletten.</p>
+    </div>
+
+    <section class="scene" data-on="1" style="left:2000px;top:225px;width:1500px">
+      <p class="eyebrow rv">01 · Dag 1</p>
+      <h2 class="rv" style="--i:1">Copilot gaat aan, en iemand stelt een vraag</h2>
+      <div class="chatrow">
+        <div class="chat rv" style="--i:2"><div class="who">Microsoft 365 Copilot</div><div class="msg">Vat de klantdossiers van Q3 samen, met contactgegevens</div>
+          <div class="think"><i></i><i></i><i></i>Copilot zoekt in alles waar deze gebruiker bij kan</div><div class="src"><span style="animation-delay:3.90s">Mail</span><span style="animation-delay:4.15s">Teams</span><span style="animation-delay:4.40s">SharePoint</span><span style="animation-delay:4.65s">OneDrive</span></div></div>
+        <div><p class="lede rv" style="--i:3;margin-top:0">Copilot vindt wat de gebruiker al mocht zien. De vraag is of jij kunt zien wat er gevraagd en geantwoord wordt, en wat erin zat.</p><p class="log rv" style="--i:4">CopilotInteraction · Microsoft 365 Copilot · <b>prompt en antwoord</b> in audit</p></div>
+      </div>
+    </section>
+
+    <section class="scene" data-on="2" style="left:3800px;top:225px;width:1500px">
+      <p class="eyebrow rv">02 · Voorwaarden</p>
+      <h2 class="rv" style="--i:1">Zonder voorwaarden zie je alleen Copilot</h2>
+      <div class="toggles">
+        <div class="tg fr" data-frag="2:1"><div class="sw"></div><div><b>Audit</b><span>staat standaard aan</span></div></div>
+        <div class="tg fr" data-frag="2:2"><div class="sw"></div><div><b>Apparaten onboarden</b><span>nodig voor AI-sites van derden</span></div></div>
+        <div class="tg fr" data-frag="2:3"><div class="sw"></div><div><b>Purview browser extension</b><span>Windows, voor bezoeken aan AI-sites</span></div></div>
+        <div class="tg fr" data-frag="2:4"><div class="sw"></div><div><b>Pay-as-you-go</b><span>voor AI-apps anders dan Microsoft 365 Copilot</span></div></div>
+      </div>
+      <p class="callout fr" data-frag="2:5">Sla je dit over, dan toont het dashboard alleen Copilot. Dat betekent niet dat er geen shadow AI is.</p>
+    </section>
+
+    <section class="scene" data-on="3" style="left:5600px;top:225px;width:1500px">
+      <p class="eyebrow rv">03 · AI observability</p>
+      <h2 class="rv" style="--i:1">Eén radar voor alle AI-apps en agents</h2>
+      <div class="radarrow">
+        <div class="radar rv" style="--i:2"><div class="sweep"></div><div class="blip" style="left:259px;top:105px"><i style="animation-delay:-0.39s"></i><span style="animation-delay:-0.39s">Microsoft 365 Copilot</span></div><div class="blip hi" style="left:373px;top:224px"><i style="animation-delay:-3.61s"></i><span style="animation-delay:-3.61s">ChatGPT</span></div><div class="blip" style="left:250px;top:279px"><i style="animation-delay:-3.00s"></i><span style="animation-delay:-3.00s">Copilot Studio agent</span></div><div class="blip" style="left:148px;top:343px"><i style="animation-delay:-2.39s"></i><span style="animation-delay:-2.39s">Agent 365</span></div><div class="blip hi" style="left:107px;top:228px"><i style="animation-delay:-1.78s"></i><span style="animation-delay:-1.78s">Gemini</span></div><div class="blip hi" style="left:99px;top:78px"><i style="animation-delay:-1.11s"></i><span style="animation-delay:-1.11s">Claude</span></div></div>
+        <div class="card rv" style="--i:3"><span class="tag">AI observability</span><h3>Alles met activiteit in 30 dagen</h3><p>AI-apps en agents, met risiconiveau en gevoelige interacties. <b>Agent 365</b> zie je hier, niet op het dashboard Apps and agents.</p></div>
+      </div>
+    </section>
+
+    <section class="scene" data-on="4" style="left:7400px;top:225px;width:1500px">
+      <p class="eyebrow rv">04 · Activity explorer</p>
+      <h2 class="rv" style="--i:1">Wat een prompt achterlaat</h2>
+      <div class="stream">
+        <div class="ev" style="--i:0;--c:#4fd8ff"><i></i><b>AI website visit</b><span>iemand opende een generatieve AI-site</span></div>
+        <div class="ev" style="--i:1;--c:#3fe0c5"><i></i><b>AI interaction</b><span>prompt en antwoord, met de juiste rechten</span></div>
+        <div class="ev" style="--i:2;--c:#ffb547"><i></i><b>Sensitive info types</b><span>er zat gevoelige informatie in</span></div>
+        <div class="ev" style="--i:3;--c:#ff5a5f"><i></i><b>DLP rule match</b><span>een policy werd geraakt</span></div>
+      </div>
+      <div class="card fr" data-frag="4:1" style="--c:#ffb547;margin-top:26px"><span class="tag">Let op</span><p style="margin-top:10px">Voor andere AI-apps leg je de inhoud alleen vast met een collection policy met <b>content capture</b>. De one-click policy voor netwerkverkeer zet die optie standaard niet aan.</p></div>
+    </section>
+
+    <section class="scene" data-on="5" style="left:9200px;top:225px;width:1500px">
+      <p class="eyebrow rv">05 · Dag 5 · Oversharing</p>
+      <h2 class="rv" style="--i:1">Elke week de honderd drukste sites</h2>
+      <div class="hmrow">
+        <div class="rv" style="--i:2"><div class="hm"><i style="--d:0"></i><i style="--d:60"></i><i style="--d:120"></i><i class="warm" style="--d:180"></i><i style="--d:240"></i><i style="--d:300"></i><i style="--d:360"></i><i class="hot" style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:60"></i><i style="--d:120"></i><i style="--d:180"></i><i class="hot" style="--d:240"></i><i style="--d:300"></i><i style="--d:360"></i><i style="--d:420"></i><i style="--d:480"></i><i class="warm" style="--d:540"></i><i style="--d:600"></i><i style="--d:120"></i><i style="--d:180"></i><i class="hot" style="--d:240"></i><i class="hot" style="--d:300"></i><i style="--d:360"></i><i style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i style="--d:660"></i><i class="warm" style="--d:180"></i><i style="--d:240"></i><i style="--d:300"></i><i style="--d:360"></i><i style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i class="hot" style="--d:660"></i><i style="--d:720"></i><i style="--d:240"></i><i class="hot" style="--d:300"></i><i style="--d:360"></i><i style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i class="warm" style="--d:660"></i><i style="--d:720"></i><i style="--d:780"></i><i style="--d:300"></i><i style="--d:360"></i><i class="warm" style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i class="hot" style="--d:660"></i><i class="hot" style="--d:720"></i><i class="hot" style="--d:780"></i><i style="--d:840"></i><i style="--d:360"></i><i style="--d:420"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i style="--d:660"></i><i class="warm" style="--d:720"></i><i style="--d:780"></i><i style="--d:840"></i><i style="--d:900"></i><i style="--d:420"></i><i class="hot" style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i style="--d:660"></i><i style="--d:720"></i><i style="--d:780"></i><i style="--d:840"></i><i style="--d:900"></i><i class="warm" style="--d:960"></i><i style="--d:480"></i><i style="--d:540"></i><i style="--d:600"></i><i style="--d:660"></i><i class="hot" style="--d:720"></i><i style="--d:780"></i><i style="--d:840"></i><i style="--d:900"></i><i style="--d:960"></i><i style="--d:1020"></i><i class="hot" style="--d:540"></i><i style="--d:600"></i><i style="--d:660"></i><i style="--d:720"></i><i style="--d:780"></i><i class="warm" style="--d:840"></i><i style="--d:900"></i><i style="--d:960"></i><i style="--d:1020"></i><i style="--d:1080"></i></div><p class="hmcap">100 sites · wekelijkse scan</p></div>
+        <div><p class="lede rv" style="--i:3;margin-top:0">Zonder dat je iets aanzet, draait elke week een data risk assessment op de honderd meest gebruikte SharePoint-sites. De eerste keer duurt het vier dagen voordat je resultaten ziet.</p>
+          <div class="key rv" style="--i:4"><span style="--c:#ffb547">Gevoelige data gevonden</span><span style="--c:#ff5a5f">Gedeeld met iedereen</span></div></div>
+      </div>
+    </section>
+
+    <section class="scene" data-on="6" style="left:11000px;top:225px;width:1500px">
+      <p class="eyebrow rv">06 · Protect</p>
+      <h2 class="rv" style="--i:1">Vier routes per site</h2>
+      <div class="routes">
+        <div class="route rv" style="--i:2;--c:#6aa8ff"><div class="ic"><svg viewBox="0 0 64 64"><path d="M8 30 30 8h24v24L32 54z"/><circle cx="44" cy="20" r="5"/></svg></div><h3>Restrict access by label</h3><p>DLP voorkomt dat Copilot gelabelde items samenvat.</p></div>
+        <div class="route rv" style="--i:3;--c:#a98bff"><div class="ic"><svg viewBox="0 0 64 64"><path d="M4 32s10-18 28-18 28 18 28 18-10 18-28 18S4 32 4 32z"/><circle cx="32" cy="32" r="8"/><path d="M10 54 54 10"/></svg></div><h3>Restrict all items</h3><p>Restricted Content Discovery sluit de hele site uit voor Copilot.</p></div>
+        <div class="route rv" style="--i:4;--c:#3fe0c5"><div class="ic"><svg viewBox="0 0 64 64"><rect x="12" y="8" width="34" height="46" rx="4"/><path d="M20 22h18M20 32h18M20 42h10"/><circle cx="48" cy="46" r="10"/><path d="M44 46l3 3 6-6"/></svg></div><h3>Auto-labeling</h3><p>Een policy labelt ongelabelde bestanden met gevoelige data.</p></div>
+        <div class="route rv" style="--i:5;--c:#ff8a5f"><div class="ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><path d="M32 18v14l10 6"/></svg></div><h3>Retention</h3><p>Content die drie jaar niet is geopend, laat je automatisch verwijderen.</p></div>
+      </div>
+    </section>
+
+    <section class="scene" data-on="7" style="left:12800px;top:200px;width:1500px">
+      <p class="eyebrow rv">07 · One-click policies</p>
+      <h2 class="rv" style="--i:1">Eerst kijken, dan blokkeren</h2>
+      <div class="split">
+        <div class="card fr" data-frag="7:1" style="--c:#4fd8ff"><span class="tag">Ontdekken</span><h3>Auditmodus</h3><p><b>Detect sensitive info added to AI sites</b> ziet wat er geplakt of geüpload wordt naar AI-sites, zonder iets tegen te houden.</p></div>
+        <div class="card fr" data-frag="7:2" style="--c:#5cf2a0"><span class="tag">Beschermen</span><h3>Blokkeren</h3><p><b>Protect sensitive data from Copilot processing</b> houdt Copilot weg bij gekozen labels. <b>Block sensitive info from AI sites</b> geeft verhoogd risico een block with override, in testmodus.</p></div>
+      </div>
+      <div class="warn fr" data-frag="7:3"><div class="tri"></div><div>Policies met Adaptive Protection zetten Adaptive Protection aan als dat nog niet zo was, met standaard risiconiveaus voor <b>alle gebruikers en groepen</b>.</div></div>
+    </section>
+
+    <section class="scene" data-on="8" style="left:14600px;top:225px;width:1500px">
+      <p class="eyebrow rv">08 · Classic en nieuw</p>
+      <h2 class="rv" style="--i:1">DSPM for AI heet nu classic</h2>
+      <div class="split">
+        <div class="card rv" style="--i:2;--c:#5b6780"><span class="tag">DSPM for AI (classic)</span><h3>Blijft, maar staat stil</h3><p>Nieuwe functies komen alleen nog in de nieuwe versie.</p></div>
+        <div class="card rv" style="--i:3;--c:#ffb547"><span class="tag">DSPM</span><h3>Gebouwd rond doelen</h3><p>Data security objectives zoals <b>Prevent oversharing of sensitive data</b>, met metrics, aanbevolen acties en one-click policies per doel.</p></div>
+      </div>
+      <p class="foot rv" style="--i:4">Langer dan 60 dagen niet gekeken? Dan pauzeert de verwerking van Microsoft 365-data, tot je terugkomt.</p>
+    </section>
+
+    <section class="scene" data-on="9" style="left:16400px;top:225px;width:1500px">
+      <p class="eyebrow rv">09 · Waar je begint</p>
+      <h2 class="rv" style="--i:1">Vier stappen, in deze volgorde</h2>
+      <div class="steps4">
+        <div class="st rv" style="--i:2"><div class="n">01</div><h3>Nieuwe DSPM</h3><p>Start in DSPM, niet in de classic versie. Daar komt niets meer bij.</p></div>
+        <div class="st rv" style="--i:3"><div class="n">02</div><h3>Voorwaarden</h3><p>Onboard apparaten, rol de browser extension uit en regel pay-as-you-go.</p></div>
+        <div class="st rv" style="--i:4"><div class="n">03</div><h3>Oversharing</h3><p>Lees de wekelijkse assessment en kies per site een route.</p></div>
+        <div class="st rv" style="--i:5"><div class="n">04</div><h3>Policies</h3><p>Scope one-click policies eerst op een testgroep. Check Adaptive Protection.</p></div>
+      </div>
+    </section>
+
+    <div id="doc" aria-hidden="true">
+      <div class="sheet">
+        <div class="bar" id="dtag">Prompt</div>
+        <div class="nm">Prompt</div>
+        <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div><div class="ln"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="clock" id="clock" aria-hidden="true" hidden></div>
+<div class="top" aria-hidden="true"><span>Purview <b>//</b> van prompt tot policy</span><span><span class="hint">← → of klik · M voor de tijdlijn · </span><b id="cnt"></b></span></div>
+<nav class="hud" aria-label="Bediening presentatie">
+  <div class="hud-l"><span class="chn" id="chn">Start</span><span class="cht" id="cht">Van prompt tot policy</span></div>
+  <div class="segs" id="segs"></div>
+  <div class="hud-r">
+    <a class="btn" href="/" aria-label="Terug naar techwes.nl">Techwes</a>
+    <a class="btn" href="from-prompt-to-policy.html" hreflang="en" lang="en" aria-label="English version">EN</a>
+    <button class="btn" id="prev" aria-label="Vorige">←</button>
+    <button class="btn" id="map" aria-pressed="false">Tijdlijn</button>
+    <button class="btn pri" id="next">Volgende →</button>
+  </div>
+</nav>
+<div class="sr" aria-live="polite" id="sr"></div>
+<script type="application/json" id="track-config">{"ui": {"map": "Tijdlijn", "all": "Hele tijdlijn"}, "world": {"w": 18100, "h": 1700, "axisY": 1180, "camY": 735, "camH": 1110}, "steps": [{"ch": "Start", "t": "Van prompt tot policy", "x": 950, "a": "#3fe0c5", "d": {"tag": "Prompt", "cls": ""}}, {"ch": "01 · Dag 1", "t": "Copilot gaat aan", "x": 2750, "a": "#4fd8ff", "d": {"tag": "Prompt", "cls": ""}, "r": 1, "clock": "Dag 1", "tick": "Dag 1"}, {"ch": "02 · Voorwaarden", "t": "Zonder voorwaarden alleen Copilot", "x": 4550, "a": "#ffb547", "d": {"tag": "Prompt", "cls": ""}, "r": -1, "clock": "Dag 1", "fr": 5}, {"ch": "03 · AI observability", "t": "Eén radar voor alle AI", "x": 6350, "a": "#3fe0c5", "d": {"tag": "Prompt · gezien", "cls": "seen"}, "r": 1, "clock": "Dag 2", "tick": "Dag 2"}, {"ch": "04 · Activity explorer", "t": "Wat een prompt achterlaat", "x": 8150, "a": "#a98bff", "d": {"tag": "Prompt · SIT", "cls": "flag"}, "r": -1, "clock": "Dag 3", "tick": "Dag 3", "fr": 1}, {"ch": "05 · Oversharing", "t": "De honderd drukste sites", "x": 9950, "a": "#ff8a5f", "d": {"tag": "Prompt · SIT", "cls": "flag"}, "r": 1, "clock": "Dag 5", "tick": "Dag 5"}, {"ch": "06 · Protect", "t": "Vier routes per site", "x": 11750, "a": "#6aa8ff", "d": {"tag": "Prompt · SIT", "cls": "flag"}, "r": -1, "clock": "Dag 5"}, {"ch": "07 · One-click policies", "t": "Eerst kijken, dan blokkeren", "x": 13550, "a": "#5cf2a0", "d": {"tag": "Beschermd", "cls": "safe"}, "r": 1, "clock": "Week 2", "tick": "Week 2", "fr": 3}, {"ch": "08 · Classic en nieuw", "t": "DSPM for AI heet nu classic", "x": 15350, "a": "#ffb547", "d": {"tag": "Beschermd", "cls": "safe"}, "r": 0, "clock": "Week 3", "tick": "Week 3"}, {"ch": "09 · Waar je begint", "t": "Vier stappen", "x": 17150, "a": "#3fe0c5", "d": {"tag": "Beschermd", "cls": "safe"}, "r": 0, "clock": "Week 4", "tick": "Week 4"}]}</script>
+<script src="track.js"></script>
+</body>
+</html>
