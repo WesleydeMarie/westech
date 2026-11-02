@@ -123,7 +123,8 @@
 #blip.blip-flag .core{box-shadow:0 0 0 4px #ffb547,0 0 70px rgba(255,181,71,.8)}
 #blip.blip-safe .core{box-shadow:0 0 0 4px #5cf2a0,0 0 60px rgba(92,242,160,.7)}
 #blip.blip-safe .core::after{content:"";position:absolute;right:-26px;top:-30px;width:56px;height:64px;background:#5cf2a0;clip-path:polygon(50% 0,100% 18%,100% 55%,50% 100%,0 55%,0 18%);box-shadow:0 0 30px #5cf2a0}
-#blip::before{content:"";position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:3px solid rgb(var(--accent-rgb));animation:bping 2.2s ease-out infinite;opacity:0}
+#blip::before{content:"";position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:3px solid rgb(var(--accent-rgb));opacity:0}
+#blip.ping::before{animation:bping 1.8s ease-out 2}
 @keyframes bping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(4);opacity:0}}
 .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:34px}
 .cat{padding:26px 26px 22px;background:rgba(255,255,255,.035);border-top:5px solid var(--c)}
