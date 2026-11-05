@@ -6,6 +6,7 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import { blogPosts } from './blogPosts';
 import { PostAnimation } from './animaties';
+import GratisCheck from './GratisCheck';
 
 // --- Routing ----------------------------------------------------------------
 // Maakt van een titel een URL-slug: "Custom SITs in Purview" -> "custom-sits-in-purview"
@@ -61,7 +62,7 @@ export default function Techwes() {
   } catch (err) {
     segments = [];
   }
-  const pageMap = { blog: 'blog', 'over-mij': 'about', contact: 'contact' };
+  const pageMap = { blog: 'blog', 'over-mij': 'about', contact: 'contact', 'gratis-check': 'gratischeck' };
   const currentPage = segments.length === 0 ? 'home' : (pageMap[segments[0]] || 'notfound');
   const detailSlug = segments.length > 1 ? segments[1] : null;
 
@@ -434,6 +435,10 @@ export default function Techwes() {
               </div>
             </div>
           </div>
+        )}
+
+        {currentPage === 'gratischeck' && (
+          <GratisCheck colors={colors} fonts={fonts} navigate={navigate} />
         )}
 
         {currentPage === 'contact' && (
