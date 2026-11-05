@@ -78,13 +78,17 @@ export default function GratisCheck({ colors, fonts, navigate }) {
         <div aria-live="polite">
           <div style={{ padding: '1.5rem', borderRadius: '12px', background: colors.white, border: `1px solid ${colors.border}`, marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-              <h2 style={{ fontFamily: fonts.serif, fontSize: '26px', fontWeight: 400, margin: 0, color: colors.text, overflowWrap: 'anywhere' }}>{result.domain}</h2>
+              <h2 style={{ fontFamily: fonts.serif, fontSize: '26px', fontWeight: 400, margin: 0, color: colors.text, overflowWrap: 'anywhere' }}>
+                <span style={{ display: 'block', fontFamily: fonts.sans, fontSize: '13px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: colors.textLight, marginBottom: '0.25rem' }}>Resultaat voor</span>
+                {result.domain}
+              </h2>
               <Badge status={result.overall} />
             </div>
-            <p style={{ margin: 0, color: colors.text, lineHeight: 1.6 }}>{OVERALL[result.overall]}</p>
+            <p style={{ margin: 0, color: colors.text, lineHeight: 1.6 }}><strong style={{ fontWeight: 600 }}>Totaaloordeel: {(STATUS[result.overall] || STATUS.oranje).label.toLowerCase()}.</strong> {OVERALL[result.overall]}</p>
             <p style={{ margin: '0.75rem 0 0', fontSize: '13px', color: colors.textLight }}>{result.email}{result.note ? ' ' + result.note : ''}</p>
           </div>
 
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: colors.text, margin: '0 0 0.75rem' }}>De checks, belangrijkste eerst</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
             {checks.map((c) => (
               <div key={c.id} style={{ padding: '1.25rem', borderRadius: '10px', background: colors.white, border: `1px solid ${colors.border}` }}>
