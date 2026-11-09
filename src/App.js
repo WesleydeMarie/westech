@@ -85,7 +85,7 @@ export default function Techwes() {
   ).sort(byPublishDateDesc);
 
   const latestPosts = [...allBlogPosts].sort(byPublishDateDesc).slice(0, 4);
-  const categories = ['Purview', 'Defender', 'AI'];
+  const categories = ['Purview', 'Entra', 'Defender', 'AI'];
   // Royal Tech Color Palette
   const colors = {
     primary: '#1e40af',

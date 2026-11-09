@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign-in risk en user risk · Techwes</title>
+<meta name="description" content="Een geanimeerde uitleg van de twee risk-based Conditional Access policies in Microsoft Entra: sign-in risk en user risk, met en zonder handhaving.">
+<link rel="alternate" hreflang="en" href="https://techwes.nl/presentaties/risk-policies.html">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="risk-policies.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a href="/">← techwes.nl</a><a class="lang" href="risk-policies.html" hreflang="en">English</a></div>
+  <div class="eyebrow">Microsoft Entra ID Protection × Conditional Access</div>
+  <h1>Twee risk policies.<br>Twee verschillende vragen.</h1>
+  <p class="lede"><b>Sign-in risk</b> vraagt: is deze aanmelding echt van de gebruiker? <b>User risk</b> vraagt: is deze identiteit al gecompromitteerd? ID Protection berekent beide scores, maar alleen een Conditional Access policy doet er iets mee. Zet de policy aan en uit om het verschil te zien.</p>
+  <div class="controls">
+    <div class="seg" role="tablist">
+      <button data-scene="signin" class="on">Sign-in risk</button>
+      <button data-scene="user">User risk</button>
+    </div>
+    <label class="switch"><input type="checkbox" id="pol" checked><span class="track"><span class="knob"></span></span><span id="polLabel"></span></label>
+    <button class="btn" id="play"></button>
+    <button class="btn" id="replay">↻ Opnieuw</button>
+  </div>
+  <div class="stage">
+    <svg id="svg" viewBox="0 0 900 370" aria-label="Geanimeerde flow van een risk-based Conditional Access policy">
+      <defs>
+        <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <line class="trackline" x1="90" y1="170" x2="810" y2="170"/>
+
+      <g class="node" id="nActor" transform="translate(90,170)">
+        <circle class="halo" r="44"/><circle class="ring" r="44"/>
+        <g class="ico"><circle cy="-11" r="9"/><path d="M-17 19c0-12 8-18 17-18s17 6 17 18z"/></g>
+        <text class="lbl" y="68" id="actorLbl">Aanmelding</text>
+        <text class="sub" y="86" id="actorSub">eva@contoso</text>
+      </g>
+      <g class="node" id="nIdp" transform="translate(330,170)">
+        <circle class="halo" r="44"/><circle class="ring" r="44"/>
+        <g class="ico"><path d="M0 -23 L19 -15 V0 C19 12 10 20 0 24 C-10 20 -19 12 -19 0 V-15 Z"/><path class="s" style="stroke:var(--panel2)" d="M-8 0 l6 6 l11 -12"/></g>
+        <text class="lbl" y="68">ID Protection</text>
+        <text class="sub" y="86">berekent risico</text>
+      </g>
+      <g class="node" id="nCa" transform="translate(570,170)">
+        <circle class="halo" r="44"/><circle class="ring" r="44"/>
+        <g class="ico"><path class="s" d="M-20 0 H-2 M-2 0 L16 -15 M-2 0 L16 15"/><circle cx="-2" cy="0" r="5"/></g>
+        <text class="lbl" y="68">Conditional Access</text>
+        <text class="sub" y="86">handhaaft</text>
+      </g>
+      <g class="node" id="nApp" transform="translate(810,170)">
+        <circle class="halo" r="44"/><circle class="ring" r="44"/>
+        <g class="ico"><rect x="-17" y="-17" width="15" height="15" rx="3"/><rect x="2" y="-17" width="15" height="15" rx="3"/><rect x="-17" y="2" width="15" height="15" rx="3"/><rect x="2" y="2" width="15" height="15" rx="3"/></g>
+        <text class="lbl" y="68">Microsoft 365</text>
+        <text class="sub" y="86">mail, bestanden, Teams</text>
+      </g>
+
+      <g class="wall" id="wall"><rect x="682" y="132" width="8" height="76" rx="3"/><text x="686" y="226" style="fill:var(--amber);font-weight:700;font-size:11px;font-family:'JetBrains Mono',monospace;text-anchor:middle">MFA</text></g>
+
+      <g id="chips"></g>
+
+      <g id="gauge" transform="translate(330,330)">
+        <path d="M-46 0 A46 46 0 0 1 -23 -39.84" stroke="var(--green)" stroke-width="9" fill="none" stroke-linecap="round" opacity=".9"/>
+        <path d="M-21 -40.9 A46 46 0 0 1 21 -40.9" stroke="var(--amber)" stroke-width="9" fill="none" opacity=".9"/>
+        <path d="M23 -39.84 A46 46 0 0 1 46 0" stroke="var(--red)" stroke-width="9" fill="none" stroke-linecap="round" opacity=".9"/>
+        <g id="needle"><line x1="0" y1="0" x2="0" y2="-36"/></g>
+        <circle r="5" fill="var(--txt)"/>
+        <text class="glbl" id="glbl" y="24">Risico: geen</text>
+      </g>
+
+      <g class="pcard" id="pcard" transform="translate(478,268)">
+        <rect class="bg" width="184" height="86" rx="10"/>
+        <text class="ttl" x="12" y="20" id="pt">CA policy</text>
+        <text x="12" y="41" id="p1"></text>
+        <text x="12" y="58" id="p2"></text>
+        <text x="12" y="75" id="p3"></text>
+      </g>
+
+      <g id="outcome"><rect x="-98" y="-17" width="196" height="34" rx="9"/><text y="5" id="otext"></text></g>
+
+      <g id="packet" style="transform:translate(90px,170px)"><circle r="9"/></g>
+    </svg>
+    <div class="caption"><div class="stepno" id="stepno"></div><div id="cap"></div></div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <div class="grid">
+    <div class="card"><span class="tag t-b">per aanmelding</span><h3>Sign-in risk policy</h3><div class="q">“Is deze aanmelding echt Eva?”</div>
+      <p>Per authenticatie in realtime berekend, op basis van signalen zoals een anoniem IP-adres, onbekende aanmeldeigenschappen of een kwaadaardig IP-adres. Hij vangt het moment waarop een correct wachtwoord door de verkeerde persoon wordt gebruikt.</p>
+      <p>De echte gebruiker doet MFA en de riskante aanmelding sluit zichzelf. De aanvaller met alleen een wachtwoord krijgt geen token.</p></div>
+    <div class="card"><span class="tag t-r">per identiteit</span><h3>User risk policy</h3><div class="q">“Is het account van Eva gecompromitteerd?”</div>
+      <p>Over tijd opgebouwd uit detecties als gelekte credentials, een password spray en threat intelligence. Waar de volgende aanmelding vandaan komt, maakt niet uit. Het account is het probleem.</p>
+      <p><b>Require risk remediation</b> dwingt een veilige wachtwoordwijziging af, of opnieuw aanmelden voor passwordless gebruikers, en trekt bestaande sessies in. Een gestolen wachtwoord en gestolen tokens werken daarna allebei niet meer.</p></div>
+    <div class="card wide"><h3>Waarom je ze allebei wilt</h3>
+      <p>Ze dekken verschillende momenten in dezelfde aanval. Sign-in risk houdt de poging aan de deur tegen, user risk ruimt een identiteit op die mogelijk al in andere handen is. Zonder beide is ID Protection een rapportagetool en moet iemand in het SOC zelf opmerken, onderzoeken en resetten.</p>
+      <table class="cfg">
+        <tr><th></th><th>Sign-in risk</th><th>User risk</th></tr>
+        <tr><td>Conditie</td><td><code>Sign-in risk: Medium, High</code></td><td><code>User risk: High</code></td></tr>
+        <tr><td>Grant</td><td><code>Require authentication strength</code></td><td><code>Require risk remediation</code></td></tr>
+        <tr><td>Session</td><td><code>Sign-in frequency: Every time</code></td><td><code>Sign-in frequency: Every time</code> (verplicht)</td></tr>
+        <tr><td>Scope</td><td>All users, All resources, break-glass uitgesloten</td><td>All users, All resources, break-glass uitgesloten</td></tr>
+      </table></div>
+    <div class="card wide note"><h3>Voordat je de policies aanzet</h3>
+      <p>Risk-based policies vereisen Microsoft Entra ID P2. Gebruikers moeten al een MFA-methode geregistreerd hebben voordat het risico ze raakt, dus combineer dit met een MFA-registratiebeleid. Begin in report-only. Require risk remediation werkt niet voor gasten en externe gebruikers, omdat Entra hun sessies niet kan intrekken. De oude risk policies in ID Protection zijn op 1 oktober 2026 uitgefaseerd, dus Conditional Access is nu de enige plek voor deze policies.</p></div>
+  </div>
+  <footer>Door Wesley de Marie, <a href="/">techwes.nl</a>. Gebaseerd op Microsoft Learn: <a href="https://learn.microsoft.com/entra/id-protection/concept-identity-protection-policies">Risk-based access policies</a> ·
+    <a href="https://learn.microsoft.com/entra/id-protection/howto-identity-protection-configure-risk-policies">Configure and enable risk policies</a> ·
+    <a href="https://learn.microsoft.com/entra/identity/conditional-access/policy-risk-based-user">Require remediation for risky users</a></footer>
+</div>
+<script src="risk-policies.js"></script>
+</body>
+</html>
