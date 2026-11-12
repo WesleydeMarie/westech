@@ -24,7 +24,7 @@ elShow.forEach(e=>e.classList.add('only'));
 let step=0,frag=0,mapMode=false,cycleT=null;
 let cam={x:2100,y:1450,s:.1,r:0},fl=null;
 let col=hex('#3fe0c5'),colFrom=col,colTo=col;
-function hex(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function hex(h){h='#1e40af';return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
 function setCol(c){col=c;document.documentElement.style.setProperty('--accent-rgb',c.map(Math.round).join(','))}
 function view(){const vh=innerHeight-hud.offsetHeight;return{w:innerWidth,h:Math.max(200,vh)}}
 function target(i){const[x,y,w,h]=S[i].f,v=view();return{x,y,s:Math.min(v.w/(w*1.04),v.h/(h*1.06)),r:S[i].r||0}}
@@ -108,7 +108,7 @@ stage.addEventListener('pointerup',e=>{if(px==null)return;const dx=e.clientX-px,
 
 // stars
 let stars=[];
-function makeStars(){stars=[];for(let i=0;i<240;i++)stars.push({x:Math.random()*5000,y:Math.random()*5000,d:.15+Math.random()*.55,r:Math.random()*1.4+.3,p:Math.random()*6.28})}
+function makeStars(){stars=[];for(let i=0;i<0;i++)stars.push({x:Math.random()*5000,y:Math.random()*5000,d:.15+Math.random()*.55,r:Math.random()*1.4+.3,p:Math.random()*6.28})}
 function resize(){const dpr=Math.min(2,devicePixelRatio||1);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0);if(!fl)cam=target(mapMode?0:step)}
 function render(now){
   if(fl){
