@@ -150,3 +150,8 @@ h3{font-weight:500!important}
 .ring .bg{stroke:var(--tw-soft)!important}
 @keyframes drain{0%{stroke-dashoffset:0}90%{stroke-dashoffset:930;stroke:#dc2626}100%{stroke-dashoffset:930;stroke:#dc2626}}
 .xl div{background:var(--tw-bg)!important;box-shadow:inset 0 0 0 1px var(--tw-soft);border-radius:8px}
+
+/* actieve scène altijd boven de rest; inactieve panelen zonder blauwe kopbalk */
+.panel.on,.scene.on,.layer.on{z-index:4}
+.panel.off,.scene.off{z-index:0;border-top-color:var(--tw-border)!important}
+#doc,#blip,.threat{z-index:6}
