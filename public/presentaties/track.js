@@ -23,7 +23,7 @@ elShow.forEach(e=>e.classList.add('only'));
 let step=0,frag=0,mapMode=false;
 let cam={x:S[0].x,y:W.camY,s:.1,r:0},fl=null;
 let col=hex(S[0].a),colFrom=col,colTo=col;
-function hex(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function hex(h){h=CFG.theme||h;return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
 function setCol(c){col=c;document.documentElement.style.setProperty('--accent-rgb',c.map(Math.round).join(','))}
 function view(){return{w:Math.max(320,innerWidth||stage.clientWidth),h:Math.max(200,(innerHeight||stage.clientHeight)-hud.offsetHeight)}}
 function target(i){const v=view();
@@ -108,7 +108,7 @@ stage.addEventListener('pointerup',e=>{if(px==null)return;const dx=e.clientX-px,
 
 // achtergrond: sterren en een tijdstroom langs de as
 let stars=[],stream=[];
-for(let i=0;i<200;i++)stars.push({x:Math.random()*5000,y:Math.random()*5000,d:.15+Math.random()*.55,r:Math.random()*1.4+.3,p:Math.random()*6.28});
+for(let i=0;i<(CFG.theme?0:200);i++)stars.push({x:Math.random()*5000,y:Math.random()*5000,d:.15+Math.random()*.55,r:Math.random()*1.4+.3,p:Math.random()*6.28});
 for(let i=0;i<160;i++)stream.push({x:Math.random()*W.w,y:W.axisY+(Math.random()+Math.random()+Math.random()-1.5)*90,v:80+Math.random()*260,l:20+Math.random()*70});
 function resize(){const dpr=Math.min(2,devicePixelRatio||1);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0);if(!fl)cam=target(mapMode?-1:step)}
 let last=performance.now();

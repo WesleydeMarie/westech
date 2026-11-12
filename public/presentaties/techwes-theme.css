@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
+/* Techwes-thema: legt de Royal Tech-huisstijl van techwes.nl over de presentatie-engines
+   (data-story.css, track.css en de inline stijlen). Laad dit bestand als laatste, vlak voor </head>. */
+
+:root{
+  --tw-primary:#1e40af; --tw-primary-dark:#1e3a8a; --tw-primary-light:#dbeafe;
+  --tw-accent:#f97316; --tw-accent-dark:#ea580c; --tw-accent-light:#fed7aa;
+  --tw-bg:#f8fafc; --tw-white:#ffffff; --tw-text:#0f172a; --tw-text-light:#64748b;
+  --tw-border:#cbd5e1; --tw-soft:#e2e8f0; --tw-success:#10b981; --tw-danger:#dc2626;
+  --bg:var(--tw-bg)!important; --fg:var(--tw-text)!important; --muted:#475569!important; --dim:#94a3b8!important;
+  --panel:#ffffff!important; --line:rgba(30,64,175,.06)!important;
+  --accent-rgb:30,64,175!important;
+  --display:'Newsreader',Georgia,'Times New Roman',serif!important;
+  --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important;
+  --mono:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;
+  color-scheme:light!important;
+}
+body{background:var(--tw-bg)!important;color:var(--tw-text)!important;font-family:var(--body)!important}
+#stage{background:radial-gradient(120% 90% at 50% 40%,rgba(30,64,175,.05),transparent 65%),var(--tw-bg)!important}
+
+/* typografie zoals de site: serif koppen, Inter tekst */
+h1,h2,h3{font-family:var(--display)!important;font-weight:400!important;letter-spacing:-.01em!important;color:var(--tw-text)}
+h3{font-weight:500!important}
+.eyebrow{font-family:var(--body)!important;font-weight:600!important;letter-spacing:.14em!important;color:var(--tw-accent-dark)!important}
+.log,code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace!important}
+.titleblock,.title{text-shadow:none!important}
+.titleblock h1,.title h1{color:var(--tw-primary-dark)!important}
+
+/* panelen en scènes: witte kaarten met blauwe kopbalk, geen hoekhaken of gloed */
+.panel,.scene{background:var(--tw-white)!important;border:1px solid var(--tw-border)!important;border-top:6px solid var(--tw-primary)!important;border-radius:12px!important;
+  box-shadow:0 1px 2px rgba(15,23,42,.04),0 24px 60px rgba(15,23,42,.08)!important}
+.panel::before,.panel::after,.scene::before,.scene::after{display:none!important}
+.off{opacity:.18!important}
+
+/* blokken binnen een scène */
+.card,.col,.route,.cat,.tg,.ev,.act,.node,.fstep,.cert,.chip3p{background:var(--tw-bg)!important;border-radius:8px;box-shadow:inset 0 0 0 1px var(--tw-soft)}
+.cat li,th,td,.tier{border-color:var(--tw-soft)!important}
+.ev i,.cat li::before{box-shadow:none!important}
+.card b,.pair b{color:var(--tw-text)!important}
+.callout{color:var(--tw-primary)!important;border-color:var(--tw-primary)!important;background:var(--tw-primary-light)}
+.caveat{color:#9a3412!important;border-left-color:var(--tw-accent)!important}
+.chip3p{border:1px dashed var(--tw-accent)!important}.chip3p span{color:#c2410c!important}
+.yes{color:#059669!important}.no{color:var(--tw-danger)!important}
+.warn{border-color:var(--tw-accent)!important;background:#fff7ed!important;box-shadow:none!important}
+.warn b{color:#c2410c!important}.warn .tri{background:var(--tw-accent)!important}
+@keyframes warnpulse{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,0)}50%{box-shadow:0 0 0 6px rgba(249,115,22,.15)}}
+
+/* tijdlijn, radar en titels zonder neon */
+.axis{background:linear-gradient(90deg,transparent,rgba(30,64,175,.45) 4%,rgba(30,64,175,.45) 96%,transparent)!important;box-shadow:none!important}
+.nowmark,.tick.cur i,.seg.cur::after,.gate,.bigdate,.hub,.rimlbl.cur,.balance .beam,.vault{box-shadow:none!important;text-shadow:none!important}
+.tick i{background:rgba(15,23,42,.18)!important}
+.hub{background:var(--tw-white)!important;border:2px solid var(--tw-primary)!important;font-family:var(--display)!important;font-weight:400!important}
+.chip,.ringlabel,.verdict,.pill,.balance .pivot{background:var(--tw-white)!important}
+.pill{box-shadow:0 8px 24px rgba(15,23,42,.08)!important}
+.clock{color:#fff!important;background:var(--tw-primary)!important;box-shadow:0 4px 14px rgba(30,64,175,.25)!important}
+
+/* reizend document en prompt */
+#doc .sheet{background:#fff!important;box-shadow:0 0 0 2px var(--lab),0 12px 30px rgba(15,23,42,.18)!important}
+#doc .ic{background:#fff!important}
+#doc.seen .sheet{box-shadow:0 0 0 3px var(--tw-primary),0 12px 30px rgba(15,23,42,.18)!important}
+#doc.flag .sheet{box-shadow:0 0 0 3px var(--tw-accent),0 12px 30px rgba(15,23,42,.18)!important}
+#doc.safe .sheet{box-shadow:0 0 0 3px var(--tw-success),0 12px 30px rgba(15,23,42,.18)!important}
+#doc.leak .sheet{box-shadow:0 0 0 3px var(--tw-danger),0 12px 30px rgba(220,38,38,.25)!important}
+#doc.safe::after,#blip.blip-safe .core::after{background:var(--tw-success)!important;box-shadow:none!important}
+#blip .core{background:#fff!important;color:var(--tw-text)!important;box-shadow:0 0 0 3px var(--tw-primary),0 12px 30px rgba(15,23,42,.15)!important}
+#blip.blip-flag .core{box-shadow:0 0 0 3px var(--tw-accent),0 12px 30px rgba(15,23,42,.15)!important}
+#blip.blip-safe .core{box-shadow:0 0 0 3px var(--tw-success),0 12px 30px rgba(15,23,42,.15)!important}
+
+/* scènespecifieke elementen uit de inline stijlen */
+.chat{background:#fff!important;border:1px solid var(--tw-border)!important}
+.chat .msg{background:var(--tw-primary-light)!important;border-color:rgba(30,64,175,.35)!important;color:var(--tw-text)}
+.chat .src span{border-color:var(--tw-border)!important;color:var(--muted)!important;background:#fff}
+.tg .sw{background:var(--tw-soft)!important}
+.tg .sw::after{background:#fff!important;box-shadow:0 1px 3px rgba(15,23,42,.25)}
+@keyframes swbg{to{background:#1e40af}}
+@keyframes swknob{to{transform:translateX(40px);background:#fff}}
+.hm i{background:var(--tw-soft)!important}
+@keyframes scan{0%{background:#1e40af}100%{background:#e2e8f0}}
+@keyframes hot{to{background:#dc2626}}
+@keyframes warm{to{background:#f97316}}
+.radar{background:repeating-radial-gradient(circle,transparent 0 51px,rgba(30,64,175,.18) 51px 53px)!important}
+
+/* neonkleuren in inline --c vervangen door het Royal Tech-palet */
+[style*="--c:#3fe0c5"]{--c:#1e40af!important}
+[style*="--c:#4fd8ff"]{--c:#1e3a8a!important}
+[style*="--c:#6aa8ff"]{--c:#1e3a8a!important}
+[style*="--c:#a98bff"]{--c:#64748b!important}
+[style*="--c:#ff8a5f"]{--c:#ea580c!important}
+[style*="--c:#ffb547"]{--c:#f97316!important}
+[style*="--c:#ff5a5f"]{--c:#dc2626!important}
+[style*="--c:#5cf2a0"]{--c:#10b981!important}
+[style*="--c:#5b6780"]{--c:#94a3b8!important}
+
+/* bediening */
+.hud{background:linear-gradient(to top,rgba(248,250,252,.98),rgba(248,250,252,.85) 70%,transparent)!important}
+.cht{font-family:var(--display)!important;font-weight:500!important;color:var(--tw-text)}
+.chn{color:var(--tw-accent-dark)!important;font-weight:600!important}
+.seg::after{background:var(--tw-border)!important}
+.seg.done::after{background:rgba(30,64,175,.4)!important}
+.seg.cur::after{background:var(--tw-primary)!important}
+.btn{color:var(--tw-text)!important;background:#fff!important;border:1px solid var(--tw-border)!important;border-radius:6px!important}
+.btn:hover{border-color:var(--tw-primary)!important}
+.btn.pri{background:var(--tw-accent)!important;color:#fff!important;border-color:transparent!important}
+.btn.pri:hover{background:var(--tw-accent-dark)!important}
+.top{color:var(--tw-text-light)!important}
+.top b{color:var(--tw-accent-dark)!important}
+
+/* SVG-kleuren die als attribuut in de markup staan */
+[stroke="#4fd8ff"],[stroke="#3fe0c5"],[stroke="#6aa8ff"]{stroke:#1e40af}
+[fill="#4fd8ff"],[fill="#3fe0c5"],[fill="#6aa8ff"]{fill:#1e40af}
+[stroke="#ffb547"]{stroke:#f97316}[fill="#ffb547"]{fill:#f97316}
+[stroke="#ff5a5f"]{stroke:#dc2626}[fill="#ff5a5f"]{fill:#dc2626}
+[stroke="#5cf2a0"]{stroke:#10b981}[fill="#5cf2a0"]{fill:#10b981}
+[stroke="#5b6780"]{stroke:#cbd5e1}[stroke="#8e9bb2"]{stroke:#94a3b8}
+
+/* zoom-engine (eDiscovery) */
+.layer .scene{background:#fff!important}
+#stage.ov .layer .scene{box-shadow:0 0 0 3px rgba(30,64,175,.25)!important}
+#stage.ov .layer.cur-map .scene{box-shadow:0 0 0 4px #1e40af!important}
+.org .tt h1{font-weight:400!important;color:var(--tw-primary-dark)}
+.dots i{background:var(--tw-soft)!important}
+.dots i.hit{background:#1e40af!important}
+#gauge::before{background:var(--tw-border)!important}
+#gauge::after{box-shadow:none!important}
+#gauge .gl i{background:var(--tw-soft)!important;border-color:var(--tw-bg)!important}
+#gauge .gl.done i{background:rgba(30,64,175,.5)!important}
+#gauge .gl.cur i{background:#1e40af!important;box-shadow:none!important}
+#gauge .gl,#gauge .hd{font-family:var(--body)!important}
+#doc.held .sheet{box-shadow:0 0 0 3px #1e40af,0 12px 30px rgba(15,23,42,.18)!important}
+#doc.held::after{border-color:#1e40af!important}
+#doc.done .sheet{box-shadow:0 0 0 3px #10b981,0 12px 30px rgba(15,23,42,.18)!important}
+.env .back{background:var(--tw-primary-light)!important}
+.env .front{background:linear-gradient(160deg,#dbeafe,#bfdbfe)!important}
+.env .flap{background:#93c5fd!important}
+.env .letter{background:#fff!important;box-shadow:0 4px 14px rgba(15,23,42,.12)}
+.env .letter b{color:var(--tw-text)!important}
+.trig span{font-family:var(--body)!important}
+.folder .body b{color:var(--tw-primary-dark)}
+.folder .mem i{background:#93c5fd!important;border-color:#fff!important}
+.net .nd circle{fill:#fff!important}
+.qbar{background:#fff!important}
+.bars{border-bottom-color:var(--tw-border)!important}
+.chips span{border-color:var(--tw-border)!important;background:#fff}
+.bin .pg{background:#fff!important;box-shadow:0 2px 8px rgba(15,23,42,.12)}
+.bin .pg.enc{background:#f1f5f9!important;box-shadow:0 0 0 3px #f97316!important}
+.bin .pg.enc::after{border-color:#f97316!important}
+#stage[data-s="6"][data-f="1"] .bin .pg.enc{box-shadow:0 0 0 3px #10b981!important}
+#stage[data-s="6"][data-f="1"] .bin .pg.enc::after{border-color:#10b981!important}
+.field .dt{background:var(--tw-border)}
+.ring .bg{stroke:var(--tw-soft)!important}
+@keyframes drain{0%{stroke-dashoffset:0}90%{stroke-dashoffset:930;stroke:#dc2626}100%{stroke-dashoffset:930;stroke:#dc2626}}
+.xl div{background:var(--tw-bg)!important;box-shadow:inset 0 0 0 1px var(--tw-soft);border-radius:8px}
