@@ -315,6 +315,58 @@ A.adaptive = {
 </svg>`
 };
 
+/* Sjabloon · Klantreis securitymonitoring (nog niet in een post gebruikt)
+   Pas de tekst aan in KR_STEPS: per stap een titel en per kolom max. 2 regels van ± 26 tekens.
+   Aantal stappen en timing passen zich automatisch aan. */
+const KR_STEPS = [
+  { t: 'Gratis check', u: ['Vult uw domeinnaam in'], w: ['Controleren openbare', 'gegevens automatisch'], k: ['Resultaat per e-mail,', 'binnen enkele minuten'] },
+  { t: 'Vragenlijst', u: ['Beantwoordt ± 10 vragen', 'over uw situatie'], w: ['Bepalen waar uw', 'grootste risico zit'], k: ['Een pakketadvies', 'op maat'] },
+  { t: 'Nulmeting', u: ['Geeft schriftelijk', 'toestemming'], w: ['Voeren de volledige', 'check uit'], k: ['Een rapport van', 'één pagina'] },
+  { t: 'Gesprek', u: ['Kiest een pakket', 'dat bij u past'], w: ['Lichten alles toe', 'in gewone taal'], k: ['Een helder plan,', 'geen verrassingen'] },
+  { t: 'Monitoring', u: ['Niets: u werkt', 'gewoon door'], w: ['Bewaken 24/7 automatisch,', 'reageren in kantoortijd'], k: ['Een melding vóórdat', 'uw klant het merkt'] },
+  { t: 'Maandrapport', u: ['Leest één pagina', 'per maand'], w: ['Geven advies en', 'volgen acties op'], k: ['Aantoonbaar veilig,', 'ook voor uw klanten'] },
+];
+const KR_T = 3; // seconden per stap
+const krX = (i) => 90 + i * (620 / (KR_STEPS.length - 1));
+const krCss = () => {
+  const n = KR_STEPS.length, seg = 100 / n, p = (v) => Math.max(0, Math.min(100, v)).toFixed(2);
+  let s = `
+.kr .d{opacity:0}.kr .d0{opacity:1}
+.kr .bar{transform-box:fill-box;transform-origin:left center;animation:krbar ${n * KR_T}s infinite}
+@keyframes krbar{${KR_STEPS.map((_, i) => `${p(i * seg + 3)}%,${p((i + 1) * seg - 1)}%{transform:scaleX(${(i / (n - 1)).toFixed(4)})}`).join('')}100%{transform:scaleX(0)}}`;
+  KR_STEPS.forEach((_, i) => {
+    const a = i * seg, b = (i + 1) * seg;
+    s += `
+.kr .on${i}{animation:kron${i} ${n * KR_T}s infinite}.kr .pl${i}{transform-box:fill-box;transform-origin:center;animation:krpl${i} ${n * KR_T}s infinite}.kr .d${i}{animation:krd${i} ${n * KR_T}s infinite}
+@keyframes kron${i}{0%,${p(a + 1)}%{opacity:0}${p(a + 3)}%,97%{opacity:1}100%{opacity:0}}
+@keyframes krpl${i}{0%,${p(a + 2)}%{opacity:0;transform:scale(1)}${p(a + 4)}%{opacity:.8}${p(b - 1)}%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+@keyframes krd${i}{0%,${p(a + 1)}%{opacity:0}${p(a + 3)}%,${p(b - 1)}%{opacity:1}${p(b)}%,100%{opacity:0}}`;
+  });
+  return s;
+};
+const krLines = (x, lines) => lines.map((l, j) => `<text x="${x}" y="${308 + j * 24}" font-size="15">${l}</text>`).join('');
+A.klantreis = {
+  caption: 'Van gratis check tot maandrapport: bij elke stap ziet u wat u doet, wat wij doen en wat het u oplevert.',
+  css: krCss(),
+  svg: `<svg class="kr" viewBox="0 0 800 400" role="img" aria-label="Klantreis in ${KR_STEPS.length} stappen: ${KR_STEPS.map(s => s.t).join(', ')}">
+<text x="40" y="44" font-size="15" class="mu">Zo werkt het</text>
+<rect x="${krX(0)}" y="106" width="${krX(KR_STEPS.length - 1) - krX(0)}" height="6" rx="3" fill="#22304a"/>
+<rect class="bar" x="${krX(0)}" y="106" width="${krX(KR_STEPS.length - 1) - krX(0)}" height="6" rx="3" fill="#3fe0c5"/>
+${KR_STEPS.map((st, i) => `<g transform="translate(${krX(i)} 109)">
+<circle class="pl${i}" r="22" fill="none" stroke="#3fe0c5" stroke-width="2"/>
+<circle r="20" fill="#111a2e" stroke="#3a4a63" stroke-width="2"/>
+<g class="on${i}"><circle r="20" fill="#3fe0c5"/></g>
+<text y="6" text-anchor="middle" font-size="16" font-weight="600" fill="#8e9bb2">${i + 1}</text>
+<g class="on${i}"><text y="6" text-anchor="middle" font-size="16" font-weight="600" fill="#0b1120">${i + 1}</text></g>
+<text y="56" text-anchor="middle" font-size="14">${st.t}</text></g>`).join('')}
+<rect x="40" y="200" width="720" height="176" rx="12" fill="#111a2e" stroke="#22304a"/>
+${KR_STEPS.map((st, i) => `<g class="d d${i}">
+<text x="64" y="236" font-size="18" fill="#3fe0c5">Stap ${i + 1} · ${st.t}</text>
+<text x="64" y="276" font-size="13" class="mu">U doet</text><text x="304" y="276" font-size="13" class="mu">Wij doen</text><text x="544" y="276" font-size="13" fill="#3fe0c5">U krijgt</text>
+${krLines(64, st.u)}${krLines(304, st.w)}${krLines(544, st.k)}</g>`).join('')}
+</svg>`
+};
+
 export function PostAnimation({ name }) {
   const a = A[name];
   if (!a) return null;
