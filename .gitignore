@@ -14,3 +14,5 @@ yarn-error.log*
 # lokale backups/scratch, niet bedoeld voor de publieke repo
 /old/
 /edit
+.fuse_hidden*
+.claude/
