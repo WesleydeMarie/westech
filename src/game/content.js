@@ -96,7 +96,7 @@ export const LEVELS = [
   // ---------------- LEVEL 1 ----------------
   {
     id: 1,
-    release: '2026-11-26',
+    release: '2026-11-25',
     name: { nl: 'Eerste werkdag', en: 'First day' },
     rank: { nl: 'Beginner', en: 'Beginner' },
     badge: { nl: 'Purview Starter', en: 'Purview Starter' },
