@@ -2,7 +2,8 @@
 // Geen externe scripts of netwerkverkeer: alles draait in de browser.
 // Voortgang (vrijgespeelde levels, taal) staat alleen lokaal in de browser.
 import React, { useEffect, useMemo, useState } from 'react';
-import { LEVELS, UI } from './content';
+import { LEVELS, UI, UPCOMING } from './content';
+import Portal, { evaluateGeneric } from './Portal';
 import DlpPortal, { evaluate as evalPortal } from './DlpPortal';
 
 const C = {
@@ -21,6 +22,12 @@ function load() {
 function save(data) {
   try { window.localStorage.setItem(STORE, JSON.stringify(data)); } catch (e) { /* privé-venster: negeren */ }
 }
+// Wekelijkse vrijgave: op techwes.nl komt een level vrij op zijn releasedatum.
+// In previews en lokaal (andere hostnaam) zijn alle levels zichtbaar, zodat je vooruit kunt testen.
+const LIVE = typeof window !== 'undefined' && /(^|\.)techwes\.nl$/.test(window.location.hostname);
+const todayISO = () => new Date().toISOString().slice(0, 10);
+export const isReleased = (lv) => !LIVE || !lv.release || lv.release <= todayISO();
+const fmtDate = (iso, lang) => new Date(iso + 'T12:00:00').toLocaleDateString(lang === 'nl' ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long' });
 const clamp = (v) => Math.max(0, Math.min(100, v));
 const shuffle = (arr) => {
   const a = [...arr];
@@ -122,6 +129,13 @@ export default function AdminGame({ fonts, navigate }) {
     setAnswer({ score, feedback: L(task.feedback) });
   };
 
+  const submitConsole = (v) => {
+    const r = evaluateGeneric(task, v, lang);
+    applyEffects(r.effects);
+    setPoints((x) => x + r.score);
+    setAnswer({ score: r.score, list: r.feedback });
+  };
+
   const submitPortal = (p) => {
     const r = evalPortal(task.step, p, lang);
     applyEffects(r.effects);
@@ -156,21 +170,28 @@ export default function AdminGame({ fonts, navigate }) {
           <p style={{ color: C.mute, lineHeight: 1.6, marginTop: 0, marginBottom: 24 }}>{t.intro}</p>
           <div style={{ display: 'grid', gap: 12 }}>
             {LEVELS.map((lv, i) => {
-              const open = true; // alle levels direct speelbaar
-              const interactive = lv.tasks.some((x) => x.type === 'portal');
+              const open = isReleased(lv);
+              const interactive = lv.tasks.some((x) => x.type === 'portal' || x.type === 'console');
               return (
                 <button key={lv.id} type="button" disabled={!open} onClick={() => startLevel(i)}
                   style={{ textAlign: 'left', background: C.panel, border: `1px solid ${open ? C.line : C.panel}`, borderRadius: 10, padding: 16, color: C.text, cursor: open ? 'pointer' : 'default', opacity: open ? 1 : 0.55 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 600, fontSize: 16 }}>Level {lv.id} · {L(lv.name)}{interactive && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: C.teal, background: C.tint, borderRadius: 999, padding: '2px 8px', whiteSpace: 'nowrap' }}>🖱️ {lang === 'nl' ? 'Interactieve portal' : 'Interactive portal'}</span>}</span>
+                    <span style={{ fontWeight: 600, fontSize: 16 }}>{open ? '' : '🔒 '}Level {lv.id} · {L(lv.name)}{interactive && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: C.teal, background: C.tint, borderRadius: 999, padding: '2px 8px', whiteSpace: 'nowrap' }}>🖱️ {lang === 'nl' ? 'Interactieve portal' : 'Interactive portal'}</span>}</span>
                     <span style={{ fontSize: 13, color: best[lv.id] >= 70 ? C.green : C.mute }}>{best[lv.id] >= 70 ? '✓ ' : ''}{L(lv.rank)}{best[lv.id] != null ? ` · ${best[lv.id]}%` : ''}</span>
                   </div>
-                  <div style={{ fontSize: 14, color: C.mute, marginTop: 6 }}>{open ? `${L(lv.blurb)} ${t.minutes}.` : t.locked}</div>
+                  <div style={{ fontSize: 14, color: C.mute, marginTop: 6 }}>{open ? `${L(lv.blurb)} ${t.minutes}.` : `🗓️ ${t.releaseOn} ${fmtDate(lv.release, lang)}`}</div>
                 </button>
               );
             })}
           </div>
-          <p style={{ fontSize: 13, color: C.mute, marginTop: 20, marginBottom: 0 }}>{t.soon}</p>
+          {UPCOMING.map((u) => (
+            <div key={u.id} style={{ marginTop: 12, border: `1px dashed ${C.line}`, borderRadius: 10, padding: 14, color: C.mute }}>
+              <div style={{ fontWeight: 600 }}>🔒 Level {u.id} · {L(u.name)}</div>
+              <div style={{ fontSize: 14, marginTop: 4 }}>🗓️ {t.releaseOn} {fmtDate(u.release, lang)}</div>
+            </div>
+          ))}
+          <p style={{ fontSize: 13, color: C.mute, marginTop: 20, marginBottom: 0 }}>{t.weekly}</p>
+          {!LIVE && <p style={{ fontSize: 12, color: C.orange, marginTop: 8, marginBottom: 0 }}>{t.previewNote}</p>}
         </div>
         <p style={{ fontSize: 12, color: '#64748b', marginTop: 12 }}>{t.disclaimer}</p>
       </div>
@@ -202,7 +223,7 @@ export default function AdminGame({ fonts, navigate }) {
             </div>
           )}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            {ok && levelIdx + 1 < LEVELS.length && <Btn onClick={() => startLevel(levelIdx + 1)}>{t.nextLevel} →</Btn>}
+            {ok && levelIdx + 1 < LEVELS.length && isReleased(LEVELS[levelIdx + 1]) && <Btn onClick={() => startLevel(levelIdx + 1)}>{t.nextLevel} →</Btn>}
             <Btn kind="ghost" onClick={() => startLevel(levelIdx)}>{t.again}</Btn>
             <Btn kind="ghost" onClick={() => setView('menu')}>{t.levels}</Btn>
             {ok && <a href={shareUrl} target="_blank" rel="noopener noreferrer" title={t.shareText(L(level.badge))}
@@ -241,6 +262,10 @@ export default function AdminGame({ fonts, navigate }) {
         </div>
 
         <div style={{ display: 'grid', gap: 10, marginTop: 16 }}>
+          {task.type === 'console' && !answer && (
+            <Portal key={`${levelIdx}-${taskIdx}`} task={task} lang={lang} onSubmit={submitConsole} />
+          )}
+
           {task.type === 'portal' && !answer && (
             <DlpPortal key={`${levelIdx}-${taskIdx}`} lang={lang} step={task.step} policy={policy} onSubmit={submitPortal} />
           )}
