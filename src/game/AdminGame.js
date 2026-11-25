@@ -139,7 +139,8 @@ export default function AdminGame({ fonts, navigate }) {
     window.scrollTo(0, 0);
   };
 
-  const frame = { background: C.bg, color: C.text, border: `1px solid ${C.line}`, borderRadius: 12, padding: 'clamp(16px, 4vw, 32px)', boxShadow: '0 2px 12px rgba(30,64,175,.08)' };
+  // Zelfde kader als de blog-animaties (src/animaties.js: .ta-frame)
+  const frame = { background: C.bg, color: C.text, border: `1px solid ${C.line}`, borderTop: `4px solid ${C.teal}`, borderRadius: 10, padding: 'clamp(16px, 4vw, 32px)', boxShadow: '0 1px 2px rgba(15,23,42,.04), 0 12px 32px rgba(15,23,42,.06)' };
   const heading = { fontFamily: fonts.serif, fontWeight: 400, margin: 0, color: C.text };
 
   // ---------- MENU ----------
