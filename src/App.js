@@ -8,6 +8,7 @@ import { blogPosts } from './blogPosts';
 import { PostAnimation } from './animaties';
 import GratisCheck from './GratisCheck';
 import AdminGame from './game/AdminGame';
+import Home from './Home';
 
 // --- Routing ----------------------------------------------------------------
 // Maakt van een titel een URL-slug: "Custom SITs in Purview" -> "custom-sits-in-purview"
@@ -280,30 +281,8 @@ export default function Techwes() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         
         {currentPage === 'home' && (
-          <div style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
-            <div style={{ maxWidth: '700px' }}>
-              <h1 style={{ fontFamily: fonts.serif, fontSize: '52px', fontWeight: '400', color: colors.text, marginBottom: '1.25rem', lineHeight: '1.15', letterSpacing: '-0.015em' }}>Techwes</h1>
-              <p style={{ fontSize: '18px', color: colors.textLight, marginBottom: '2rem', lineHeight: '1.7' }}>Praktijkgerichte analyses over Microsoft Purview, Defender en AI-security. Geschreven voor security- en complianceprofessionals die verder willen dan de documentatie.</p>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
-                <button onClick={() => navigate('/blog')} style={{ padding: '12px 28px', background: colors.primary, color: colors.white, border: 'none', borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', boxShadow: '0 2px 8px rgba(30, 64, 175, 0.2)' }}>Lees de Blog</button>
-                <button onClick={() => navigate('/over-mij')} style={{ padding: '12px 28px', background: colors.white, color: colors.primary, border: `2px solid ${colors.primary}`, borderRadius: '6px', fontSize: '15px', fontWeight: '500', cursor: 'pointer' }}>Over Mij</button>
-              </div>
-
-              {featuredPost && (
-                <div style={{ padding: '2.5rem', background: colors.primaryDark, borderRadius: '12px', color: colors.white, marginBottom: '3rem', cursor: 'pointer' }} onClick={() => navigate(postPath(featuredPost))}>
-                  <div style={{ color: colors.accentLight, fontSize: '12px', fontWeight: '500', marginBottom: '1rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Uitgelicht</div>
-                  <h2 style={{ fontFamily: fonts.serif, fontSize: '32px', fontWeight: '400', marginBottom: '1rem', lineHeight: '1.25' }}>{featuredPost.title}</h2>
-                  <p style={{ fontSize: '15px', lineHeight: '1.6', marginBottom: '1.5rem', opacity: 0.95 }}>{featuredPost.excerpt}</p>
-                  <div style={{ display: 'flex', gap: '1rem', fontSize: '13px', opacity: 0.85 }}>
-                    <span>{featuredPost.date}</span>
-                    <span>•</span>
-                    <span>{featuredPost.readTime}</span>
-                  </div>
-                </div>
-              )}
-
-            </div>
-          </div>
+          <Home colors={colors} fonts={fonts} navigate={navigate} posts={[...allBlogPosts].sort(byPublishDateDesc)} featured={featuredPost} postPath={postPath}
+            onCategory={(cat) => { setSelectedCategory(cat); navigate('/blog'); }} />
         )}
 
         {currentPage === 'blog' && (
