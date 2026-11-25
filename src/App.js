@@ -7,6 +7,7 @@ import '@fontsource/inter/600.css';
 import { blogPosts } from './blogPosts';
 import { PostAnimation } from './animaties';
 import GratisCheck from './GratisCheck';
+import AdminGame from './game/AdminGame';
 
 // --- Routing ----------------------------------------------------------------
 // Maakt van een titel een URL-slug: "Custom SITs in Purview" -> "custom-sits-in-purview"
@@ -62,7 +63,7 @@ export default function Techwes() {
   } catch (err) {
     segments = [];
   }
-  const pageMap = { blog: 'blog', 'over-mij': 'about', contact: 'contact', 'gratis-check': 'gratischeck' };
+  const pageMap = { blog: 'blog', 'over-mij': 'about', contact: 'contact', 'gratis-check': 'gratischeck', spel: 'game', game: 'game' };
   const currentPage = segments.length === 0 ? 'home' : (pageMap[segments[0]] || 'notfound');
   const detailSlug = segments.length > 1 ? segments[1] : null;
 
@@ -435,6 +436,10 @@ export default function Techwes() {
               </div>
             </div>
           </div>
+        )}
+
+        {currentPage === 'game' && (
+          <AdminGame fonts={fonts} navigate={navigate} />
         )}
 
         {currentPage === 'gratischeck' && (
