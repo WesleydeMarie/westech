@@ -15,6 +15,7 @@ export const SECTIONS = {
   roles: { icon: '🔑', nl: 'Rollen', en: 'Roles' },
   labels: { icon: '🏷️', nl: 'Labels', en: 'Labels' },
   dlp: { icon: '🚫', nl: 'DLP', en: 'DLP' },
+  dspm: { icon: '🤖', nl: 'DSPM for AI', en: 'DSPM for AI' },
   explorer: { icon: '🗂️', nl: 'Data explorer', en: 'Data explorer' },
   retention: { icon: '🗄️', nl: 'Retentie', en: 'Retention' },
   ediscovery: { icon: '🔍', nl: 'eDiscovery', en: 'eDiscovery' },
@@ -90,7 +91,7 @@ export default function Portal({ task, lang, onSubmit }) {
   const [section, setSection] = useState('home');
   const [toast, setToast] = useState(null);
   const [v, setV] = useState(() => ({ ...(task.defaults || {}) }));
-  const nav = task.nav || ['home', 'roles', 'labels', 'dlp', 'explorer', 'retention', 'ediscovery', 'insider', 'audit'];
+  const nav = task.nav || ['home', 'roles', 'labels', 'dlp', 'dspm', 'explorer', 'retention', 'ediscovery', 'insider', 'audit'];
 
   const go = (k) => {
     if (k === task.section) { setSection(k); setToast(null); return; }

@@ -563,11 +563,183 @@ New-AutoSensitivityLabelRule -Policy "BSN auto" -Name "BSN" \`
       },
     ],
   },
+  // ---------------- LEVEL 5 ----------------
+  {
+    id: 5,
+    release: '2026-12-21',
+    name: { nl: 'AI in de tenant', en: 'AI in the tenant' },
+    rank: { nl: 'Expert+', en: 'Expert+' },
+    badge: { nl: 'AI Data Guardian', en: 'AI Data Guardian' },
+    blurb: { nl: 'Copilot, DSPM for AI, oversharing en shadow AI. Vier portal-opdrachten die op elkaar voortbouwen.', en: 'Copilot, DSPM for AI, oversharing and shadow AI. Four portal tasks that build on each other.' },
+    tasks: [
+      {
+        type: 'console', section: 'dspm',
+        from: { nl: 'CISO', en: 'CISO' },
+        prompt: {
+          nl: '"Iedereen gebruikt AI, maar ik heb geen idee wat erin gaat." Copilot wordt uitgerold en medewerkers gebruiken ook ChatGPT en Gemini. Zorg eerst voor inzicht.',
+          en: '"Everyone uses AI, but I have no idea what goes in." Copilot is being rolled out and staff also use ChatGPT and Gemini. Get visibility first.',
+        },
+        page: { nl: 'Aan de slag', en: 'Get started' },
+        info: { nl: 'Nog geen AI-interacties zichtbaar.', en: 'No AI interactions visible yet.' },
+        fields: [
+          { id: 'audit', kind: 'toggle', label: { nl: 'AI-interacties vastleggen (prompts en antwoorden via audit)', en: 'Capture AI interactions (prompts and responses via audit)' } },
+          { id: 'apps', kind: 'checks', label: { nl: 'Welke AI-apps wil je zichtbaar maken?', en: 'Which AI apps do you want visibility into?' }, options: [
+            { v: 'copilot', label: 'Microsoft 365 Copilot' }, { v: 'chatgpt', label: 'ChatGPT' }, { v: 'gemini', label: 'Gemini' }] },
+          { id: 'approach', kind: 'radio', label: { nl: 'Aanpak', en: 'Approach' }, options: [
+            { v: 'monitor', label: { nl: 'Eerst inzicht: alleen monitoren', en: 'Visibility first: monitor only' } },
+            { v: 'blockall', label: { nl: 'Alle AI-apps meteen blokkeren', en: 'Block all AI apps right away' } }] },
+        ],
+        checks: [
+          { test: (v) => v.audit === true, good: { nl: 'Interacties worden vastgelegd: zonder die data heb je niets om naar te kijken.', en: 'Interactions are captured: without that data there is nothing to look at.' }, bad: { nl: 'Zonder vastleggen blijft DSPM for AI leeg.', en: 'Without capturing, DSPM for AI stays empty.' }, effects: { cmp: -1 } },
+          { test: (v) => ['copilot', 'chatgpt', 'gemini'].every((x) => (v.apps || []).includes(x)), good: { nl: 'Alle drie: ook de apps die je niet beheert. Daar zit het grootste risico.', en: 'All three: including the apps you do not manage. That is where the biggest risk is.' }, bad: { nl: 'Neem ook de niet-beheerde apps mee: daar gaat de data het makkelijkst naar buiten.', en: 'Include the unmanaged apps too: that is where data leaves most easily.' }, effects: { sec: -1 } },
+          { test: (v) => v.approach === 'monitor', good: { nl: 'Eerst meten, dan beslissen.', en: 'Measure first, then decide.' }, bad: { nl: 'Alles blokkeren drijft medewerkers naar privé-telefoons, buiten je zicht.', en: 'Blocking everything drives staff to personal phones, out of sight.' }, effects: { usr: -3 } },
+        ],
+        link: 'dspm-voor-ai-van-de-eerste-prompt-tot-een-policy',
+      },
+      {
+        type: 'choice',
+        from: { nl: 'CISO', en: 'CISO' },
+        prompt: { nl: 'Een week later toont DSPM for AI: 40 prompts met BSN\'s naar ChatGPT. "Mooi, dan is dat dus opgelost?"', en: 'A week later DSPM for AI shows: 40 prompts with BSNs to ChatGPT. "Great, so that is solved?"' },
+        options: [
+          { text: { nl: 'Nee: zichtbaarheid is geen bescherming. Nu weet je wát er gebeurt; tegenhouden vraagt een policy.', en: 'No: visibility is not protection. Now you know what happens; stopping it needs a policy.' }, correct: true, effects: { sec: 1, usr: 0, cmp: 1 },
+            feedback: { nl: 'Precies het punt: inzicht is stap één, maar er is nog niets tegengehouden.', en: 'Exactly the point: visibility is step one, but nothing has been stopped yet.' } },
+          { text: { nl: 'Ja: DSPM for AI blokkeert gevoelige prompts automatisch', en: 'Yes: DSPM for AI blocks sensitive prompts automatically' }, effects: { sec: -2, usr: 0, cmp: -1 },
+            feedback: { nl: 'Nee: DSPM for AI laat zien en adviseert. Tegenhouden doe je met DLP.', en: 'No: DSPM for AI shows and recommends. Blocking is done with DLP.' } },
+          { text: { nl: 'Ja, als je de rapportage maandelijks exporteert', en: 'Yes, if you export the report monthly' }, effects: { sec: -1, usr: 0, cmp: 0 },
+            feedback: { nl: 'Een rapport houdt niets tegen.', en: 'A report stops nothing.' } },
+        ],
+        link: 'dspm-for-ai-zichtbaarheid-is-niet-hetzelfde-als-bescherming',
+      },
+      {
+        type: 'console', section: 'dspm',
+        from: { nl: 'HR-directeur', en: 'HR director' },
+        prompt: {
+          nl: '"Copilot vatte voor een stagiair het fusiedossier samen!" Zoek in het oversharing-overzicht de oorzaak en pak de juiste site aan.',
+          en: '"Copilot summarised the merger file for an intern!" Find the cause in the oversharing overview and fix the right site.',
+        },
+        page: { nl: 'Oversharing-overzicht', en: 'Oversharing overview' },
+        table: {
+          head: [{ nl: 'Site', en: 'Site' }, { nl: 'Gevoelige items', en: 'Sensitive items' }, { nl: 'Toegang', en: 'Access' }],
+          rows: [
+            ['Directie-Fusie2027', '212', { nl: 'Iedereen behalve externe gebruikers ⚠️', en: 'Everyone except external users ⚠️' }],
+            ['Kantine-Menu', '0', { nl: 'Iedereen behalve externe gebruikers', en: 'Everyone except external users' }],
+            ['HR-Personeelsdossiers', '1.240', { nl: 'Alleen HR', en: 'HR only' }],
+          ],
+        },
+        fields: [
+          { id: 'site', kind: 'radio', label: { nl: 'Welke site eerst?', en: 'Which site first?' }, options: [
+            { v: 'fusie', label: 'Directie-Fusie2027' }, { v: 'kantine', label: 'Kantine-Menu' }, { v: 'hr', label: 'HR-Personeelsdossiers' }] },
+          { id: 'action', kind: 'select', label: { nl: 'Maatregel', en: 'Action' }, options: [
+            { v: 'restrict', label: { nl: 'Toegang beperken tot de directie en eigenaren', en: 'Restrict access to the board and owners' } },
+            { v: 'delete', label: { nl: 'Site verwijderen', en: 'Delete the site' } },
+            { v: 'nocopilot', label: { nl: 'Copilot uitzetten voor alle medewerkers', en: 'Turn off Copilot for all employees' } }] },
+        ],
+        checks: [
+          { test: (v) => v.site === 'fusie', good: { nl: 'De fusiesite: gevoelig én open voor iedereen.', en: 'The merger site: sensitive and open to everyone.' }, bad: { nl: 'Kijk naar de combinatie: gevoelige items én toegang voor iedereen.', en: 'Look at the combination: sensitive items and access for everyone.' }, effects: { sec: -2 } },
+          { test: (v) => v.action === 'restrict', good: { nl: 'Rechten herstellen: de oorzaak weg, Copilot blijft voor iedereen werken.', en: 'Fix the permissions: the cause is removed, Copilot keeps working for everyone.' },
+            bad: { nl: 'Verwijderen kost data; Copilot uitzetten bestrijdt het symptoom. De stagiair kan het bestand dan nog steeds zelf openen.', en: 'Deleting loses data; turning off Copilot treats the symptom. The intern can still open the file directly.' }, effects: { usr: -2, cmp: -1 } },
+        ],
+        link: 'copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde',
+      },
+      {
+        type: 'choice',
+        from: { nl: 'HR-directeur', en: 'HR director' },
+        prompt: { nl: '"Dus Copilot had een lek in de beveiliging?"', en: '"So Copilot had a security hole?"' },
+        options: [
+          { text: { nl: 'Nee: Copilot toont alleen wat de gebruiker al mocht openen. Het maakte een bestaand rechtenprobleem zichtbaar.', en: 'No: Copilot only shows what the user could already open. It exposed an existing permissions problem.' }, correct: true, effects: { sec: 1, usr: 0, cmp: 1 },
+            feedback: { nl: 'Copilot is de zaklamp, niet de inbreker.', en: 'Copilot is the flashlight, not the burglar.' } },
+          { text: { nl: 'Ja: Copilot omzeilt SharePoint-rechten', en: 'Yes: Copilot bypasses SharePoint permissions' }, effects: { sec: 0, usr: 0, cmp: -1 },
+            feedback: { nl: 'Copilot respecteert de rechten van de gebruiker.', en: 'Copilot respects the user\'s permissions.' } },
+          { text: { nl: 'Ja: het moet een licentiefout zijn', en: 'Yes: it must be a licensing error' }, effects: { sec: 0, usr: 0, cmp: 0 },
+            feedback: { nl: 'Licenties bepalen wie Copilot heeft, niet wat Copilot ziet.', en: 'Licences decide who has Copilot, not what Copilot sees.' } },
+        ],
+      },
+      {
+        type: 'console', section: 'dlp',
+        from: { nl: 'CISO', en: 'CISO' },
+        prompt: {
+          nl: 'Fusiedocumenten krijgen voortaan het label "Strikt vertrouwelijk". Zorg dat Copilot die documenten nooit gebruikt om antwoorden te maken, ook niet voor de directie.',
+          en: 'Merger documents will now get the label "Highly confidential". Make sure Copilot never uses those documents to build answers, not even for the board.',
+        },
+        page: { nl: 'Policy maken', en: 'Create policy' },
+        fields: [
+          { id: 'loc', kind: 'radio', label: { nl: 'Locatie', en: 'Location' }, options: [
+            { v: 'copilot', label: 'Microsoft 365 Copilot' }, { v: 'exo', label: 'Exchange' }, { v: 'devices', label: { nl: 'Apparaten', en: 'Devices' } }] },
+          { id: 'cond', kind: 'select', label: { nl: 'Voorwaarde', en: 'Condition' }, options: [
+            { v: 'label', label: { nl: 'Inhoud heeft sensitivity label "Strikt vertrouwelijk"', en: 'Content has sensitivity label "Highly confidential"' } },
+            { v: 'word', label: { nl: 'Bestandsnaam bevat "fusie"', en: 'File name contains "merger"' } }] },
+          { id: 'act', kind: 'radio', label: { nl: 'Actie', en: 'Action' }, options: [
+            { v: 'noprocess', label: { nl: 'Copilot mag deze inhoud niet verwerken', en: 'Prevent Copilot from processing this content' } },
+            { v: 'alert', label: { nl: 'Alleen een melding sturen', en: 'Only send an alert' } }] },
+        ],
+        checks: [
+          { test: (v) => v.loc === 'copilot', good: { nl: 'De Copilot-locatie: daar grijpt de regel in.', en: 'The Copilot location: that is where the rule acts.' }, bad: { nl: 'Verkeerde locatie: het gaat om wat Copilot verwerkt.', en: 'Wrong location: this is about what Copilot processes.' }, effects: { sec: -2 } },
+          { test: (v) => v.cond === 'label', good: { nl: 'Op label: elk fusiedocument, hoe het ook heet.', en: 'On label: every merger document, whatever its name.' }, bad: { nl: 'Op bestandsnaam mis je "Project Noord.docx".', en: 'On file name you miss "Project North.docx".' }, effects: { sec: -1 } },
+          { test: (v) => v.act === 'noprocess', good: { nl: 'Copilot laat deze documenten buiten zijn antwoorden.', en: 'Copilot leaves these documents out of its answers.' }, bad: { nl: 'Een melding houdt niets tegen.', en: 'An alert stops nothing.' }, effects: { sec: -1 } },
+        ],
+        link: 'dlp-houdt-externe-e-mail-buiten-copilot',
+      },
+      {
+        type: 'choice',
+        from: { nl: 'Directiesecretaris', en: 'Board secretary' },
+        prompt: { nl: 'Een week later vat Copilot tóch een fusiedocument samen. Het bestand heet "Notulen-Noord.docx". Wat is de meest waarschijnlijke oorzaak?', en: 'A week later Copilot still summarises a merger document. The file is called "Minutes-North.docx". Most likely cause?' },
+        options: [
+          { text: { nl: 'Het document heeft (nog) geen label, dus de regel matcht niet', en: 'The document has no label (yet), so the rule does not match' }, correct: true, effects: { sec: 1, usr: 0, cmp: 1 },
+            feedback: { nl: 'Label-gebaseerde regels zijn zo sterk als je labeling. Combineer met auto-labeling.', en: 'Label-based rules are only as strong as your labelling. Combine with auto-labelling.' } },
+          { text: { nl: 'De DLP-regel werkt alleen in Outlook', en: 'The DLP rule only works in Outlook' }, effects: { sec: 0, usr: 0, cmp: 0 },
+            feedback: { nl: 'De regel staat op de Copilot-locatie.', en: 'The rule is on the Copilot location.' } },
+          { text: { nl: 'Copilot negeert DLP', en: 'Copilot ignores DLP' }, effects: { sec: 0, usr: 0, cmp: -1 },
+            feedback: { nl: 'Niet waar, mits het document het label heeft.', en: 'Not true, provided the document has the label.' } },
+        ],
+        link: 'externe-mail-uit-je-copilot-grounding-houden',
+      },
+      {
+        type: 'console', section: 'dlp',
+        from: { nl: 'CISO', en: 'CISO' },
+        prompt: {
+          nl: 'Laatste stap: shadow AI. Medewerkers plakken BSN\'s in ChatGPT en Gemini via de browser. Copilot is wél toegestaan. Richt Endpoint DLP zo in dat plakken van BSN\'s naar niet-beheerde AI-sites wordt tegengehouden, met een uitweg voor uitzonderingen.',
+          en: 'Final step: shadow AI. Staff paste BSNs into ChatGPT and Gemini in the browser. Copilot is allowed. Configure Endpoint DLP so pasting BSNs into unmanaged AI sites is stopped, with an escape hatch for exceptions.',
+        },
+        page: { nl: 'Endpoint DLP-instellingen: groep gevoelige domeinen', en: 'Endpoint DLP settings: sensitive domain group' },
+        fields: [
+          { id: 'domains', kind: 'checks', label: { nl: 'Domeinen in de groep "Generatieve AI (niet beheerd)"', en: 'Domains in the group "Generative AI (unmanaged)"' }, options: [
+            { v: 'chatgpt', label: 'chatgpt.com' }, { v: 'gemini', label: 'gemini.google.com' }, { v: 'copilot', label: 'copilot.microsoft.com' }] },
+          { id: 'paste', kind: 'select', label: { nl: 'Actie bij plakken van BSN naar deze groep', en: 'Action when pasting a BSN into this group' }, options: [
+            { v: 'audit', label: { nl: 'Alleen auditen', en: 'Audit only' } }, { v: 'override', label: { nl: 'Blokkeren met override', en: 'Block with override' } }, { v: 'block', label: { nl: 'Altijd blokkeren', en: 'Always block' } }] },
+        ],
+        checks: [
+          { test: (v) => (v.domains || []).includes('chatgpt') && (v.domains || []).includes('gemini'), good: { nl: 'ChatGPT en Gemini zitten in de groep.', en: 'ChatGPT and Gemini are in the group.' }, bad: { nl: 'Er ontbreekt een niet-beheerde AI-site.', en: 'An unmanaged AI site is missing.' }, effects: { sec: -2 } },
+          { test: (v) => !(v.domains || []).includes('copilot'), good: { nl: 'Copilot blijft erbuiten: dat is je beheerde, toegestane AI.', en: 'Copilot stays out: that is your managed, allowed AI.' }, bad: { nl: 'Copilot hoort hier niet in: dan blokkeer je je eigen toegestane AI.', en: 'Copilot does not belong here: you would block your own allowed AI.' }, effects: { usr: -2 } },
+          { test: (v) => v.paste === 'override', good: { nl: 'Blokkeren met override: veilig, met een uitweg die wordt gelogd.', en: 'Block with override: safe, with an escape hatch that is logged.' }, bad: { nl: 'Alleen auditen houdt niets tegen; altijd blokkeren laat geen ruimte voor uitzonderingen.', en: 'Audit only stops nothing; always block leaves no room for exceptions.' }, effects: { sec: -1, usr: -1 } },
+        ],
+        link: 'dlp-op-de-netwerklaag-purview-gaat-shadow-ai-achterna-waar-de-browser-ophoudt',
+      },
+      {
+        type: 'order',
+        from: { nl: 'CISO', en: 'CISO' },
+        prompt: {
+          nl: 'Eindbaas: de raad van bestuur wil een AI-uitrolplan voor de hele organisatie. Zet de stappen in de juiste volgorde.',
+          en: 'Final boss: the board wants an AI rollout plan for the whole organisation. Put the steps in the right order.',
+        },
+        steps: [
+          { nl: 'Inzicht: AI-interacties vastleggen in DSPM for AI', en: 'Visibility: capture AI interactions in DSPM for AI' },
+          { nl: 'Oversharing opruimen: rechten op gevoelige sites herstellen', en: 'Clean up oversharing: fix permissions on sensitive sites' },
+          { nl: 'Labelen: gevoelige documenten (automatisch) labelen', en: 'Label: label sensitive documents (automatically)' },
+          { nl: 'Afdwingen: DLP voor Copilot en Endpoint DLP tegen shadow AI', en: 'Enforce: DLP for Copilot and Endpoint DLP against shadow AI' },
+        ],
+        feedback: {
+          nl: 'Eerst zien, dan opruimen, dan labelen, en pas dan afdwingen. DLP op labels werkt pas als de labels er zijn.',
+          en: 'First see, then clean up, then label, and only then enforce. DLP on labels only works once the labels exist.',
+        },
+      },
+    ],
+  },
+
 ];
 
 // Aangekondigde levels (nog niet gebouwd): tonen als teaser in het menu.
 export const UPCOMING = [
-  { id: 5, release: '2026-12-21', name: { nl: 'AI in de tenant: Copilot en DSPM for AI', en: 'AI in the tenant: Copilot and DSPM for AI' } },
+  { id: 6, release: '2026-12-28', name: { nl: 'Endpoint DLP en apparaten', en: 'Endpoint DLP and devices' } },
 ];
 
 // Blogposts per opdracht (aanvulling op task.link) en per level ("Lees verder op de blog").
@@ -589,5 +761,6 @@ export const LEVEL_BLOGS = {
   1: ['copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde', 'custom-sensitive-information-types-in-purview-dlp-voorbij-de-templates', 'purview-configureert-defender-onderzoekt-de-rolverdeling-die-je-soc-nog-moet-inhalen'],
   2: ['waarom-ik-bij-de-meeste-klanten-dlp-verkies-boven-encryptie', 'auto-labeling-zonder-ruis-false-positives-wegwerken-voordat-je-de-policy-aanzet', 'custom-sensitive-information-types-in-purview-dlp-voorbij-de-templates', 'dlp-alert-aggregation-de-ruis-daalt-het-werk-blijft'],
   3: ['simuleren-voordat-je-labelt-wat-de-nieuwe-insights-van-auto-labeling-wel-en-niet-laten-zien', 'auto-labeling-in-productie-het-overschrijven-van-handmatige-labels-is-een-beleidskeuze-geen-vinkje', 'retentie-in-purview-waarom-bewaren-en-vernietigen-bij-elkaar-horen', 'disposition-review-in-purview-de-tussenstap-voordat-je-data-definitief-verwijdert'],
+  5: ['dspm-voor-ai-van-de-eerste-prompt-tot-een-policy', 'dspm-for-ai-zichtbaarheid-is-niet-hetzelfde-als-bescherming', 'copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde', 'dlp-op-de-netwerklaag-purview-gaat-shadow-ai-achterna-waar-de-browser-ophoudt'],
   4: ['ediscovery-in-purview-van-verzoek-tot-exportpakket', 'insider-risk-als-conditie-in-conditional-access-zo-richt-je-adaptive-protection-veilig-in', 'insider-risk-management-en-ai-apps-monitoring-is-nu-ook-een-kostenbeslissing'],
 };
