@@ -2,7 +2,8 @@
 // Geen externe scripts of netwerkverkeer: alles draait in de browser.
 // Voortgang (vrijgespeelde levels, taal) staat alleen lokaal in de browser.
 import React, { useEffect, useMemo, useState } from 'react';
-import { LEVELS, UI, UPCOMING } from './content';
+import { LEVELS, UI, UPCOMING, TASK_LINKS, LEVEL_BLOGS } from './content';
+import { blogPosts } from '../blogPosts';
 import Portal, { evaluateGeneric } from './Portal';
 import DlpPortal, { evaluate as evalPortal } from './DlpPortal';
 
@@ -28,6 +29,16 @@ const LIVE = typeof window !== 'undefined' && /(^|\.)techwes\.nl$/.test(window.l
 const todayISO = () => new Date().toISOString().slice(0, 10);
 export const isReleased = (lv) => !LIVE || !lv.release || lv.release <= todayISO();
 const fmtDate = (iso, lang) => new Date(iso + 'T12:00:00').toLocaleDateString(lang === 'nl' ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long' });
+// Blogverwijzingen: alleen naar posts die bestaan en al gepubliceerd zijn.
+const slugify = (str) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const POSTS = {};
+blogPosts.forEach((bp) => { POSTS[bp.slug || slugify(bp.title)] = bp; });
+const publishedPost = (slug) => {
+  const bp = slug && POSTS[slug];
+  if (!bp) return null;
+  if (bp.publishDate && new Date(bp.publishDate) > new Date()) return null;
+  return bp;
+};
 const clamp = (v) => Math.max(0, Math.min(100, v));
 const shuffle = (arr) => {
   const a = [...arr];
@@ -222,6 +233,16 @@ export default function AdminGame({ fonts, navigate }) {
               </div>
             </div>
           )}
+          {(LEVEL_BLOGS[level.id] || []).map(publishedPost).filter(Boolean).length > 0 && (
+            <div style={{ margin: '20px 0', background: C.panel, border: `1px solid ${C.line}`, borderRadius: 10, padding: 16 }}>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>📚 {t.blogs}</div>
+              <ul style={{ margin: 0, paddingLeft: 18, display: 'grid', gap: 6 }}>
+                {(LEVEL_BLOGS[level.id] || []).filter((sl) => publishedPost(sl)).map((sl) => (
+                  <li key={sl}><button type="button" onClick={() => navigate('/blog/' + sl)} style={{ background: 'none', border: 'none', padding: 0, color: C.teal, cursor: 'pointer', fontSize: 14, textAlign: 'left' }}>{POSTS[sl].title}</button></li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {ok && levelIdx + 1 < LEVELS.length && isReleased(LEVELS[levelIdx + 1]) && <Btn onClick={() => startLevel(levelIdx + 1)}>{t.nextLevel} →</Btn>}
             <Btn kind="ghost" onClick={() => startLevel(levelIdx)}>{t.again}</Btn>
@@ -334,8 +355,8 @@ export default function AdminGame({ fonts, navigate }) {
             {task.type === 'order' && answer.score !== 1 && (
               <ol style={{ margin: '8px 0 0', paddingLeft: 20, color: C.mute, fontSize: 14 }}>{task.steps.map((s, i) => <li key={i}>{L(s)}</li>)}</ol>
             )}
-            {task.link && (
-              <button type="button" onClick={() => navigate('/blog/' + task.link)} style={{ marginTop: 10, background: 'none', border: 'none', padding: 0, color: C.teal, cursor: 'pointer', fontSize: 14 }}>{t.readMore} →</button>
+            {publishedPost(task.link || TASK_LINKS[`${level.id}-${taskIdx}`]) && (
+              <button type="button" onClick={() => navigate('/blog/' + (task.link || TASK_LINKS[`${level.id}-${taskIdx}`]))} style={{ marginTop: 10, background: 'none', border: 'none', padding: 0, color: C.teal, cursor: 'pointer', fontSize: 14 }}>{t.readMore} →</button>
             )}
             <div style={{ marginTop: 14 }}>
               <Btn onClick={next}>{isLast ? t.finish : t.next} →</Btn>

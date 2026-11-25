@@ -132,6 +132,7 @@ export default function Techwes() {
   const navItems = [
     { label: 'Home', page: 'home', path: '/' },
     { label: 'Blog', page: 'blog', path: '/blog' },
+    { label: 'Spel', page: 'game', path: '/spel' },
     { label: 'Over Mij', page: 'about', path: '/over-mij' },
     { label: 'Contact', page: 'contact', path: '/contact' }
   ];
@@ -268,7 +269,7 @@ export default function Techwes() {
       <nav style={{ borderBottom: `1px solid ${colors.border}`, padding: '1.5rem 2rem', position: 'sticky', top: 0, background: colors.primary, zIndex: 10, boxShadow: '0 2px 8px rgba(30, 64, 175, 0.15)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ fontFamily: fonts.serif, fontSize: '26px', fontWeight: '400', letterSpacing: '0.01em', color: colors.white, cursor: 'pointer' }} onClick={() => navigate('/')}>techwes</div>
-          <div style={{ display: 'flex', gap: '2rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '0.25rem 1.5rem' }}>
             {navItems.map(item => (
               <button key={item.page} onClick={() => navigate(item.path)} style={{ background: 'none', border: 'none', fontSize: '15px', cursor: 'pointer', color: currentPage === item.page ? colors.white : 'rgba(255,255,255,0.8)', fontWeight: currentPage === item.page ? '500' : '400', paddingBottom: '4px', borderBottom: currentPage === item.page ? `2px solid ${colors.accent}` : 'none' }}>{item.label}</button>
             ))}

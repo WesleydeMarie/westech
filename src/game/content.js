@@ -45,6 +45,7 @@ export const UI = {
     minutes: '± 5 minuten',
     soon: 'Binnenkort: Defender, Entra en Conditional Access',
     releaseOn: 'Beschikbaar vanaf',
+    blogs: 'Lees verder op de blog',
     weekly: 'Elke week komt er een nieuw level bij.',
     previewNote: 'Preview: alle levels zijn hier speelbaar. Op techwes.nl komen ze wekelijks vrij.',
     disclaimer: 'Fictief bedrijf. Vereenvoudigde scenario\'s: controleer altijd de actuele Microsoft-documentatie voordat je iets in productie zet.',
@@ -83,6 +84,7 @@ export const UI = {
     minutes: '± 5 minutes',
     soon: 'Coming soon: Defender, Entra and Conditional Access',
     releaseOn: 'Available from',
+    blogs: 'Read more on the blog (Dutch)',
     weekly: 'A new level is added every week.',
     previewNote: 'Preview: all levels are playable here. On techwes.nl they are released weekly.',
     disclaimer: 'Fictional company. Simplified scenarios: always check current Microsoft documentation before changing production.',
@@ -94,7 +96,7 @@ export const LEVELS = [
   // ---------------- LEVEL 1 ----------------
   {
     id: 1,
-    release: '2026-11-30',
+    release: '2026-11-26',
     name: { nl: 'Eerste werkdag', en: 'First day' },
     rank: { nl: 'Beginner', en: 'Beginner' },
     badge: { nl: 'Purview Starter', en: 'Purview Starter' },
@@ -216,7 +218,7 @@ export const LEVELS = [
   // Ritme: eerst doen in de portal, dan een vraag die het inzicht vastzet.
   {
     id: 2,
-    release: '2026-12-07',
+    release: '2026-11-30',
     name: { nl: 'Datalekken', en: 'Data leaks' },
     rank: { nl: 'Gevorderd', en: 'Intermediate' },
     badge: { nl: 'DLP Guardian', en: 'DLP Guardian' },
@@ -302,7 +304,7 @@ export const LEVELS = [
   // ---------------- LEVEL 3 ----------------
   {
     id: 3,
-    release: '2026-12-14',
+    release: '2026-12-07',
     name: { nl: 'Labelen en bewaren', en: 'Labelling and retention' },
     rank: { nl: 'Ervaren', en: 'Advanced' },
     badge: { nl: 'Data Steward', en: 'Data Steward' },
@@ -430,7 +432,7 @@ New-AutoSensitivityLabelRule -Policy "BSN auto" -Name "BSN" \`
   // ---------------- LEVEL 4 ----------------
   {
     id: 4,
-    release: '2026-12-21',
+    release: '2026-12-14',
     name: { nl: 'Incident!', en: 'Incident!' },
     rank: { nl: 'Expert', en: 'Expert' },
     badge: { nl: 'Incident Responder', en: 'Incident Responder' },
@@ -565,5 +567,27 @@ New-AutoSensitivityLabelRule -Policy "BSN auto" -Name "BSN" \`
 
 // Aangekondigde levels (nog niet gebouwd): tonen als teaser in het menu.
 export const UPCOMING = [
-  { id: 5, release: '2026-12-28', name: { nl: 'AI in de tenant: Copilot en DSPM for AI', en: 'AI in the tenant: Copilot and DSPM for AI' } },
+  { id: 5, release: '2026-12-21', name: { nl: 'AI in de tenant: Copilot en DSPM for AI', en: 'AI in the tenant: Copilot and DSPM for AI' } },
 ];
+
+// Blogposts per opdracht (aanvulling op task.link) en per level ("Lees verder op de blog").
+// Sleutel: "<level>-<opdrachtnummer vanaf 0>". Alleen gepubliceerde posts worden getoond.
+export const TASK_LINKS = {
+  '1-4': 'copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde',
+  '2-3': 'custom-sensitive-information-types-in-purview-dlp-voorbij-de-templates',
+  '2-4': 'gericht-externe-toegang-blokkeren-in-sharepoint-en-onedrive-dlp-wordt-granulair',
+  '2-5': 'dlp-alert-aggregation-de-ruis-daalt-het-werk-blijft',
+  '3-3': 'auto-labeling-in-productie-het-overschrijven-van-handmatige-labels-is-een-beleidskeuze-geen-vinkje',
+  '3-5': 'retentie-in-purview-waarom-bewaren-en-vernietigen-bij-elkaar-horen',
+  '4-1': 'ediscovery-in-purview-van-verzoek-tot-exportpakket',
+  '4-2': 'purview-configureert-defender-onderzoekt-de-rolverdeling-die-je-soc-nog-moet-inhalen',
+  '4-3': 'insider-risk-management-en-ai-apps-monitoring-is-nu-ook-een-kostenbeslissing',
+  '4-5': 'insider-risk-als-conditie-in-conditional-access-zo-richt-je-adaptive-protection-veilig-in',
+};
+
+export const LEVEL_BLOGS = {
+  1: ['copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde', 'custom-sensitive-information-types-in-purview-dlp-voorbij-de-templates', 'purview-configureert-defender-onderzoekt-de-rolverdeling-die-je-soc-nog-moet-inhalen'],
+  2: ['waarom-ik-bij-de-meeste-klanten-dlp-verkies-boven-encryptie', 'auto-labeling-zonder-ruis-false-positives-wegwerken-voordat-je-de-policy-aanzet', 'custom-sensitive-information-types-in-purview-dlp-voorbij-de-templates', 'dlp-alert-aggregation-de-ruis-daalt-het-werk-blijft'],
+  3: ['simuleren-voordat-je-labelt-wat-de-nieuwe-insights-van-auto-labeling-wel-en-niet-laten-zien', 'auto-labeling-in-productie-het-overschrijven-van-handmatige-labels-is-een-beleidskeuze-geen-vinkje', 'retentie-in-purview-waarom-bewaren-en-vernietigen-bij-elkaar-horen', 'disposition-review-in-purview-de-tussenstap-voordat-je-data-definitief-verwijdert'],
+  4: ['ediscovery-in-purview-van-verzoek-tot-exportpakket', 'insider-risk-als-conditie-in-conditional-access-zo-richt-je-adaptive-protection-veilig-in', 'insider-risk-management-en-ai-apps-monitoring-is-nu-ook-een-kostenbeslissing'],
+};
