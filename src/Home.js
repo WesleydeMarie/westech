@@ -2,6 +2,7 @@
 import React from 'react';
 import { LEVELS, UPCOMING } from './game/content';
 import { isReleased } from './game/AdminGame';
+import BlogSlider from './BlogSlider';
 
 const PRESENTATIONS = [
   { href: '/presentaties/levensloop-van-een-document.html', title: 'De levensloop van een document', text: 'Sensitivity labels, encryptie en DLP, aan de hand van één document dat de organisatie verlaat.', tag: 'Purview · labels en DLP' },
@@ -29,7 +30,7 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
   const btnGhost = { padding: '12px 24px', background: colors.white, color: colors.primary, border: `2px solid ${colors.primary}`, borderRadius: 6, fontSize: 15, fontWeight: 500, cursor: 'pointer' };
 
   // Een uitgelichte post (featured: true) gaat voor; daarna de nieuwste.
-  const latest = (featured ? [featured, ...posts.filter((p) => p !== featured)] : posts).slice(0, 3);
+  const latest = featured ? [featured, ...posts.filter((p) => p !== featured)] : posts;
   const open = LEVELS.filter(isReleased);
   const nextLevel = LEVELS.find((lv) => !isReleased(lv)) || UPCOMING[0];
   const fmt = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
@@ -51,19 +52,10 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
       {/* Laatste artikelen */}
       <div style={section}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-          <h2 style={h2}>Nieuw op de blog</h2>
+          <h2 style={h2}>Op de blog</h2>
           <button type="button" onClick={() => navigate('/blog')} style={{ background: 'none', border: 'none', color: colors.accent, fontWeight: 600, cursor: 'pointer', fontSize: 14, padding: 0 }}>Alle artikelen →</button>
         </div>
-        <div style={grid}>
-          {latest.map((post) => (
-            <button key={post.id} type="button" onClick={() => navigate(postPath(post))} style={{ ...card, borderTop: `4px solid ${colors.primary}`, textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '.6rem', font: 'inherit', color: 'inherit' }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: colors.primary, textTransform: 'uppercase', letterSpacing: '.06em' }}>{post.category}</span>
-              <span style={{ fontFamily: fonts.serif, fontSize: 21, lineHeight: 1.3, color: colors.text }}>{post.title}</span>
-              <span style={{ fontSize: 14, lineHeight: 1.6, color: colors.textLight, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{post.excerpt}</span>
-              <span style={{ fontSize: 13, color: colors.textLight, marginTop: 'auto' }}>{post.date}{post.readTime ? ` · ${post.readTime}` : ''}</span>
-            </button>
-          ))}
-        </div>
+        <BlogSlider colors={colors} fonts={fonts} posts={latest} navigate={navigate} postPath={postPath} />
       </div>
 
       {/* Het spel */}
