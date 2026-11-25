@@ -6,8 +6,9 @@ import { LEVELS, UI } from './content';
 import DlpPortal, { evaluate as evalPortal } from './DlpPortal';
 
 const C = {
-  bg: '#0b1120', panel: '#111a2e', line: '#22304a', text: '#e6edf7', mute: '#8e9bb2',
-  teal: '#3fe0c5', orange: '#fb923c', red: '#f87171', green: '#4ade80',
+  // Huisstijl techwes.nl
+  bg: '#ffffff', panel: '#f8fafc', line: '#cbd5e1', text: '#0f172a', mute: '#64748b',
+  teal: '#1e40af', accent: '#f97316', orange: '#ea580c', red: '#dc2626', green: '#059669', side: '#f1f5f9', tint: '#dbeafe',
 };
 const STORE = 'techwes-tenant-admin-v1';
 const PASS = 0.7;
@@ -44,7 +45,7 @@ function Meter({ label, value }) {
 function Btn({ children, onClick, kind = 'primary', disabled, style }) {
   const base = { padding: '12px 18px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: disabled ? 'default' : 'pointer', border: 'none', textAlign: 'left', lineHeight: 1.4 };
   const kinds = {
-    primary: { background: C.teal, color: C.bg },
+    primary: { background: C.accent, color: '#ffffff', boxShadow: '0 2px 8px rgba(249,115,22,.25)' },
     ghost: { background: 'transparent', color: C.text, border: `1px solid ${C.line}` },
   };
   return <button type="button" onClick={onClick} disabled={disabled} style={{ ...base, ...kinds[kind], opacity: disabled ? 0.5 : 1, ...style }}>{children}</button>;
@@ -138,7 +139,7 @@ export default function AdminGame({ fonts, navigate }) {
     window.scrollTo(0, 0);
   };
 
-  const frame = { background: C.bg, color: C.text, borderRadius: 14, padding: 'clamp(16px, 4vw, 32px)', boxShadow: '0 8px 24px rgba(15,23,42,.18)' };
+  const frame = { background: C.bg, color: C.text, border: `1px solid ${C.line}`, borderRadius: 12, padding: 'clamp(16px, 4vw, 32px)', boxShadow: '0 2px 12px rgba(30,64,175,.08)' };
   const heading = { fontFamily: fonts.serif, fontWeight: 400, margin: 0, color: C.text };
 
   // ---------- MENU ----------
@@ -154,13 +155,14 @@ export default function AdminGame({ fonts, navigate }) {
           <p style={{ color: C.mute, lineHeight: 1.6, marginTop: 0, marginBottom: 24 }}>{t.intro}</p>
           <div style={{ display: 'grid', gap: 12 }}>
             {LEVELS.map((lv, i) => {
-              const open = lv.id <= unlocked;
+              const open = true; // alle levels direct speelbaar
+              const interactive = lv.tasks.some((x) => x.type === 'portal');
               return (
                 <button key={lv.id} type="button" disabled={!open} onClick={() => startLevel(i)}
                   style={{ textAlign: 'left', background: C.panel, border: `1px solid ${open ? C.line : C.panel}`, borderRadius: 10, padding: 16, color: C.text, cursor: open ? 'pointer' : 'default', opacity: open ? 1 : 0.55 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 600, fontSize: 16 }}>{open ? '' : '🔒 '}Level {lv.id} · {L(lv.name)}</span>
-                    <span style={{ fontSize: 13, color: best[lv.id] >= 70 ? C.green : C.mute }}>{L(lv.rank)}{best[lv.id] != null ? ` · ${best[lv.id]}%` : ''}</span>
+                    <span style={{ fontWeight: 600, fontSize: 16 }}>Level {lv.id} · {L(lv.name)}{interactive && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: C.teal, background: C.tint, borderRadius: 999, padding: '2px 8px', whiteSpace: 'nowrap' }}>🖱️ {lang === 'nl' ? 'Interactieve portal' : 'Interactive portal'}</span>}</span>
+                    <span style={{ fontSize: 13, color: best[lv.id] >= 70 ? C.green : C.mute }}>{best[lv.id] >= 70 ? '✓ ' : ''}{L(lv.rank)}{best[lv.id] != null ? ` · ${best[lv.id]}%` : ''}</span>
                   </div>
                   <div style={{ fontSize: 14, color: C.mute, marginTop: 6 }}>{open ? `${L(lv.blurb)} ${t.minutes}.` : t.locked}</div>
                 </button>
@@ -233,7 +235,7 @@ export default function AdminGame({ fonts, navigate }) {
           <div style={{ fontSize: 13, color: C.teal, marginBottom: 8 }}>🎫 {t.from}: {L(task.from)}</div>
           <p style={{ fontSize: 17, lineHeight: 1.55, margin: 0 }}>{L(task.prompt)}</p>
           {task.code && (
-            <pre style={{ background: C.bg, border: `1px solid ${C.line}`, borderRadius: 8, padding: 12, marginTop: 14, marginBottom: 0, overflowX: 'auto', fontSize: 13, lineHeight: 1.5, color: '#c7d2fe' }}><code>{task.code}</code></pre>
+            <pre style={{ background: C.side, border: `1px solid ${C.line}`, borderRadius: 8, padding: 12, marginTop: 14, marginBottom: 0, overflowX: 'auto', fontSize: 13, lineHeight: 1.5, color: C.text }}><code>{task.code}</code></pre>
           )}
         </div>
 
@@ -259,7 +261,7 @@ export default function AdminGame({ fonts, navigate }) {
                 const border = answer ? (o.correct ? C.green : on ? C.red : C.line) : on ? C.teal : C.line;
                 return (
                   <Btn key={i} kind="ghost" disabled={!!answer} onClick={() => setMulti(on ? multi.filter((x) => x !== i) : [...multi, i])}
-                    style={{ border: `1px solid ${border}`, fontWeight: 500, background: on ? 'rgba(63,224,197,.08)' : 'transparent' }}>
+                    style={{ border: `1px solid ${border}`, fontWeight: 500, background: on ? 'rgba(30,64,175,.06)' : 'transparent' }}>
                     {on ? '☑ ' : '☐ '}{L(o.text)}
                   </Btn>
                 );

@@ -4,8 +4,9 @@
 import React, { useState } from 'react';
 
 const C = {
-  bg: '#0b1120', panel: '#111a2e', line: '#22304a', text: '#e6edf7', mute: '#8e9bb2',
-  teal: '#3fe0c5', orange: '#fb923c', red: '#f87171', green: '#4ade80', side: '#0e1628',
+  // Huisstijl techwes.nl
+  bg: '#ffffff', panel: '#f8fafc', line: '#cbd5e1', text: '#0f172a', mute: '#64748b',
+  teal: '#1e40af', accent: '#f97316', orange: '#ea580c', red: '#dc2626', green: '#059669', side: '#f1f5f9', tint: '#dbeafe',
 };
 
 const TXT = {
@@ -108,7 +109,7 @@ function Nav({ t, onWrong }) {
     <div style={{ background: C.side, borderRight: `1px solid ${C.line}`, padding: '10px 6px', display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
       {items.map((k) => (
         <button key={k} type="button" className="nav-btn" title={t.nav[k]} aria-label={t.nav[k]} onClick={() => (k === 'dlp' ? null : onWrong())}
-          style={{ textAlign: 'left', background: k === 'dlp' ? 'rgba(63,224,197,.12)' : 'transparent', color: k === 'dlp' ? C.teal : C.mute, border: 'none', borderRadius: 6, padding: '8px 8px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          style={{ textAlign: 'left', background: k === 'dlp' ? 'rgba(30,64,175,.10)' : 'transparent', color: k === 'dlp' ? C.teal : C.mute, border: 'none', borderRadius: 6, padding: '8px 8px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           <span aria-hidden="true">{icons[k]}</span> <span className="nav-label">{t.nav[k]}</span>
         </button>
       ))}
@@ -118,7 +119,7 @@ function Nav({ t, onWrong }) {
 
 const field = { width: '100%', boxSizing: 'border-box', background: C.bg, color: C.text, border: `1px solid ${C.line}`, borderRadius: 6, padding: '9px 10px', fontSize: 14 };
 const label = { display: 'block', fontSize: 13, color: C.mute, margin: '12px 0 6px' };
-const btn = (primary) => ({ padding: '10px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer', border: primary ? 'none' : `1px solid ${C.line}`, background: primary ? C.teal : 'transparent', color: primary ? C.bg : C.text });
+const btn = (primary) => ({ padding: '10px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer', border: primary ? 'none' : `1px solid ${C.line}`, background: primary ? C.accent : C.bg, color: primary ? '#ffffff' : C.text });
 
 function Radio({ name, value, current, onChange, children }) {
   return (
@@ -141,7 +142,7 @@ export default function DlpPortal({ lang, step, policy, onSubmit }) {
   const wrong = () => { setToast(t.notNeeded); setTimeout(() => setToast(null), 2200); };
 
   const statusPill = (m) => (
-    <span style={{ fontSize: 12, padding: '3px 8px', borderRadius: 999, background: m === 'on' ? 'rgba(74,222,128,.15)' : 'rgba(251,146,60,.15)', color: m === 'on' ? C.green : C.orange }}>{t.status[m] || t.status.off}</span>
+    <span style={{ fontSize: 12, padding: '3px 8px', borderRadius: 999, background: m === 'on' ? 'rgba(5,150,105,.12)' : 'rgba(234,88,12,.12)', color: m === 'on' ? C.green : C.orange }}>{t.status[m] || t.status.off}</span>
   );
 
   let body;
@@ -274,7 +275,7 @@ export default function DlpPortal({ lang, step, policy, onSubmit }) {
       <div className="dlp-grid" style={{ display: 'grid', gridTemplateColumns: '170px 1fr', minHeight: 300 }}>
         <Nav t={t} onWrong={wrong} />
         <div style={{ padding: 16, minWidth: 0, position: 'relative' }}>
-          {toast && <div role="status" style={{ background: 'rgba(251,146,60,.15)', color: C.orange, borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12 }}>{toast}</div>}
+          {toast && <div role="status" style={{ background: 'rgba(234,88,12,.12)', color: C.orange, borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12 }}>{toast}</div>}
           {body}
         </div>
       </div>
