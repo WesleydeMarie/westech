@@ -3,6 +3,7 @@
 // Voortgang (vrijgespeelde levels, taal) staat alleen lokaal in de browser.
 import React, { useEffect, useMemo, useState } from 'react';
 import { LEVELS, UI } from './content';
+import DlpPortal, { evaluate as evalPortal } from './DlpPortal';
 
 const C = {
   bg: '#0b1120', panel: '#111a2e', line: '#22304a', text: '#e6edf7', mute: '#8e9bb2',
@@ -63,6 +64,7 @@ export default function AdminGame({ fonts, navigate }) {
   const [multi, setMulti] = useState([]);
   const [order, setOrder] = useState([]);
   const [opts, setOpts] = useState([]);
+  const [policy, setPolicy] = useState(null); // portal-stand, gaat mee naar de volgende portal-opdracht
 
   const t = UI[lang];
   const L = (o) => (o && typeof o === 'object' ? o[lang] : o);
@@ -76,12 +78,13 @@ export default function AdminGame({ fonts, navigate }) {
   useEffect(() => {
     if (!task) return;
     if (task.type === 'order') setOpts(shuffle(task.steps.map((s, i) => ({ s, i }))));
-    else setOpts(shuffle(task.options.map((o, i) => ({ o, i }))));
+    else if (task.options) setOpts(shuffle(task.options.map((o, i) => ({ o, i }))));
+    else setOpts([]);
     setMulti([]); setOrder([]); setAnswer(null);
   }, [levelIdx, taskIdx, task]);
 
   const startLevel = (i) => {
-    setLevelIdx(i); setTaskIdx(0); setPoints(0);
+    setLevelIdx(i); setTaskIdx(0); setPoints(0); setPolicy(null);
     setMeters({ sec: START, usr: START, cmp: START });
     setView('play');
     window.scrollTo(0, 0);
@@ -116,6 +119,14 @@ export default function AdminGame({ fonts, navigate }) {
     applyEffects(score === 1 ? { sec: 2, usr: 1, cmp: 2 } : score ? {} : { sec: -1, usr: 0, cmp: -2 });
     setPoints((p) => p + score);
     setAnswer({ score, feedback: L(task.feedback) });
+  };
+
+  const submitPortal = (p) => {
+    const r = evalPortal(task.step, p, lang);
+    applyEffects(r.effects);
+    setPoints((x) => x + r.score);
+    setPolicy(p);
+    setAnswer({ score: r.score, list: r.feedback });
   };
 
   const next = () => {
@@ -227,6 +238,10 @@ export default function AdminGame({ fonts, navigate }) {
         </div>
 
         <div style={{ display: 'grid', gap: 10, marginTop: 16 }}>
+          {task.type === 'portal' && !answer && (
+            <DlpPortal key={`${levelIdx}-${taskIdx}`} lang={lang} step={task.step} policy={policy} onSubmit={submitPortal} />
+          )}
+
           {task.type === 'choice' && opts.map(({ o, i }) => {
             const shown = !!answer;
             const border = !shown ? C.line : o.correct ? C.green : i === answer.picked ? C.red : C.line;
@@ -279,7 +294,12 @@ export default function AdminGame({ fonts, navigate }) {
         {answer && (
           <div role="status" style={{ marginTop: 18, borderLeft: `4px solid ${verdictColor}`, background: C.panel, borderRadius: 8, padding: '14px 16px' }}>
             <div style={{ fontWeight: 700, color: verdictColor, marginBottom: 6 }}>{verdict}</div>
-            <div style={{ lineHeight: 1.55 }}>{answer.feedback}</div>
+            {answer.feedback && <div style={{ lineHeight: 1.55 }}>{answer.feedback}</div>}
+            {answer.list && (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 6 }}>
+                {answer.list.map(([icon, msg], i) => <li key={i} style={{ lineHeight: 1.5 }}>{icon} {msg}</li>)}
+              </ul>
+            )}
             {task.type === 'choice' && answer.score !== 1 && (
               <div style={{ marginTop: 8, color: C.mute, fontSize: 14 }}>✅ {L(task.options.find((o) => o.correct).text)}{' — '}{L(task.options.find((o) => o.correct).feedback)}</div>
             )}

@@ -3,6 +3,7 @@
 //   choice : één juist antwoord
 //   multi  : bouw een policy, kies alle juiste blokken
 //   order  : zet de stappen in de juiste volgorde
+//   portal : voer de opdracht uit in de gesimuleerde beheerportal (DlpPortal.js)
 // effects: invloed op de meters { sec: beveiliging, usr: gebruikers, cmp: compliance }.
 // link: slug van een gepubliceerde blogpost op techwes.nl (alleen tonen als die bestaat).
 
@@ -175,114 +176,86 @@ export const LEVELS = [
   },
 
   // ---------------- LEVEL 2 ----------------
+  // Ritme: eerst doen in de portal, dan een vraag die het inzicht vastzet.
   {
     id: 2,
     name: { nl: 'Datalekken', en: 'Data leaks' },
     rank: { nl: 'Gevorderd', en: 'Intermediate' },
     badge: { nl: 'DLP Guardian', en: 'DLP Guardian' },
-    blurb: { nl: 'DLP bouwen, testen en tunen zonder de business stil te leggen.', en: 'Build, test and tune DLP without stopping the business.' },
+    blurb: { nl: 'Bouw, test en tune een DLP-policy in de portal.', en: 'Build, test and tune a DLP policy in the portal.' },
     tasks: [
       {
-        type: 'choice',
+        type: 'portal', step: 'create',
         from: { nl: 'CISO', en: 'CISO' },
         prompt: {
-          nl: '"Ik wil dat niemand nog BSN\'s naar buiten mailt. Vandaag nog." Wat doe je eerst?',
-          en: '"I want nobody to email citizen service numbers outside anymore. Today." What do you do first?',
+          nl: '"Niemand mag nog BSN\'s naar buiten mailen. Maar de business mag niet stilvallen." Maak in de portal een DLP-policy die precies dat doet.',
+          en: '"Nobody may email citizen service numbers (BSN) outside anymore. But the business must not grind to a halt." Create a DLP policy in the portal that does exactly that.',
         },
-        options: [
-          { text: { nl: 'DLP-policy direct aan op blokkeren voor iedereen', en: 'DLP policy straight to block for everyone' }, effects: { sec: 2, usr: -3, cmp: 0 },
-            feedback: { nl: 'Salarisadministratie kan niet meer met de Belastingdienst mailen: 40 tickets voor de lunch.', en: 'Payroll can no longer email the tax office: 40 tickets before lunch.' } },
-          { text: { nl: 'DLP-policy in simulatiemodus met policy tips, na een paar dagen evalueren', en: 'DLP policy in simulation mode with policy tips, evaluate after a few days' }, correct: true, effects: { sec: 1, usr: 1, cmp: 1 },
-            feedback: { nl: 'Je ziet 3 echte lekken en 25 false positives, en die werk je weg vóór je blokkeert.', en: 'You see 3 real leaks and 25 false positives, which you fix before you block.' } },
-          { text: { nl: 'Een mail naar alle medewerkers', en: 'An email to all employees' }, effects: { sec: 0, usr: 0, cmp: -1 },
-            feedback: { nl: 'Bewustwording helpt, maar houdt technisch niets tegen.', en: 'Awareness helps, but technically stops nothing.' } },
-        ],
         link: 'waarom-ik-bij-de-meeste-klanten-dlp-verkies-boven-encryptie',
       },
       {
-        type: 'multi',
+        type: 'choice',
         from: { nl: 'CISO', en: 'CISO' },
         prompt: {
-          nl: 'Bouw de policy: BSN\'s mogen niet zomaar per e-mail naar buiten, maar gebruikers mogen met een reden doorgaan.',
-          en: 'Build the policy: citizen service numbers must not leave by email casually, but users may continue with a reason.',
+          nl: '"Waarom staat die policy op simulatie? Ik wilde dat het vandaag werkte!" Wat antwoord je?',
+          en: '"Why is that policy in simulation? I wanted it working today!" What do you answer?',
         },
         options: [
-          { text: { nl: 'Locatie: Exchange e-mail', en: 'Location: Exchange email' }, correct: true },
-          { text: { nl: 'Locatie: alle Windows-endpoints', en: 'Location: all Windows endpoints' } },
-          { text: { nl: 'Voorwaarde: bevat het SIT voor BSN', en: 'Condition: contains the BSN sensitive info type' }, correct: true },
-          { text: { nl: 'Voorwaarde: gedeeld met mensen buiten de organisatie', en: 'Condition: shared with people outside the organisation' }, correct: true },
-          { text: { nl: 'Actie: blokkeren, met override en motivatie', en: 'Action: block, with override and justification' }, correct: true },
-          { text: { nl: 'Actie: alleen auditen', en: 'Action: audit only' } },
-        ],
-        feedback: {
-          nl: 'Precies genoeg: de juiste locatie, alleen extern verkeer, en een override zodat legitiem werk doorgaat. Elke keuze wordt gelogd.',
-          en: 'Exactly enough: the right location, only external traffic, and an override so legitimate work continues. Every choice is logged.',
-        },
-      },
-      {
-        type: 'choice',
-        from: { nl: 'Helpdesk', en: 'Helpdesk' },
-        prompt: {
-          nl: 'Je hebt de policy 10 minuten geleden gemaakt, maar in Outlook verschijnt nog geen policy tip. Wat is de meest waarschijnlijke oorzaak?',
-          en: 'You created the policy 10 minutes ago, but no policy tip shows in Outlook yet. Most likely cause?',
-        },
-        options: [
-          { text: { nl: 'De policy is kapot: opnieuw aanmaken', en: 'The policy is broken: recreate it' }, effects: { sec: 0, usr: -1, cmp: 0 },
-            feedback: { nl: 'Opnieuw aanmaken begint de wachttijd alleen opnieuw.', en: 'Recreating it only restarts the waiting time.' } },
-          { text: { nl: 'Het verspreiden van een policy kan tot een uur duren', en: 'Policy distribution can take up to an hour' }, correct: true, effects: { sec: 0, usr: 1, cmp: 0 },
-            feedback: { nl: 'Even geduld. Kijk daarna pas verder, bijvoorbeeld naar de status van de policy.', en: 'Be patient. Only then look further, for example at the policy status.' } },
-          { text: { nl: 'Outlook ondersteunt geen policy tips', en: 'Outlook does not support policy tips' }, effects: { sec: 0, usr: 0, cmp: 0 },
-            feedback: { nl: 'Outlook ondersteunt policy tips wel.', en: 'Outlook does support policy tips.' } },
+          { text: { nl: 'Simulatie laat zien wat de policy zou raken, zonder iemand te blokkeren. Zo werk ik false positives weg vóór ik aanzet.', en: 'Simulation shows what the policy would hit, without blocking anyone. That way I remove false positives before turning it on.' }, correct: true, effects: { sec: 0, usr: 1, cmp: 1 },
+            feedback: { nl: 'Precies. En met policy tips worden gebruikers al gewaarschuwd, zonder blokkade.', en: 'Exactly. And with policy tips users are already warned, without being blocked.' } },
+          { text: { nl: 'Simulatie is verplicht: je kunt een DLP-policy niet direct aanzetten.', en: 'Simulation is mandatory: you cannot turn a DLP policy on directly.' }, effects: { sec: 0, usr: 0, cmp: -1 },
+            feedback: { nl: 'Niet waar: het kan wel. Het is alleen niet verstandig.', en: 'Not true: you can. It just is not wise.' } },
+          { text: { nl: 'In simulatie werkt de policy al, alleen zonder logging.', en: 'In simulation the policy already works, just without logging.' }, effects: { sec: -1, usr: 0, cmp: 0 },
+            feedback: { nl: 'Andersom: in simulatie wordt gelogd, maar niets tegengehouden.', en: 'The other way round: simulation logs, but blocks nothing.' } },
         ],
       },
       {
-        type: 'choice',
+        type: 'portal', step: 'tune',
         from: { nl: 'Inkoop', en: 'Procurement' },
         prompt: {
-          nl: 'Inkoop krijgt steeds waarschuwingen: hun ordernummers van 9 cijfers worden als BSN herkend. Wat doe je?',
-          en: 'Procurement keeps getting warnings: their 9-digit order numbers are detected as BSNs. What do you do?',
+          nl: 'Drie dagen later. Inkoop klaagt: hun ordernummers worden als BSN gezien. Open je policy, bekijk het simulatieresultaat en tune de regel zó dat de ruis verdwijnt, maar echte lekken gevangen blijven.',
+          en: 'Three days later. Procurement complains: their order numbers are detected as BSNs. Open your policy, review the simulation result and tune the rule so the noise disappears but real leaks are still caught.',
         },
-        options: [
-          { text: { nl: 'Policy uitzetten voor iedereen', en: 'Turn the policy off for everyone' }, effects: { sec: -2, usr: 1, cmp: -2 },
-            feedback: { nl: 'Probleem weg, bescherming ook weg.', en: 'Problem gone, protection gone too.' } },
-          { text: { nl: 'Hogere confidence eisen, zodat er bewijs in de buurt nodig is (bijv. het woord "BSN")', en: 'Require higher confidence, so supporting evidence is needed nearby (e.g. the word "BSN")' }, correct: true, effects: { sec: 1, usr: 2, cmp: 1 },
-            feedback: { nl: 'Gericht tunen: de ruis verdwijnt, de echte BSN\'s blijven gevangen.', en: 'Targeted tuning: the noise goes away, the real BSNs are still caught.' } },
-          { text: { nl: 'Inkoop uitzonderen van alle DLP', en: 'Exclude procurement from all DLP' }, effects: { sec: -1, usr: 1, cmp: -1 },
-            feedback: { nl: 'Nu kan inkoop ongemerkt ook échte BSN\'s mailen.', en: 'Now procurement can also send real BSNs unnoticed.' } },
-        ],
         link: 'auto-labeling-zonder-ruis-false-positives-wegwerken-voordat-je-de-policy-aanzet',
       },
       {
         type: 'choice',
-        from: { nl: 'Helpdesk', en: 'Helpdesk' },
+        from: { nl: 'Collega-admin', en: 'Fellow admin' },
         prompt: {
-          nl: 'Endpoint DLP grijpt niet in als een medewerker een bestand met BSN\'s naar een USB-stick kopieert. Wat controleer je eerst?',
-          en: 'Endpoint DLP does not act when an employee copies a file with BSNs to a USB stick. What do you check first?',
+          nl: 'Waarom verdwijnen de ordernummers bij een hoge confidence, maar blijven echte BSN\'s gevangen?',
+          en: 'Why do the order numbers disappear at high confidence, while real BSNs are still caught?',
         },
         options: [
-          { text: { nl: 'Of het apparaat aan Purview is toegevoegd (onboarded)', en: 'Whether the device is onboarded to Purview' }, correct: true, effects: { sec: 1, usr: 0, cmp: 1 },
-            feedback: { nl: 'Zonder onboarding ziet Purview het apparaat niet. Daarna pas de policy-instellingen.', en: 'Without onboarding Purview cannot see the device. Only then check the policy settings.' } },
-          { text: { nl: 'Of de gebruiker een E5-licentie heeft', en: 'Whether the user has an E5 licence' }, effects: { sec: 0, usr: 0, cmp: 0 },
-            feedback: { nl: 'Licenties doen ertoe, maar de eerste technische oorzaak is bijna altijd onboarding.', en: 'Licences matter, but the first technical cause is almost always onboarding.' } },
-          { text: { nl: 'USB-poorten in het BIOS uitschakelen', en: 'Disable USB ports in the BIOS' }, effects: { sec: 1, usr: -2, cmp: 0 },
-            feedback: { nl: 'Grof middel: nu werkt geen enkele muis- of headset-dongle meer.', en: 'Blunt instrument: now no mouse or headset dongle works anymore.' } },
+          { text: { nl: 'Hoge confidence vraagt naast een geldig nummer ook ondersteunend bewijs in de buurt, zoals het woord "BSN"', en: 'High confidence requires, besides a valid number, supporting evidence nearby, such as the word "BSN"' }, correct: true, effects: { sec: 1, usr: 1, cmp: 0 },
+            feedback: { nl: 'Een kaal getal van 9 cijfers is niet genoeg. Een echte BSN staat meestal naast woorden als "BSN" of "burgerservicenummer".', en: 'A bare 9-digit number is not enough. A real BSN usually sits next to words like "BSN" or "burgerservicenummer".' } },
+          { text: { nl: 'Hoge confidence kijkt alleen naar Excel-bestanden', en: 'High confidence only looks at Excel files' }, effects: { sec: 0, usr: 0, cmp: 0 },
+            feedback: { nl: 'Confidence gaat over bewijs rond de match, niet over bestandstypen.', en: 'Confidence is about evidence around the match, not file types.' } },
+          { text: { nl: 'Hoge confidence vraagt minimaal 10 BSN\'s per bericht', en: 'High confidence requires at least 10 BSNs per message' }, effects: { sec: -1, usr: 0, cmp: 0 },
+            feedback: { nl: 'Dat is het minimaal aantal, een andere instelling.', en: 'That is the minimum instance count, a different setting.' } },
         ],
-        link: 'endpoint-dlp-wordt-eindelijk-beheersbaar-device-scoping-health-reports-en-advanced-hunting',
+      },
+      {
+        type: 'portal', step: 'finish',
+        from: { nl: 'Salarisadministratie', en: 'Payroll' },
+        prompt: {
+          nl: 'Salarisadministratie moet loonaangiftes met BSN\'s naar belastingdienst.nl kunnen sturen. Voeg de juiste uitzondering toe en zet de policy daarna echt aan.',
+          en: 'Payroll must be able to send payroll returns with BSNs to belastingdienst.nl. Add the right exception and then actually turn the policy on.',
+        },
       },
       {
         type: 'choice',
-        from: { nl: 'Salarisadministratie', en: 'Payroll' },
+        from: { nl: 'CISO', en: 'CISO' },
         prompt: {
-          nl: 'Salarisadministratie moet loonaangiftes met BSN\'s naar belastingdienst.nl kunnen sturen. Hoe regel je dat?',
-          en: 'Payroll must be able to send payroll returns with BSNs to belastingdienst.nl. How do you arrange that?',
+          nl: 'De policy staat aan. "Ik wil zien wie de override gebruikt en met welke reden." Waar kijk je?',
+          en: 'The policy is on. "I want to see who uses the override and with what reason." Where do you look?',
         },
         options: [
-          { text: { nl: 'Een uitzondering in de policy: groep Salarisadministratie naar het domein belastingdienst.nl', en: 'An exception in the policy: group Payroll to the domain belastingdienst.nl' }, correct: true, effects: { sec: 1, usr: 2, cmp: 1 },
-            feedback: { nl: 'Zo smal mogelijk: alleen deze groep, alleen dit domein. De rest blijft beschermd.', en: 'As narrow as possible: only this group, only this domain. Everything else stays protected.' } },
-          { text: { nl: 'Salarisadministratie uitsluiten van de policy', en: 'Exclude payroll from the policy' }, effects: { sec: -1, usr: 1, cmp: -1 },
-            feedback: { nl: 'Nu kunnen ze BSN\'s naar élk adres sturen.', en: 'Now they can send BSNs to any address.' } },
-          { text: { nl: 'Laat ze maar elke keer de override gebruiken', en: 'Let them use the override every time' }, effects: { sec: 0, usr: -2, cmp: 0 },
-            feedback: { nl: 'Werkt, maar frustreert en vervuilt je alerts met verwachte meldingen.', en: 'Works, but frustrates users and floods your alerts with expected events.' } },
+          { text: { nl: 'In de DLP-activiteiten in Activity explorer, en in de DLP-alerts', en: 'In the DLP activity in Activity explorer, and in the DLP alerts' }, correct: true, effects: { sec: 1, usr: 0, cmp: 1 },
+            feedback: { nl: 'Daar zie je de regelmatches, wie een override deed en de opgegeven motivatie.', en: 'There you see the rule matches, who overrode and the justification given.' } },
+          { text: { nl: 'In Content explorer', en: 'In Content explorer' }, effects: { sec: 0, usr: 0, cmp: 0 },
+            feedback: { nl: 'Content explorer toont waar data staat, niet wie een override gebruikte.', en: 'Content explorer shows where data lives, not who used an override.' } },
+          { text: { nl: 'Dat wordt niet vastgelegd', en: 'That is not recorded' }, effects: { sec: -1, usr: 0, cmp: -1 },
+            feedback: { nl: 'Wel: elke override met motivatie wordt gelogd. Dat is juist de waarde van "blokkeren met override".', en: 'It is: every override with justification is logged. That is the point of "block with override".' } },
         ],
       },
     ],
