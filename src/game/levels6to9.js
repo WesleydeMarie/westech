@@ -6,6 +6,7 @@ export const LEVELS_6_9 = [
   // ---------------- LEVEL 6 ----------------
   {
     id: 6,
+    visible: '2026-12-07', // verschijnt dan op techwes.nl (op slot tot release)
     release: '2026-12-28',
     name: T('Endpoint DLP en apparaten', 'Endpoint DLP and devices'),
     rank: T('Specialist', 'Specialist'),
@@ -146,6 +147,7 @@ export const LEVELS_6_9 = [
   // ---------------- LEVEL 7 ----------------
   {
     id: 7,
+    visible: '2026-12-14', // verschijnt dan op techwes.nl (op slot tot release)
     release: '2027-01-04',
     name: T('DLP overal', 'DLP everywhere'),
     rank: T('Specialist+', 'Specialist+'),
@@ -282,6 +284,7 @@ export const LEVELS_6_9 = [
   // ---------------- LEVEL 8 ----------------
   {
     id: 8,
+    visible: '2026-12-21', // verschijnt dan op techwes.nl (op slot tot release)
     release: '2027-01-11',
     name: T('Je eigen gevoelige data', 'Your own sensitive data'),
     rank: T('Architect', 'Architect'),
@@ -431,6 +434,7 @@ export const LEVELS_6_9 = [
   // ---------------- LEVEL 9 ----------------
   {
     id: 9,
+    visible: '2026-12-28', // verschijnt dan op techwes.nl (op slot tot release)
     release: '2027-01-18',
     name: T('Agents aan het werk', 'Agents at work'),
     rank: T('Architect+', 'Architect+'),

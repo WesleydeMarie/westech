@@ -1,7 +1,7 @@
 // Homepage van techwes.nl: wie, wat er nieuw is, het spel, de presentaties en de onderwerpen.
 import React from 'react';
 import { LEVELS, UPCOMING } from './game/content';
-import { isReleased } from './game/AdminGame';
+import { isReleased, isVisible } from './game/AdminGame';
 import BlogSlider from './BlogSlider';
 import Carousel from './Carousel';
 
@@ -70,7 +70,7 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
           <Carousel id="hl" label="Levels van Tenant Admin" perView={2} gap={12} start={Math.max(0, open.length - 1)}
             palette={{ primary: colors.primary, border: colors.border, white: colors.white, mute: colors.textLight }}
             prevText="Vorige levels" nextText="Volgende levels">
-            {[...LEVELS, ...UPCOMING].map((lv) => {
+            {[...LEVELS, ...UPCOMING].filter(isVisible).map((lv) => {
               const ok = LEVELS.includes(lv) && isReleased(lv);
               return (
                 <button key={lv.id} type="button" disabled={!ok} onClick={() => navigate('/spel')}
@@ -82,7 +82,7 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
               );
             })}
           </Carousel>
-          <div style={{ fontSize: 12, color: colors.textLight, marginTop: 4 }}>{open.length} van {LEVELS.length} levels speelbaar · geen account nodig, er wordt niets opgeslagen</div>
+          <div style={{ fontSize: 12, color: colors.textLight, marginTop: 4 }}>{open.length} van {LEVELS.filter(isVisible).length} levels speelbaar · geen account nodig, er wordt niets opgeslagen</div>
         </div>
       </div>
 

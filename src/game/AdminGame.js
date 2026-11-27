@@ -29,6 +29,8 @@ function save(data) {
 const LIVE = typeof window !== 'undefined' && /(^|\.)techwes\.nl$/.test(window.location.hostname);
 const todayISO = () => new Date().toISOString().slice(0, 10);
 export const isReleased = (lv) => !LIVE || !lv.release || lv.release <= todayISO();
+// Op techwes.nl verschijnt een level pas in het menu vanaf zijn visible-datum; previews tonen alles.
+export const isVisible = (lv) => !LIVE || !lv.visible || lv.visible <= todayISO();
 const fmtDate = (iso, lang) => new Date(iso + 'T12:00:00').toLocaleDateString(lang === 'nl' ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long' });
 // Blogverwijzingen: alleen naar posts die bestaan en al gepubliceerd zijn.
 const slugify = (str) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -188,6 +190,7 @@ export default function AdminGame({ fonts, navigate }) {
             palette={{ primary: C.teal, border: C.line, white: C.bg, mute: C.mute }}
             ofText={lang === 'nl' ? 'van' : 'of'} prevText={lang === 'nl' ? 'Vorige levels' : 'Previous levels'} nextText={lang === 'nl' ? 'Volgende levels' : 'Next levels'}>
             {LEVELS.map((lv, i) => {
+              if (!isVisible(lv)) return null;
               const open = isReleased(lv);
               const interactive = lv.tasks.some((x) => x.type === 'portal' || x.type === 'console');
               return (
@@ -203,7 +206,7 @@ export default function AdminGame({ fonts, navigate }) {
                 </button>
               );
             })}
-            {UPCOMING.map((u) => (
+            {UPCOMING.filter(isVisible).map((u) => (
               <div key={u.id} style={{ border: `1px dashed ${C.line}`, borderRadius: 10, padding: 16, color: C.mute, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontSize: 13 }}>🔒 Level {u.id}</span>
                 <span style={{ fontWeight: 600, fontSize: 17 }}>{L(u.name)}</span>

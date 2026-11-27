@@ -6,6 +6,7 @@
 //   portal : DLP-wizard in de gesimuleerde portal (DlpPortal.js, level 2)
 //   console: opdracht in de generieke gesimuleerde portal (Portal.js): section, fields, checks
 // release: datum waarop het level op techwes.nl vrijkomt (wekelijks één nieuw level).
+// visible: datum waarop het level in het menu verschijnt (nog op slot). Zonder visible: altijd zichtbaar.
 // effects: invloed op de meters { sec: beveiliging, usr: gebruikers, cmp: compliance }.
 // link: slug van een gepubliceerde blogpost op techwes.nl (alleen tonen als die bestaat).
 
@@ -742,7 +743,7 @@ New-AutoSensitivityLabelRule -Policy "BSN auto" -Name "BSN" \`
 
 // Aangekondigde levels (nog niet gebouwd): tonen als teaser in het menu.
 export const UPCOMING = [
-  { id: 10, release: '2027-01-25', name: { nl: 'De Purview-scanner op je fileshares', en: 'The Purview scanner on your file shares' } },
+  { id: 10, visible: '2027-01-04', release: '2027-01-25', name: { nl: 'De Purview-scanner op je fileshares', en: 'The Purview scanner on your file shares' } },
 ];
 
 // Blogposts per opdracht (aanvulling op task.link) en per level ("Lees verder op de blog").
