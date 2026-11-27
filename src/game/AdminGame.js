@@ -3,6 +3,7 @@
 // Voortgang (vrijgespeelde levels, taal) staat alleen lokaal in de browser.
 import React, { useEffect, useMemo, useState } from 'react';
 import { LEVELS, UI, UPCOMING, TASK_LINKS, LEVEL_BLOGS } from './content';
+import Carousel from '../Carousel';
 import { blogPosts } from '../blogPosts';
 import Portal, { evaluateGeneric } from './Portal';
 import DlpPortal, { evaluate as evalPortal } from './DlpPortal';
@@ -82,7 +83,6 @@ export default function AdminGame({ fonts, navigate }) {
   const [answer, setAnswer] = useState(null); // { score, feedback, picked }
   const [multi, setMulti] = useState([]);
   const [order, setOrder] = useState([]);
-  const [opts, setOpts] = useState([]);
   const [policy, setPolicy] = useState(null); // portal-stand, gaat mee naar de volgende portal-opdracht
 
   const t = UI[lang];
@@ -94,16 +94,21 @@ export default function AdminGame({ fonts, navigate }) {
   useEffect(() => { document.title = `${t.title} | Techwes`; }, [t.title]);
 
   // Opties per opdracht schudden, zodat het juiste antwoord niet steeds op dezelfde plek staat.
+  // useMemo i.p.v. state: zo hoort de lijst altijd bij de opdracht die nu getoond wordt
+  // (anders rendert een nieuw level één keer met de opties van de vorige opdracht).
+  const opts = useMemo(() => {
+    if (!task) return [];
+    if (task.type === 'order') return shuffle(task.steps.map((s, i) => ({ s, i })));
+    if (task.options) return shuffle(task.options.map((o, i) => ({ o, i })));
+    return [];
+  }, [task]);
   useEffect(() => {
-    if (!task) return;
-    if (task.type === 'order') setOpts(shuffle(task.steps.map((s, i) => ({ s, i }))));
-    else if (task.options) setOpts(shuffle(task.options.map((o, i) => ({ o, i }))));
-    else setOpts([]);
     setMulti([]); setOrder([]); setAnswer(null);
   }, [levelIdx, taskIdx, task]);
 
   const startLevel = (i) => {
     setLevelIdx(i); setTaskIdx(0); setPoints(0); setPolicy(null);
+    setAnswer(null); setMulti([]); setOrder([]);
     setMeters({ sec: START, usr: START, cmp: START });
     setView('play');
     window.scrollTo(0, 0);
@@ -179,28 +184,33 @@ export default function AdminGame({ fonts, navigate }) {
           </div>
           <h1 style={{ ...heading, fontSize: 'clamp(32px, 6vw, 44px)', marginBottom: 12 }}>{t.title}</h1>
           <p style={{ color: C.mute, lineHeight: 1.6, marginTop: 0, marginBottom: 24 }}>{t.intro}</p>
-          <div style={{ display: 'grid', gap: 12 }}>
+          <Carousel id="lv" label="Levels" perView={2} start={Math.max(0, LEVELS.filter(isReleased).length - 1)}
+            palette={{ primary: C.teal, border: C.line, white: C.bg, mute: C.mute }}
+            ofText={lang === 'nl' ? 'van' : 'of'} prevText={lang === 'nl' ? 'Vorige levels' : 'Previous levels'} nextText={lang === 'nl' ? 'Volgende levels' : 'Next levels'}>
             {LEVELS.map((lv, i) => {
               const open = isReleased(lv);
               const interactive = lv.tasks.some((x) => x.type === 'portal' || x.type === 'console');
               return (
                 <button key={lv.id} type="button" disabled={!open} onClick={() => startLevel(i)}
-                  style={{ textAlign: 'left', background: C.panel, border: `1px solid ${open ? C.line : C.panel}`, borderRadius: 10, padding: 16, color: C.text, cursor: open ? 'pointer' : 'default', opacity: open ? 1 : 0.55 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 600, fontSize: 16 }}>{open ? '' : '🔒 '}Level {lv.id} · {L(lv.name)}{interactive && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: C.teal, background: C.tint, borderRadius: 999, padding: '2px 8px', whiteSpace: 'nowrap' }}>🖱️ {lang === 'nl' ? 'Interactieve portal' : 'Interactive portal'}</span>}</span>
-                    <span style={{ fontSize: 13, color: best[lv.id] >= 70 ? C.green : C.mute }}>{best[lv.id] >= 70 ? '✓ ' : ''}{L(lv.rank)}{best[lv.id] != null ? ` · ${best[lv.id]}%` : ''}</span>
-                  </div>
-                  <div style={{ fontSize: 14, color: C.mute, marginTop: 6 }}>{open ? `${L(lv.blurb)} ${t.minutes}.` : `🗓️ ${t.releaseOn} ${fmtDate(lv.release, lang)}`}</div>
+                  style={{ textAlign: 'left', background: C.panel, border: `1px solid ${open ? C.line : C.panel}`, borderRadius: 10, padding: 16, color: C.text, cursor: open ? 'pointer' : 'default', opacity: open ? 1 : 0.55, display: 'flex', flexDirection: 'column', gap: 8, font: 'inherit' }}>
+                  <span style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13, color: best[lv.id] >= 70 ? C.green : C.mute }}>
+                    <span>{open ? '' : '🔒 '}Level {lv.id}</span>
+                    <span>{best[lv.id] >= 70 ? '✓ ' : ''}{L(lv.rank)}{best[lv.id] != null ? ` · ${best[lv.id]}%` : ''}</span>
+                  </span>
+                  <span style={{ fontWeight: 600, fontSize: 17 }}>{L(lv.name)}</span>
+                  {interactive && <span style={{ alignSelf: 'flex-start', fontSize: 12, fontWeight: 600, color: C.teal, background: C.tint, borderRadius: 999, padding: '2px 8px', whiteSpace: 'nowrap' }}>🖱️ {lang === 'nl' ? 'Interactieve portal' : 'Interactive portal'}</span>}
+                  <span style={{ fontSize: 14, color: C.mute, lineHeight: 1.5 }}>{open ? `${L(lv.blurb)} ${t.minutes}.` : `🗓️ ${t.releaseOn} ${fmtDate(lv.release, lang)}`}</span>
                 </button>
               );
             })}
-          </div>
-          {UPCOMING.map((u) => (
-            <div key={u.id} style={{ marginTop: 12, border: `1px dashed ${C.line}`, borderRadius: 10, padding: 14, color: C.mute }}>
-              <div style={{ fontWeight: 600 }}>🔒 Level {u.id} · {L(u.name)}</div>
-              <div style={{ fontSize: 14, marginTop: 4 }}>🗓️ {t.releaseOn} {fmtDate(u.release, lang)}</div>
-            </div>
-          ))}
+            {UPCOMING.map((u) => (
+              <div key={u.id} style={{ border: `1px dashed ${C.line}`, borderRadius: 10, padding: 16, color: C.mute, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <span style={{ fontSize: 13 }}>🔒 Level {u.id}</span>
+                <span style={{ fontWeight: 600, fontSize: 17 }}>{L(u.name)}</span>
+                <span style={{ fontSize: 14 }}>🗓️ {t.releaseOn} {fmtDate(u.release, lang)}</span>
+              </div>
+            ))}
+          </Carousel>
           <p style={{ fontSize: 13, color: C.mute, marginTop: 20, marginBottom: 0 }}>{t.weekly}</p>
           {!LIVE && <p style={{ fontSize: 12, color: C.orange, marginTop: 8, marginBottom: 0 }}>{t.previewNote}</p>}
         </div>

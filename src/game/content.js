@@ -9,6 +9,8 @@
 // effects: invloed op de meters { sec: beveiliging, usr: gebruikers, cmp: compliance }.
 // link: slug van een gepubliceerde blogpost op techwes.nl (alleen tonen als die bestaat).
 
+import { LEVELS_6_9, TASK_LINKS_6_9, LEVEL_BLOGS_6_9 } from './levels6to9';
+
 export const COMPANY = 'Nordwind BV';
 
 export const UI = {
@@ -735,11 +737,12 @@ New-AutoSensitivityLabelRule -Policy "BSN auto" -Name "BSN" \`
     ],
   },
 
+  ...LEVELS_6_9,
 ];
 
 // Aangekondigde levels (nog niet gebouwd): tonen als teaser in het menu.
 export const UPCOMING = [
-  { id: 6, release: '2026-12-28', name: { nl: 'Endpoint DLP en apparaten', en: 'Endpoint DLP and devices' } },
+  { id: 10, release: '2027-01-25', name: { nl: 'De Purview-scanner op je fileshares', en: 'The Purview scanner on your file shares' } },
 ];
 
 // Blogposts per opdracht (aanvulling op task.link) en per level ("Lees verder op de blog").
@@ -755,6 +758,7 @@ export const TASK_LINKS = {
   '4-2': 'purview-configureert-defender-onderzoekt-de-rolverdeling-die-je-soc-nog-moet-inhalen',
   '4-3': 'insider-risk-management-en-ai-apps-monitoring-is-nu-ook-een-kostenbeslissing',
   '4-5': 'insider-risk-als-conditie-in-conditional-access-zo-richt-je-adaptive-protection-veilig-in',
+  ...TASK_LINKS_6_9,
 };
 
 export const LEVEL_BLOGS = {
@@ -763,4 +767,5 @@ export const LEVEL_BLOGS = {
   3: ['simuleren-voordat-je-labelt-wat-de-nieuwe-insights-van-auto-labeling-wel-en-niet-laten-zien', 'auto-labeling-in-productie-het-overschrijven-van-handmatige-labels-is-een-beleidskeuze-geen-vinkje', 'retentie-in-purview-waarom-bewaren-en-vernietigen-bij-elkaar-horen', 'disposition-review-in-purview-de-tussenstap-voordat-je-data-definitief-verwijdert'],
   5: ['dspm-voor-ai-van-de-eerste-prompt-tot-een-policy', 'dspm-for-ai-zichtbaarheid-is-niet-hetzelfde-als-bescherming', 'copilot-maakt-je-oversharing-probleem-zichtbaar-en-dat-is-precies-de-waarde', 'dlp-op-de-netwerklaag-purview-gaat-shadow-ai-achterna-waar-de-browser-ophoudt'],
   4: ['ediscovery-in-purview-van-verzoek-tot-exportpakket', 'insider-risk-als-conditie-in-conditional-access-zo-richt-je-adaptive-protection-veilig-in', 'insider-risk-management-en-ai-apps-monitoring-is-nu-ook-een-kostenbeslissing'],
+  ...LEVEL_BLOGS_6_9,
 };

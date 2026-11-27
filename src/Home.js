@@ -3,6 +3,7 @@ import React from 'react';
 import { LEVELS, UPCOMING } from './game/content';
 import { isReleased } from './game/AdminGame';
 import BlogSlider from './BlogSlider';
+import Carousel from './Carousel';
 
 const PRESENTATIONS = [
   { href: '/presentaties/levensloop-van-een-document.html', title: 'De levensloop van een document', text: 'Sensitivity labels, encryptie en DLP, aan de hand van één document dat de organisatie verlaat.', tag: 'Purview · labels en DLP' },
@@ -32,7 +33,6 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
   // Een uitgelichte post (featured: true) gaat voor; daarna de nieuwste.
   const latest = featured ? [featured, ...posts.filter((p) => p !== featured)] : posts;
   const open = LEVELS.filter(isReleased);
-  const nextLevel = LEVELS.find((lv) => !isReleased(lv)) || UPCOMING[0];
   const fmt = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
 
   return (
@@ -66,19 +66,22 @@ export default function Home({ colors, fonts, navigate, posts, featured, postPat
           <p style={{ color: colors.textLight, lineHeight: 1.7, margin: '0 0 1.25rem' }}>Je bent de nieuwe Purview-beheerder bij het fictieve Nordwind BV. Bouw policies in een gesimuleerde portal, los tickets op en houd beveiliging, gebruikers en compliance in balans. Van beginner tot expert, elke week een nieuw level. In het Nederlands en Engels.</p>
           <button type="button" style={btnAccent} onClick={() => navigate('/spel')}>Speel nu →</button>
         </div>
-        <div style={{ display: 'grid', gap: '.5rem' }}>
-          {LEVELS.map((lv) => {
-            const ok = isReleased(lv);
-            return (
-              <div key={lv.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '.6rem .9rem', borderRadius: 8, background: ok ? colors.primaryLight : colors.background, color: ok ? colors.primaryDark : colors.textLight, fontSize: 14 }}>
-                <span>{ok ? '▶' : '🔒'} Level {lv.id} · {lv.name.nl}</span>
-                <span style={{ whiteSpace: 'nowrap' }}>{ok ? lv.rank.nl : fmt(lv.release)}</span>
-              </div>
-            );
-          })}
-          {nextLevel && !LEVELS.includes(nextLevel) && (
-            <div style={{ padding: '.6rem .9rem', borderRadius: 8, border: `1px dashed ${colors.border}`, color: colors.textLight, fontSize: 14 }}>🔒 Level {nextLevel.id} · {nextLevel.name.nl} · {fmt(nextLevel.release)}</div>
-          )}
+        <div style={{ minWidth: 0 }}>
+          <Carousel id="hl" label="Levels van Tenant Admin" perView={2} gap={12} start={Math.max(0, open.length - 1)}
+            palette={{ primary: colors.primary, border: colors.border, white: colors.white, mute: colors.textLight }}
+            prevText="Vorige levels" nextText="Volgende levels">
+            {[...LEVELS, ...UPCOMING].map((lv) => {
+              const ok = LEVELS.includes(lv) && isReleased(lv);
+              return (
+                <button key={lv.id} type="button" disabled={!ok} onClick={() => navigate('/spel')}
+                  style={{ textAlign: 'left', font: 'inherit', display: 'flex', flexDirection: 'column', gap: 6, padding: '.9rem 1rem', borderRadius: 8, border: ok ? 'none' : `1px dashed ${colors.border}`, background: ok ? colors.primaryLight : colors.background, color: ok ? colors.primaryDark : colors.textLight, cursor: ok ? 'pointer' : 'default' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.04em' }}>{ok ? '▶' : '🔒'} LEVEL {lv.id}{lv.rank ? ` · ${lv.rank.nl}` : ''}</span>
+                  <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.35 }}>{lv.name.nl}</span>
+                  <span style={{ fontSize: 13, marginTop: 'auto' }}>{ok ? 'Nu speelbaar' : `Vanaf ${fmt(lv.release)}`}</span>
+                </button>
+              );
+            })}
+          </Carousel>
           <div style={{ fontSize: 12, color: colors.textLight, marginTop: 4 }}>{open.length} van {LEVELS.length} levels speelbaar · geen account nodig, er wordt niets opgeslagen</div>
         </div>
       </div>
