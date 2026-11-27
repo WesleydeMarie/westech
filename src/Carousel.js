@@ -40,8 +40,10 @@ export default function Carousel({ id, label, children, perView = 2, start = 0, 
     if (e.key === 'ArrowLeft') { e.preventDefault(); slide(-1); }
   };
   const arrow = (disabled) => ({
-    width: 36, height: 36, borderRadius: '50%', border: `1px solid ${palette.border}`, background: palette.white,
-    color: disabled ? palette.border : palette.primary, fontSize: 16, cursor: disabled ? 'default' : 'pointer', padding: 0,
+    // Zelfde pijltjes als de blogslider (BlogSlider.js), zodat alle sliders op de site gelijk zijn.
+    width: 40, height: 40, borderRadius: '50%', border: `1px solid ${palette.border}`, background: palette.white,
+    color: disabled ? palette.border : palette.primary, fontSize: 18, cursor: disabled ? 'default' : 'pointer', padding: 0,
+    boxShadow: disabled ? 'none' : '0 2px 8px rgba(15,23,42,.08)',
   });
   const basis = `calc((100% - ${(perView - 1) * gap}px) / ${perView})`;
 
